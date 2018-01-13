@@ -2,19 +2,35 @@ html,
 body {
   background: #eff3f4;
 }
-/*html,body {
-  background: #EFF3F4;
+.box {
+  height: 100%;
 }
-.box{
-	height: 100%;
+.hb:hover {
+  background: #ffa500;
 }
-.hb:hover{
-	background: orange;
+.footer {
+  background: #eff3f4;
 }
-.footer{
-	background: #EFF3F4
+.mb {
+  margin-top: 40px;
 }
-.mb{
-	margin-top: 40px;
+.card {
+  height: 100%;
 }
-*/
+.author-image {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  width: 60px;
+  height: 60px;
+  margin-left: -30px;
+  border: 3px solid #ccc;
+  border-radius: 50%;
+}
+.article,
+.promo-block {
+  margin-top: 2rem;
+}
+.article-title {
+  line-height: 2;
+}
