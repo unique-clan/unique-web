@@ -2,33 +2,49 @@ extends layout
 
 block content
   main
-    section.hero
-      .hero-body
+section.section
         .container
           .content.has-text-centered
-            img(src='/img/st.png', alt='welcome to our clanpage!')   
-    section.hero.is-dark
-      .hero-body
-        .container
-          h1.title About
-          h2.subtitle
-            | Unique was founded 26.12.2014 by Tezcan. 
-            | It is a familiarly allround clan with nice players you can play with. 
-            | We have up to 26 servers, including different gametypes, where you can score ranks and enjoy your time!
-    section.hero.is-warning
-      .hero-body
-        .container
-          h1.title Clan Skin
-          h2.subtitle Now for everyone!
-          img.image(src='/img/unique-clanskin.png', alt='unique-clanskin')
-    section.hero.is-dark
-      .hero-body
-        .container
-          h1.title Discord Server
-          h2.subtitle Contact us
-          img.image(src='/img/discord-white.png', alt='discord')
-          
-
-    // img(src='/img/unique.png', alt='unique')
-                  
-
+            img(src="global/img/st.png" alt="welcome to our clanpage!")
+          hr
+      .container
+        .columns
+          .column
+            .card.article
+              .card-content
+                .media
+                  .media-center
+                    img.author-image(src="global/img/tee.png" alt="Placeholder image")
+                  .media-content.has-text-centered
+                    p.title.article-title Clanskin
+                    p.subtitle.is-6.article-subtitle
+                      | Now for everyone!
+                .content.article-body.has-text-centered
+                  p
+                    img(src="global/img/unique-clanskin.png" alt="unique-clanskin")
+          .column
+            .card.article
+              .card-content
+                .media
+                  .media-center
+                    img.author-image(src="global/img/discord-icon.png" alt="Placeholder image")
+                  .media-content.has-text-centered
+                    p.title.article-title Discord
+                    p.subtitle.is-6.article-subtitle
+                      | Contact us!
+                .content.article-body.has-text-centered
+                  p
+                    img(src="global/img/discord.png" alt="discord")
+          .column
+            .card.article
+              .card-content
+                .media
+                  .media-center
+                    img.author-image(src="global/img/info-icon.png" alt="Placeholder image")
+                  .media-content.has-text-centered
+                    p.title.article-title About
+                    p.subtitle.is-6.article-subtitle
+                      | Unique was founded 26.12.2014 by Tezcan. It is a familiarly allround clan with nice players you can play with. We have up to 16 servers, including different gametypes, where you can score ranks and enjoy your time!
+                .content.article-body.has-text-centered
+                  p
+                    img(src="global/img/unique.png" alt="unique")
