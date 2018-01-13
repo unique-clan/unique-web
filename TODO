@@ -11,7 +11,7 @@ Backend:
   ☐ Auth system (login / register)
 
 Frontend:
-  ☐ Better main page style
+  ✔ Better main page style @done(18-01-14 00:46)
   ☐ Ajax for all forms
   ☐ Form edit members (add, remove, edit)
 
