@@ -5,7 +5,41 @@ var logger = require('morgan')
 var cookieParser = require('cookie-parser')
 var bodyParser = require('body-parser')
 var stylus = require('stylus')
+var debug = require('debug')('uniqueweb:app')
 
+// Setup the db connection
+const mongoose = require('mongoose')
+// Load models
+require('./mongodb/index')()
+
+mongoose.Promise = global.Promise
+
+var db = mongoose.connection
+db.on('error', console.error.bind(console, 'connection error:'))
+db.once('open', function callback () {
+  debug('Connection to database succesfull.')
+})
+
+// Build the connection string
+var connectionString = 'mongodb://'
+
+if (process.env.DATABASE_USERNAME && process.env.DATABASE_PASSWORD) {
+  connectionString += `${process.env.DATABASE_USERNAME}:${process.env.DATABASE_PASSWORD}`
+}
+
+if (process.env.DATABASE_HOST && process.env.DATABASE_PORT) {
+  connectionString += `@${process.env.DATABASE_HOST}:${process.env.DATABASE_PORT}`
+} else {
+  connectionString += 'localhost'
+}
+
+connectionString += '/' + (process.env.DATABASE_NAME || 'uniqueweb')
+
+mongoose.connect(connectionString, {
+  useMongoClient: true
+})
+
+// Load App routes
 var index = require('./routes/index')
 
 var app = express()
@@ -23,6 +57,7 @@ app.use(cookieParser())
 app.use(stylus.middleware(path.join(__dirname, 'public')))
 app.use(express.static(path.join(__dirname, 'public')))
 
+// Add the app routes
 app.use('/', index)
 
 // catch 404 and forward to error handler
