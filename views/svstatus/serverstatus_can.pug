@@ -1,0 +1,78 @@
+extends ../layout
+
+block content
+  main
+    section.section
+      br
+      .container
+        section.hero.is-small.is-warning
+          .hero-body
+            h1.title
+              | Serverstatus
+            h2.subtitle
+              | GER Status: 
+              span.has-text-danger OFF
+              |  | FRA Status: 
+              span.has-text-success ON
+              |  | CAN Status: 
+              span.has-text-success ON
+        br
+        br
+        br
+        .tabs.is-large.is-centered
+          ul
+            li
+              a(href='/serverstatus/ger') GER
+            li
+              a(href='/serverstatus/fra') FRA
+            li.is-active
+              a(href='/serverstatus/can') CAN
+        article.tile.is-child.notification.is-white.has-shadow
+          .box
+            p.title TeeSmash
+            p.subtitle
+              | Map: SkySmasher
+              .columns
+                .column.is-one-quarter
+                  .box.has-text-centered.hb
+                    section.hero
+                      h1.title
+                        | nameless tee
+                      h2.subtitle
+                        | nameless clan
+          .box
+            p.title Race 1
+            p.subtitle
+              | Map: run_kickz2
+              .columns
+                .column.is-one-quarter
+                  .box.has-text-centered.hb
+                    section.hero
+                      h1.title
+                        | nameless tee
+                      h2.subtitle
+                        | nameless clan
+          .box
+            p.title Race 2
+            p.subtitle
+              | Map: run_wild_desire
+              .columns
+                .column.is-one-quarter
+                  .box.has-text-centered.hb
+                    section.hero
+                      h1.title
+                        | nameless tee
+                      h2.subtitle
+                        | nameless clan
+          .box
+            p.title Fly
+            p.subtitle
+              | Map: fly2junglehide
+              .columns
+                .column.is-one-quarter
+                  .box.has-text-centered.hb
+                    section.hero
+                      h1.title
+                        | nameless tee
+                      h2.subtitle
+                        | nameless clan
