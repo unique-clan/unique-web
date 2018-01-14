@@ -1,0 +1,10 @@
+doctype html
+html(lang="en")
+  head
+    title= title
+    include templates/header.pug
+  body
+    include templates/nav.pug
+    block content
+    include templates/footer.pug
+    include templates/globalscripts.pug

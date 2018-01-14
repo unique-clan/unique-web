@@ -1,0 +1,106 @@
+extends layout
+
+include templates/mixins.pug
+
+block content
+  main
+    br
+    section.section
+      .container
+        article.tile.is-child.notification.is-white.has-shadow
+          p.title Application Expectations
+          .columns
+            p.subtitle
+              .column
+                p.subtitle
+                  strong 1. What you should know
+                  ul
+                    li Your application will be kept private.
+                    li Just our leaders can read your application.
+                    li If your application isn't good enough, we will delete it without notifying you.
+                    li We are an allround-clan, this means we play all gametypes.
+                    li Having multiple clans is forbidden.
+                    li Activity doesn't matter!
+              .column
+                p.subtitle
+                  strong 2. You should take care about
+                  ul
+                    li Your grammar.
+                    li Your spelling.
+                    li That your application should contain about 100 words.
+                    li That your application should be in english
+                    li That your application should consist of full sentences.
+              .column
+                p.subtitle
+                  strong 3. About yourself
+                  ul
+                    ul
+                      li How old are you?
+                      li How long have you been playing Teeworlds?
+                      li Have you ever used different Ingame-Names?
+                      li Which modifications (gametypes) do/did you play?
+              .column
+                p.subtitle
+                  strong 4. W - Questions
+                  ul
+                    li Why do you want to join us?
+                    li Why should we take you?
+                    li What is unique about you?
+                    li What do you know/think about our clan?
+                    li Which people do you know in our clan?
+                    li Who brought you to us?
+    section.section
+      .container
+        article.tile.is-child.notification.is-white.has-shadow
+          form.form
+            .field.is-horizontal
+              .field-label.is-normal
+                label.label Ingame-Name
+              .field-body
+                .field
+                  p.control.is-expanded.has-icons-left
+                    input.input(type='text', placeholder='Name')
+                    span.icon.is-small.is-left
+                      i.fa.fa-user
+            .field.is-horizontal
+              .field-label.is-normal
+                label.label Country
+              .field-body
+                p.control.has-icons-left
+                  span.select
+                    +country_select()
+                  span.icon.is-small.is-left
+                    i.fa.fa-globe
+            .field.is-horizontal
+              .field-label.is-normal
+                label.label Gametypes
+              .field-body
+                .field
+                  p.control.is-expanded
+                    input.input(type='text', placeholder='DDRace, OpenFNG')
+            .field.is-horizontal
+              .field-label
+                label.label Gender
+              .field-body
+                .field.is-narrow
+                  .control
+                    label.radio
+                      input(type='radio', name='member')
+                      |   Male
+                    label.radio
+                      input(type='radio', name='member')
+                      |   Female
+            .field.is-horizontal
+              .field-label.is-normal
+                label.label Presentation
+              .field-body
+                .field
+                  .control
+                    textarea.textarea(placeholder='I am fameless tee and i am 16 years old...')
+            .field.is-horizontal
+              .field-label
+              .field-body
+                .field
+                  .control
+                    button.button.is-success.is-outlined
+                      | Apply
