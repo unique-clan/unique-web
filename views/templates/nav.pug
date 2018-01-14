@@ -1,0 +1,25 @@
+header
+  nav.navbar.is-fixed-top.has-shadow(role='navigation', aria-label='main navigation')
+    .container
+      .navbar-brand
+        a.navbar-item(href='/')
+          img(src='/img/logo.png', alt='Unique - Be smart, be Unique!')
+        button.button.navbar-burger(data-target='navMenu')
+          span
+          span
+          span
+      #navMenu.navbar-menu
+        .navbar-start
+          a.navbar-item(href='/member')
+            p Member
+          a.navbar-item(href='/serverstatus')
+            p Serverstatus
+          a.navbar-item(href='/apply')
+            p Apply
+          a.navbar-item(href='/mapupload')
+            p Map Upload
+          a.navbar-item(href='/ranks')
+            p Ranks
+        .navbar-end
+          a.navbar-item(href='javascript:void(0)')
+            p Backend
