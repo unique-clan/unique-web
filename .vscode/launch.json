@@ -9,7 +9,10 @@
             "request": "launch",
             "name": "Launch Program",
             "program": "${workspaceFolder}/bin/www",
-            "console": "integratedTerminal"
+            "console": "integratedTerminal",
+            "env": {
+                "DEBUG": "uniqueweb:server"
+            }
         }
     ]
 }
