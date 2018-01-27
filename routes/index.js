@@ -32,7 +32,7 @@ router.get('/apply', function (req, res, next) {
 })
 
 router.get('/mapupload', function (req, res, next) {
-  res.render('mapupload', {title: 'Map upload | Unique'})
+  res.render('mapupload', {title: 'Map Upload | Unique'})
 })
 
 router.get('/ranks', function (req, res, next) {
