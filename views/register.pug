@@ -1,0 +1,75 @@
+extends layout
+
+include templates/mixins.pug
+
+block content
+  main
+    br
+    section.section
+      .container
+        article.tile.is-child.notification.is-white.has-shadow
+          form.form#register-form
+            .field.is-horizontal
+              .field-label.is-normal
+                label.label Username
+              .field-body
+                .field
+                  p.control.is-expanded.has-icons-left
+                    input.input(type='text', placeholder='Username' name='username')
+                    span.icon.is-small.is-left
+                      i.fa.fa-user
+            .field.is-horizontal
+              .field-label.is-normal
+                label.label Password
+              .field-body
+                .field
+                  p.control.is-expanded.has-icons-left
+                    input.input(type='password', placeholder='Password' name='password')
+                    span.icon.is-small.is-left
+                      i.fa.fa-key
+            .field.is-horizontal
+              .field-label.is-normal
+                label.label Repeat password
+              .field-body
+                .field
+                  p.control.is-expanded.has-icons-left
+                    input.input(type='password', placeholder='Repeat the password' name='rep_password')
+                    span.icon.is-small.is-left
+                      i.fa.fa-key
+            .field.is-horizontal
+              .field-label.is-normal
+                label.label Teeworlds Name
+              .field-body
+                .field
+                  p.control.is-expanded.has-icons-left
+                    input.input(type='text', placeholder='fameless tee' name='tw_name')
+                    span.icon.is-small.is-left
+                      i.fa.fa-user
+            .field.is-horizontal
+              .field-label.is-normal
+                label.label Country
+              .field-body
+                p.control.has-icons-left
+                  span.select
+                    +country_select('country')
+                  span.icon.is-small.is-left
+                    i.fa.fa-globe
+            .field.is-horizontal
+              .field-label.is-normal
+                label.label Gametypes
+              .field-body
+                .field
+                  p.control.is-expanded.has-icons-left
+                    input.input(type="tags", placeholder="Add gamemode", value="DDRace,OpenFNG", name='gameModes')
+                    span.icon.is-small.is-left
+                      i.fa.fa-gamepad
+            .field.is-horizontal
+              .field-label
+              .field-body
+                .field
+                  .control
+                    button.button.is-success.is-outlined#register-button
+                      | Register
+
+block scripts
+  script(src="/js/register.js")

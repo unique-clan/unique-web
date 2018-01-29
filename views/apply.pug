@@ -76,8 +76,10 @@ block content
                 label.label Gametypes
               .field-body
                 .field
-                  p.control.is-expanded
-                    input.input(type='text', placeholder='DDRace, OpenFNG')
+                  p.control.is-expanded.has-icons-left
+                    input.input(type="tags", placeholder="Add gamemode", value="DDRace,OpenFNG", name='gameModes')
+                    span.icon.is-small.is-left
+                      i.fa.fa-gamepad
             .field.is-horizontal
               .field-label
                 label.label Gender
