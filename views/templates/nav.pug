@@ -21,5 +21,8 @@ header
           a.navbar-item(href='/ranks')
             p Ranks
         .navbar-end
-          a.navbar-item(href='javascript:void(0)')
-            p Backend
+          if !user
+            a.navbar-item(href='/auth/register')
+              p Register
+            a.navbar-item(href='/auth/login')
+              p Login
