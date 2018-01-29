@@ -41,6 +41,7 @@ mongoose.connect(connectionString, {
 
 // Load App routes
 var index = require('./routes/index')
+var auth = require('./routes/auth')
 
 var app = express()
 
@@ -59,6 +60,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 // Add the app routes
 app.use('/', index)
+app.use('/auth', auth)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

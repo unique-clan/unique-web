@@ -9,6 +9,10 @@ var UserSchema = new Schema({
       unique: true
     }
   },
+  tw_name: {
+    type: String,
+    required: [true, 'Teeworlds name is required.']
+  },
   password: {
     type: String,
     required: [true, 'Missing password.'],
@@ -23,9 +27,8 @@ var UserSchema = new Schema({
     default: false
   },
   gameModes: {
-    type: String,
-    enum: ['DDRace', 'Race', 'Block', 'OpenFNG', 'zCatch'],
-    default: 'DDRace'
+    type: [String],
+    default: ['DDRace']
   }
 })
 
