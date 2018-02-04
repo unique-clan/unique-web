@@ -7,6 +7,8 @@ var bodyParser = require('body-parser')
 var helmet = require('helmet')
 var sassMiddleware = require('node-sass-middleware')
 var session = require('express-session')
+const MongoStore = require('connect-mongo')(session)
+var mongoSanitize = require('express-mongo-sanitize')
 var debug = require('debug')('uniqueweb:app')
 
 // Setup the db connection
@@ -57,6 +59,9 @@ app.use(favicon(path.join(__dirname, 'public', 'favicon/favicon.ico')))
 app.use(logger('dev'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(mongoSanitize({
+  replaceWith: '_'
+}))
 app.use(cookieParser())
 // app.use(stylus.middleware(path.join(__dirname, 'public')))
 app.use(sassMiddleware({
@@ -77,7 +82,11 @@ app.use(session({
   cookie: {
     secure: process.env.COOKIE_SECURE || false
   },
-  name: 'uniqueclan.sid'
+  name: 'uniqueclan.sid',
+  store: new MongoStore({
+    mongooseConnection: mongoose.connection,
+    ttl: 14 * 24 * 60 * 60 // = 14 days. Default
+  })
 }))
 
 // Add the app routes
@@ -96,7 +105,7 @@ app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message
   res.locals.error = req.app.get('env') === 'development' ? err : {}
-  // debug(err)
+  debug(err)
   // render the error page
   if (!res.headersSent) {
     res.status(err.status || 500)

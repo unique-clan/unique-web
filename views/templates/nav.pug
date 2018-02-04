@@ -10,22 +10,18 @@ header
           span
       #navMenu.navbar-menu
         .navbar-start
-          a.navbar-item(href='/member')
-            p Member
-          a.navbar-item(href='/serverstatus')
-            p Serverstatus
-          a.navbar-item(href='/apply')
-            p Apply
-          a.navbar-item(href='/mapupload')
-            p Map Upload
-          a.navbar-item(href='/ranks')
-            p Ranks
+          a.navbar-item(href='/member') Member
+          a.navbar-item(href='/serverstatus') Serverstatus
+          a.navbar-item(href='/apply') Apply
+          a.navbar-item(href='/mapupload') Map Upload
+          a.navbar-item(href='/ranks') Ranks
         .navbar-end
-          if !user
-            a.navbar-item(href='/auth/register')
-              p Register
-            a.navbar-item#login-enable(href='javascript:void(0)')
-              p Login
+          if user
+            a.navbar-item(href='/user/' + user.username)= user.username
+            a.navbar-item(href='/auth/logout') Logout
+          else
+            a.navbar-item(href='/auth/register') Register
+            a.navbar-item#login-enable(href='javascript:void(0)') Login
   .modal#login-modal
     .modal-background
     .modal-card#login-card
@@ -54,6 +50,7 @@ header
                   span.icon.is-small.is-left
                     i.fa.fa-key
                 p.help#help-password
+          p#response-message
         footer.modal-card-foot
           button.button.is-success Login
           button.button#login-modal-close Close
