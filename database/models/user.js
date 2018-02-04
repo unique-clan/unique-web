@@ -29,6 +29,9 @@ var UserSchema = new Schema({
   gameModes: {
     type: [String],
     default: ['DDRace']
+  },
+  country: {
+    type: String
   }
 })
 
