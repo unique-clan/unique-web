@@ -1,0 +1,43 @@
+extends layout
+
+include templates/mixins.pug
+
+block content
+  main
+    br
+    section.section
+      .container
+        article.tile.is-child.notification.is-white.has-shadow
+          form.form#form-register
+            .field.is-horizontal
+              .field-label.is-normal
+                label.label Username
+              .field-body
+                .field
+                  p.control.is-expanded.has-icons-left
+                    input.input(type='text', placeholder='Username' name='username')
+                    span.icon.is-small.is-left
+                      i.fa.fa-user
+                  p.help#help-username
+            .field.is-horizontal
+              .field-label.is-normal
+                label.label Password
+              .field-body
+                .field
+                  p.control.is-expanded.has-icons-left
+                    input.input(type='password', placeholder='Password' name='password')
+                    span.icon.is-small.is-left
+                      i.fa.fa-key
+                  p.help#help-password
+            .field.is-horizontal
+              .field-label
+              .field-body
+                .field
+                  .control
+                    button.button.is-success.is-outlined#register-button
+                      | Login
+                    p#response-message
+            
+
+block scripts
+  script(src="/js/login.js")
