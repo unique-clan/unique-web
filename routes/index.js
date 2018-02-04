@@ -63,11 +63,4 @@ router.get('/ranks', function (req, res, next) {
   })
 })
 
-router.get('/points', function (req, res, next) {
-  res.render('points', {
-    title: 'Points | Unique',
-    user: req.session.authed ? req.session.user : null
-  })
-})
-
 module.exports = router
