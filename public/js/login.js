@@ -4,14 +4,19 @@ $(document).ready(function () {
     switch (status) {
       case 400:
       case 422:
+      case 404:
       {
         form.handleErrors(res.responseJSON.errors)
         break
       }
-      case 201:
+      case 403:
       {
-        form.turnAllGreen()
         form.find('#response-message').html(res.responseJSON.msg)
+        break
+      }
+      case 200:
+      {
+        window.location.replace('/')
         break
       }
     }
