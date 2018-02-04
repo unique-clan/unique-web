@@ -14,8 +14,29 @@ document.addEventListener('DOMContentLoaded', function () {
         // Toggle the class on both the "navbar-burger" and the "navbar-menu"
         $el.classList.toggle('is-active')
         $target.classList.toggle('is-active')
-
       })
     })
   }
+
+  $('#login-close').click(() => $('#login-modal-close').click())
+  $('#login-modal-close').click(e => {
+    e.preventDefault()
+    $('#login-modal').removeClass('is-active')
+  })
+
+  $('#login-enable').click(() => {
+    if (!$('#login-modal').hasClass('is-active')) {
+      $('#login-modal').addClass('is-active')
+    }
+  })
+
+  $(document).mouseup((e) => {
+    var container = $('#login-card')
+
+    if ($('#login-modal').hasClass('is-active')) {
+      if (!container.is(e.target) && container.has(e.target).length === 0) {
+        $('#login-modal').removeClass('is-active')
+      }
+    }
+  })
 })

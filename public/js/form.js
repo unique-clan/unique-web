@@ -103,6 +103,10 @@ class FormHandler {
   onInternal (callback) {
     this.onInternalCallbacks.push(callback)
   }
+
+  find (selector) {
+    return this.form.find(selector)
+  }
 }
 
 /**
@@ -118,8 +122,8 @@ class BulmaFormHandler extends FormHandler {
    */
   turnGreen (field) {
     // If the DOM has the danger class, remove it.
-    let input = $(`input[name=${field}]`)
-    let help = $('#help-' + field)
+    let input = this.form.find(`input[name=${field}]`)
+    let help = this.form.find('#help-' + field)
 
     if (input.hasClass('is-danger')) {
       input.toggleClass('is-danger')
@@ -135,9 +139,9 @@ class BulmaFormHandler extends FormHandler {
   handleErrors (errors, prefix = '') {
     for (let fieldName in errors) {
       let err = errors[fieldName]
-      let help = $('#help-' + prefix + fieldName)
+      let help = this.form.find('#help-' + prefix + fieldName)
       // let input = $('#input-' + prefix + fieldName)
-      let input = $(`input[name=${fieldName}]`)
+      let input = this.form.find(`input[name=${fieldName}]`)
 
       // Check if exists
       if (!input.length) {

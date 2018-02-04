@@ -1,5 +1,5 @@
 $(document).ready(function () {
-  var form = new BulmaFormHandler('#form-register', '/auth/register', 'POST')
+  var form = new BulmaFormHandler('#form-login', '/auth/login', 'POST')
   form.onResponse((status, res) => {
     switch (status) {
       case 400:
@@ -11,7 +11,7 @@ $(document).ready(function () {
       case 201:
       {
         form.turnAllGreen()
-        form.find('p#response-message').html(res.responseJSON.msg)
+        form.find('#response-message').html(res.responseJSON.msg)
         break
       }
     }
