@@ -61,6 +61,12 @@ block content
               .field-label
               .field-body
                 .field
+                  .g-recaptcha(data-sitekey='6LfSTEQUAAAAADn8kA4TMBsMOtXqwtA7lkndO9ih')
+                  p.help#help-g-recaptcha-response
+            .field.is-horizontal
+              .field-label
+              .field-body
+                .field
                   .control
                     button.button.is-success.is-outlined#register-button
                       | Register
@@ -68,4 +74,5 @@ block content
             
 
 block scripts
+  script(src='https://www.google.com/recaptcha/api.js')
   script(src="/js/register.js")
