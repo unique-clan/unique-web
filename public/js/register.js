@@ -10,7 +10,6 @@ $(document).ready(function () {
       }
       case 201:
       {
-        console.log('CALLED OMG')
         form.turnAllGreen()
         $('#response-message').html(res.responseJSON.msg)
         break
