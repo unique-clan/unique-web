@@ -1,3 +1,9 @@
+
+public/css/*.css
+
+
+# nodejs thingies
+
 # Logs
 logs
 *.log
