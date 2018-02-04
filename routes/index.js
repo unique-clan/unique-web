@@ -39,8 +39,4 @@ router.get('/ranks', function (req, res, next) {
   res.render('ranks', {title: 'Ranks | Unique'})
 })
 
-router.get('/points', function (req, res, next) {
-  res.render('points', {title: 'Points | Unique'})
-})
-
 module.exports = router
