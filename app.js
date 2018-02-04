@@ -10,7 +10,7 @@ var debug = require('debug')('uniqueweb:app')
 // Setup the db connection
 const mongoose = require('mongoose')
 // Load models
-require('./mongodb/index')()
+require('./database/index')()
 
 mongoose.Promise = global.Promise
 
