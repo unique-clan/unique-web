@@ -1,6 +1,7 @@
 $(document).ready(function () {
   var form = new BulmaFormHandler('#form-register', '/auth/register', 'POST')
   form.onResponse((status, res) => {
+    grecaptcha.reset()
     switch (status) {
       case 400:
       case 422:

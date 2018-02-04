@@ -5,6 +5,10 @@ var mongoose = require('mongoose')
 var UserSchema = require('../database/models/user')
 var middleware = require('./middleware')
 
+var Recaptcha = require('express-recaptcha')
+
+var recaptcha = new Recaptcha(process.env.RECAPTCHA_SITE_KEY, process.env.RECAPTCHA_SECRET_KEY)
+
 /* GET home page. */
 router.get('/', function (req, res, next) {
   res.redirect('login')
@@ -107,34 +111,47 @@ router.post('/register', function (req, res, next) {
   // debug(req.params)
   // debug(req.body)
 
-  let Users = mongoose.model('User')
+  recaptcha.verify(req, function (error, data) {
+    if (!error) {
+      let Users = mongoose.model('User')
 
-  Users.create({
-    username: req.body.username,
-    tw_name: req.body.tw_name,
-    password: req.body.password,
-    gameModes: gameModes,
-    country: req.body.country
-  }, (err, result) => {
-    if (err) {
-      if (err.code && err.code === 11000) {
-        debug(`${req.ip} tried to create account with an existing username '${req.body.username}'`)
-        res.status(422).json({
-          errors: {
-            username: {
-              message: 'An account with this username already exists.'
-            }
+      Users.create({
+        username: req.body.username,
+        tw_name: req.body.tw_name,
+        password: req.body.password,
+        gameModes: gameModes,
+        country: req.body.country
+      }, (err, result) => {
+        if (err) {
+          if (err.code && err.code === 11000) {
+            debug(`${req.ip} tried to create account with an existing username '${req.body.username}'`)
+            res.status(422).json({
+              errors: {
+                username: {
+                  message: 'An account with this username already exists.'
+                }
+              }
+            })
+            return
           }
+          res.status(400).json(err)
+          return
+        }
+        debug(`Account created with username '${req.body.username}' (${req.ip})`)
+        res.status(201).json({
+          msg: 'Account created succesfully.'
         })
-        return
-      }
-      res.status(400).json(err)
-      return
+      })
+    } else {
+      console.log(req.body)
+      res.status(422).json({
+        errors: {
+          'g-recaptcha-response': {
+            message: 'reCaptcha is wrong.'
+          }
+        }
+      })
     }
-    debug(`Account created with username '${req.body.username}' (${req.ip})`)
-    res.status(201).json({
-      msg: 'Account created succesfully.'
-    })
   })
 })
 
