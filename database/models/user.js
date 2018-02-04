@@ -5,13 +5,17 @@ var UserSchema = new Schema({
   username: {
     type: String,
     required: [true, 'Missing username.'],
+    maxlength: [30, 'Username can\'t be longer than 30 characters.'],
+    minlength: [3, 'Username can\'t be shorter than 3 characters.'],
     index: {
       unique: true
     }
   },
   tw_name: {
     type: String,
-    required: [true, 'Teeworlds name is required.']
+    required: [true, 'Teeworlds name is required.'],
+    minlength: [1, 'Teeworlds name can\'t be shorter than 1 character.'],
+    maxlength: [15, 'Teeworlds name can\'t be longer than 15 characters.']
   },
   password: {
     type: String,
@@ -30,8 +34,15 @@ var UserSchema = new Schema({
     type: [String],
     default: ['DDRace']
   },
+  favGameMode: {
+    type:String
+  },
   country: {
     type: String
+  },
+  registerDate: {
+    type: Date,
+    default: new Date()
   }
 })
 

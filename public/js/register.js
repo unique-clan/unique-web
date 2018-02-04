@@ -1,19 +1,20 @@
 $(document).ready(function () {
-  function objectifyForm (formArray) { // serialize data function
-    var returnArray = {}
-    for (var i = 0; i < formArray.length; i++) {
-      returnArray[formArray[i]['name']] = formArray[i]['value']
+  var form = new BulmaFormHandler('#form-register', '/auth/register', 'POST')
+  form.onResponse((status, res) => {
+    switch (status) {
+      case 400:
+      case 422:
+      {
+        form.handleErrors(res.responseJSON.errors)
+        break
+      }
+      case 201:
+      {
+        console.log('CALLED OMG')
+        form.turnAllGreen()
+        $('#response-message').html(res.responseJSON.msg)
+        break
+      }
     }
-    return returnArray
-  }
-
-  $('#register-form').submit(e => {
-    e.preventDefault()
-
-    let data = objectifyForm($('#register-form').serializeArray())
-
-    $.post('/auth/register', data, (res) => {
-      console.log(res)
-    })
   })
 })
