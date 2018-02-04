@@ -4,7 +4,8 @@ var favicon = require('serve-favicon')
 var logger = require('morgan')
 var cookieParser = require('cookie-parser')
 var bodyParser = require('body-parser')
-var stylus = require('stylus')
+// var stylus = require('stylus')
+var sassMiddleware = require('node-sass-middleware')
 var debug = require('debug')('uniqueweb:app')
 
 // Setup the db connection
@@ -55,7 +56,13 @@ app.use(logger('dev'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cookieParser())
-app.use(stylus.middleware(path.join(__dirname, 'public')))
+// app.use(stylus.middleware(path.join(__dirname, 'public')))
+app.use(sassMiddleware({
+  src: path.join(__dirname, 'public'),
+  dest: path.join(__dirname, 'public'),
+  indentedSyntax: true, // true = .sass and false = .scss
+  sourceMap: true
+}))
 app.use(express.static(path.join(__dirname, 'public')))
 
 // Add the app routes
