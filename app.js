@@ -4,8 +4,9 @@ var favicon = require('serve-favicon')
 var logger = require('morgan')
 var cookieParser = require('cookie-parser')
 var bodyParser = require('body-parser')
-// var stylus = require('stylus')
+var helmet = require('helmet')
 var sassMiddleware = require('node-sass-middleware')
+var session = require('express-session')
 var debug = require('debug')('uniqueweb:app')
 
 // Setup the db connection
@@ -44,6 +45,9 @@ var auth = require('./routes/auth')
 
 var app = express()
 
+// Production security
+app.use(helmet())
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'pug')
@@ -62,6 +66,19 @@ app.use(sassMiddleware({
   sourceMap: true
 }))
 app.use(express.static(path.join(__dirname, 'public')))
+
+if (process.env.COOKIE_SECURE) {
+  app.set('trust proxy', 1) // trust first proxy
+}
+app.use(session({
+  secret: process.env.COOKIE_SECRET || 'unique is the best clan in teeworlds',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: process.env.COOKIE_SECURE || false
+  },
+  name: 'uniqueclan.sid'
+}))
 
 // Add the app routes
 app.use('/', index)

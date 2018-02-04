@@ -2,13 +2,14 @@ This is a the TODO file for uniqueweb.
 Please follow the TODO style.
 
 Backend:
-  ☐ MongoDB integration with mongoose
+  ✔ MongoDB integration with mongoose @done(18-02-04 11:36)
   ☐ Mysql integration with a ORM npm package (such as https://www.npmjs.com/package/orm)
   ☐ Form validation with mongoose
   ☐ Ranks
   ☐ Points
   ☐ Map upload
   ☐ Auth system (login / register)
+  ☐ Add session save at login
 
 Frontend:
   ✔ Better main page style @done(18-01-14 00:46)
