@@ -143,12 +143,13 @@ class BulmaFormHandler extends FormHandler {
       // let input = $('#input-' + prefix + fieldName)
       let input = this.form.find(`input[name=${fieldName}]`)
 
+      help.text(err.message)
+
       // Check if exists
       if (!input.length) {
         continue
       }
-
-      help.text(err.message)
+      
       if (!input.hasClass('is-danger')) {
         input.toggleClass('is-danger')
       }
