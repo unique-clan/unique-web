@@ -10,7 +10,7 @@ Copyright (c) 2018 Ryozuki, Tezcan, timakro
 - `git clone https://github.com/unique-clan/unique-web`
 - `cd unique-web`
 - `npm install`
-- `npm start` Will listen on localhost:3000 by default
+- `npm start` Will listen on `localhost:3000` by default
 
 # Javascript style
 We follow [StandardJS](https://standardjs.com/)
