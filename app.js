@@ -25,20 +25,18 @@ db.once('open', function callback () {
 var connectionString = 'mongodb://'
 
 if (process.env.DATABASE_USERNAME && process.env.DATABASE_PASSWORD) {
-  connectionString += `${process.env.DATABASE_USERNAME}:${process.env.DATABASE_PASSWORD}`
+  connectionString += `${process.env.DATABASE_USERNAME}:${process.env.DATABASE_PASSWORD}@`
 }
 
 if (process.env.DATABASE_HOST && process.env.DATABASE_PORT) {
-  connectionString += `@${process.env.DATABASE_HOST}:${process.env.DATABASE_PORT}`
+  connectionString += `${process.env.DATABASE_HOST}:${process.env.DATABASE_PORT}`
 } else {
   connectionString += 'localhost'
 }
 
 connectionString += '/' + (process.env.DATABASE_NAME || 'uniqueweb')
 
-mongoose.connect(connectionString, {
-  useMongoClient: true
-})
+mongoose.connect(connectionString)
 
 // Load App routes
 var index = require('./routes/index')
