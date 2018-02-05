@@ -56,7 +56,6 @@ app.set('view engine', 'pug')
 
 // uncomment after placing your favicon in /public
 app.use(favicon(path.join(__dirname, 'public', 'favicon/favicon.ico')))
-app.use(logger('dev'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(mongoSanitize({
@@ -71,6 +70,7 @@ app.use(sassMiddleware({
   sourceMap: true
 }))
 app.use(express.static(path.join(__dirname, 'public')))
+app.use(logger('dev'))
 
 if (process.env.COOKIE_SECURE) {
   app.set('trust proxy', 1) // trust first proxy
