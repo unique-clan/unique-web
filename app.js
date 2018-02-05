@@ -72,7 +72,7 @@ app.use(sassMiddleware({
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(logger('dev'))
 
-if (process.env.COOKIE_SECURE) {
+if (process.env.COOKIE_SECURE == 'true') {
   app.set('trust proxy', 1) // trust first proxy
 }
 app.use(session({
@@ -80,7 +80,7 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: process.env.COOKIE_SECURE || false
+    secure: process.env.COOKIE_SECURE == 'true'
   },
   name: 'uniqueclan.sid',
   store: new MongoStore({
