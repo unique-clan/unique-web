@@ -2,7 +2,6 @@ var express = require('express')
 var router = express.Router()
 var debug = require('debug')('uniqueweb:auth')
 var mongoose = require('mongoose')
-var UserSchema = require('../database/models/user')
 var middleware = require('./middleware')
 
 var Recaptcha = require('express-recaptcha')
