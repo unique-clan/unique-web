@@ -5,21 +5,27 @@ block content
     br
     section.section
       .container
-        .card
-          .card-content
-            .content
-              h1 Map Upload
-              p Before you upload your map, be aware that if your Map isn't good enough, we will delete it without notifying you.
-              p Also write your Ingame-Name in the map like that: run_example_[YOUR_NAME].map
-          footer.card-footer
-            .file.is-warning.has-name.is-fullwidth
-                label.file-label
-                   input#file.file-input(type='file', name='resume')
-                   span.file-cta
-                     span.file-icon
-                       i.fa.fa-upload
-                     span.file-label
-                       | Choose a file…
-                   span#filename.file-name
-                     | run_example_fameless_tee.map
-            a.card-footer-item.button Upload
+        .columns
+          .column
+            .box
+              section.hero
+                h1.title.has-text-centered
+                  | Map Upload
+                h2.subtitle
+                  | Before you upload your map,
+                  | be aware that if your Map isn't good enough, we will delete it without notifying you.
+                  | Also write your Ingame-Name in the map like that: run_example_[YOUR_NAME].map
+          .column
+            .box.has-text-centered
+              section.hero
+                .file.is-warning.has-name.is-fullwidth
+                  label.file-label
+                    input#file.file-input(type="file" name="resume")
+                    span.file-cta
+                      span.file-icon
+                        i.fa.fa-upload
+                      span.file-label
+                        | Choose a file…
+                    span#filename.file-name
+                      | run_example.map
+                a.button.is-warning.is-outlined.mb Upload
