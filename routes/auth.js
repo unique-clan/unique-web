@@ -7,7 +7,7 @@ var middleware = require('./middleware')
 
 var Recaptcha = require('express-recaptcha')
 
-var recaptcha = new Recaptcha(process.env.RECAPTCHA_SITE_KEY, process.env.RECAPTCHA_SECRET_KEY)
+var recaptcha = new Recaptcha(process.env.RECAPTCHA_SITE_KEY || '', process.env.RECAPTCHA_SECRET_KEY || '')
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
