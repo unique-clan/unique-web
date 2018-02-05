@@ -7,6 +7,7 @@ Copyright (c) 2018 Ryozuki, Tezcan, timakro
 - [Node.js](https://nodejs.org/en/) (recommended LTS)
 
 # Environment variables
+- Server: `PORT` (default `3000`)
 - MongoDB: `DATABASE_USERNAME`, `DATABASE_PASSWORD`, `DATABASE_HOST`, `DATABASE_PORT`, `DATABASE_NAME` (default `"uniqueweb"`)
 - Cookies: `COOKIE_SECURE` only send cookies via HTTPS? (default `false`), `COOKIE_SECRET` cookie signing key
 - ReCAPTCHA: `RECAPTCHA_SITE_KEY`, `RECAPTCHA_SECRET_KEY`

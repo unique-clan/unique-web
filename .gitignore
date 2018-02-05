@@ -38,3 +38,4 @@ npm-debug.log
 
 .vscode/
 *.swp
+/run.sh
