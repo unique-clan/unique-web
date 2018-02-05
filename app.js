@@ -76,7 +76,7 @@ if (process.env.COOKIE_SECURE) {
   app.set('trust proxy', 1) // trust first proxy
 }
 app.use(session({
-  secret: process.env.COOKIE_SECRET,
+  secret: process.env.COOKIE_SECRET || 'unique is the best clan in teeworlds',
   resave: false,
   saveUninitialized: false,
   cookie: {
