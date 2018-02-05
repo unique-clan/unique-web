@@ -69,7 +69,7 @@ UserSchema.pre('save', function (next) {
     return next()
   }
 
-  bcrypt.genSalt(Number.parseInt(process.env.SALT_WORK_FACTOR) || 10, function (err, salt) {
+  bcrypt.genSalt(parseInt(process.env.SALT_WORK_FACTOR || 10), function (err, salt) {
     if (err) return next(err)
 
     bcrypt.hash(user.password, salt, function (err, hash) {
