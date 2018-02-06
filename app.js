@@ -81,7 +81,7 @@ app.use(session({
   saveUninitialized: false,
   cookie: {
     secure: process.env.COOKIE_SECURE === 'true',
-    maxAge: 14 * 24 * 60 * 60 * 1000
+    expires: new Date(253402300799999)
   },
   name: 'uniqueclan.sid',
   store: new MongoStore({
