@@ -1,4 +1,4 @@
-extends ../layout
+extends layout
 
 block content
   main
@@ -10,23 +10,22 @@ block content
             h1.title
               | Serverstatus
             h2.subtitle
-              | GER Status: 
-              span.has-text-danger OFF
-              |  | FRA Status: 
-              span.has-text-success ON
-              |  | CAN Status: 
-              span.has-text-success ON
+              each loc, locname in locations
+                if !loc.first
+                  |  | 
+                | #{locname} Status:
+                if loc.reachable
+                  span.has-text-success ON
+                else
+                  span.has-text-danger OFF
         br
         br
         br
         .tabs.is-large.is-centered
           ul
-            li.is-active
-              a(href='/serverstatus/ger') GER
-            li
-              a(href='/serverstatus/fra') FRA
-            li
-              a(href='/serverstatus/can') CAN
+            each loc, locname in locations
+              li(class={'is-active': locname === location})
+                a(href='/serverstatus/'+locname) #{locname}
         article.tile.is-child.notification.is-white.has-shadow
           .box
             p.title OpenFNG

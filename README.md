@@ -12,6 +12,7 @@ Copyright (c) 2018 Ryozuki, Tezcan, timakro
 - Cookies: `COOKIE_SECRET` cookie signing key, `COOKIE_SECURE` only send cookies via HTTPS? (default `false`)
 - ReCAPTCHA: `RECAPTCHA_SITE_KEY`, `RECAPTCHA_SECRET_KEY`
 - Password storage: `SALT_WORK_FACTOR` (default `10`)
+- Serverstatus: `SERVERS_LOCATION` location of servers.json file (default `servers.json`)
 
 # How-to
 - `git clone https://github.com/unique-clan/unique-web`
