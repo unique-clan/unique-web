@@ -6,9 +6,6 @@ Backend:
   ☐ Ranks
   ☐ Points
   ☐ Map upload
-  ☐ Add session save at login
-  ☐ Fix logout crash
-  ☐ Fix login not working?
 
 Frontend:
   ☐ Form edit members (add, remove, edit)
@@ -16,14 +13,12 @@ Frontend:
   ☐ New/better icons for mainpage
   ☐ Members to big
   ☐ Serverstatus to big
+  ☐ Profile page
 
-Style:
-  Label:
-  ☐ Example todo
-  ✔ Todo done @done(18-01-13 18:41)
-  ✘ Abandoned todo @cancelled(18-01-13 18:41)
-  
 Archive:
+  ✔ Add session save at login @done(18-02-06 22:56)
+  ✔ Fix logout crash @done(18-02-06 22:56)
+  ✔ Fix login not working? @done(18-02-06 22:56)
   ✔ MongoDB integration with mongoose @done(18-02-04 11:36)
   ✔ Form validation with mongoose @done(18-02-06 07:51)
   ✔ Auth system (login / register) @done(18-02-06 07:51)
