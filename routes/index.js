@@ -19,7 +19,7 @@ router.get('/member', function (req, res, next) {
 })
 
 router.get('/serverstatus', function (req, res, next) {
-  res.redirect('/serverstatus/'+'GER')
+  res.redirect('/serverstatus/' + Object.keys(serverstatus.locations)[0])
 })
 
 router.get('/serverstatus/:location', function (req, res, next) {
