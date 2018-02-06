@@ -34,7 +34,6 @@ router.post('/login', function (req, res, next) {
   let response = {
     errors: {}
   }
-  debug(req.body)
 
   if (!req.body.username) {
     response.errors.username = {message: 'The username is missing'}
@@ -66,8 +65,9 @@ router.post('/login', function (req, res, next) {
         tw_name: user.tw_name,
         country: user.country
       }
-      req.session.save()
-      res.status(200).json({ok: true})
+      req.session.save(() => {
+        res.status(200).json({ok: true})
+      })
     } else {
       var incorrect = {
         errors: {
