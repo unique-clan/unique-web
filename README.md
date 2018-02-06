@@ -7,9 +7,9 @@ Copyright (c) 2018 Ryozuki, Tezcan, timakro
 - [Node.js](https://nodejs.org/en/) (recommended LTS)
 
 # Environment variables
-- Server: `PORT` (default `3000`)
+- Server: `PORT` (default `3000`), `BEHIND_PROXY` node.js is behind reverse proxy? (default `false`)
 - MongoDB: `DATABASE_USERNAME`, `DATABASE_PASSWORD`, `DATABASE_HOST`, `DATABASE_PORT`, `DATABASE_NAME` (default `"uniqueweb"`)
-- Cookies: `COOKIE_SECURE` only send cookies via HTTPS? (default `false`), `COOKIE_SECRET` cookie signing key
+- Cookies: `COOKIE_SECRET` cookie signing key, `COOKIE_SECURE` only send cookies via HTTPS? (default `false`)
 - ReCAPTCHA: `RECAPTCHA_SITE_KEY`, `RECAPTCHA_SECRET_KEY`
 - Password storage: `SALT_WORK_FACTOR` (default `10`)
 
