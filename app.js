@@ -72,7 +72,7 @@ app.use(sassMiddleware({
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(logger('dev'))
 
-if (process.env.COOKIE_SECURE === 'true') {
+if (process.env.BEHIND_PROXY === 'true') {
   app.set('trust proxy', 1) // trust first proxy
 }
 app.use(session({
