@@ -61,16 +61,19 @@ router.post('/login', function (req, res, next) {
       if (!req.session) {
         req.session.regenerate()
       }
-      req.session.authed = true
-      req.session.user = {
-        username: user.username,
-        isAdmin: user.isAdmin,
-        isTester: user.isTester,
-        tw_name: user.tw_name,
-        country: user.country
-      }
-      req.session.save(() => {
-        res.status(200).json({ok: true})
+      req.session.regenerate((err) => {
+        if (err) debug(err)
+        req.session.authed = true
+        req.session.user = {
+          username: user.username,
+          isAdmin: user.isAdmin,
+          isTester: user.isTester,
+          tw_name: user.tw_name,
+          country: user.country
+        }
+        req.session.save(() => {
+          res.status(200).json({ok: true})
+        })
       })
     } else {
       var incorrect = {
