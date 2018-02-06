@@ -4,16 +4,18 @@ Please follow the TODO style.
 Backend:
   ✔ MongoDB integration with mongoose @done(18-02-04 11:36)
   ☐ Mysql integration with a ORM npm package (such as https://www.npmjs.com/package/orm)
-  ☐ Form validation with mongoose
+  ✔ Form validation with mongoose @done(18-02-06 07:51)
   ☐ Ranks
   ☐ Points
   ☐ Map upload
-  ☐ Auth system (login / register)
+  ✔ Auth system (login / register) @done(18-02-06 07:51)
   ☐ Add session save at login
+  ☐ Fix logout crash
+  ☐ Fix login not working?
 
 Frontend:
   ✔ Better main page style @done(18-01-14 00:46)
-  ☐ Ajax for all forms
+  ✔ Ajax for all forms @done(18-02-06 07:51)
   ☐ Form edit members (add, remove, edit)
   ☐ Color adjustment
   ☐ New/better icons for mainpage
