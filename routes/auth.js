@@ -22,6 +22,10 @@ router.get('/register', middleware.isNotAuthed, function (req, res, next) {
 })
 
 router.get('/logout', function (req, res, next) {
+  if (!req.session) {
+    res.redirect('/')
+    return
+  }
   req.session.destroy(err => {
     if (err) {
       debug(err)
