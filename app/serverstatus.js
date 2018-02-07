@@ -8,7 +8,7 @@ class ServerStatus {
     this.list = null
   }
 
-  async startUpdating () {
+  startUpdating () {
     // Call also when starting
     this.updateStatus()
     // Then every x seconds
@@ -23,16 +23,16 @@ class ServerStatus {
       this.list = JSON.parse(data)
       for (var i in this.list) {
         let server = this.list[i]
-        ping.promise.probe(server.ip).then((res) => {
+        ping.promise.probe(server.ip, {timeout: 2}).then((res) => {
           server.alive = res.alive
           server.ping = res.avg
-          // debug(`${server.name} (${server.ip}) is alive: ${server.alive} ${server.ping} ms`)
+          debug(`${server.name} (${server.ip}) is alive: ${server.alive} ${server.ping} ms`)
         })
       }
     })
   }
 
-  async getServerstatus () {
+  getServerstatus () {
     // get serverstatus, see loc.ip and loc.servers
     for (var i in this.list) {
       let server = this.list[i]
