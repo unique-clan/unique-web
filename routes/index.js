@@ -52,16 +52,16 @@ router.get('/mapupload', function (req, res, next) {
   })
 })
 
-router.get('/ranks', function (req, res, next) {
-  res.render('ranks', {
-    title: 'Ranks | Unique',
+router.get('/tournaments', function (req, res, next) {
+  res.render('tournaments', {
+    title: 'Tournaments | Unique',
     user: req.session.authed ? req.session.user : null
   })
 })
 
-router.get('/tournaments', function (req, res, next) {
-  res.render('tournaments', {
-    title: 'Tournaments | Unique',
+router.get('/ranks', function (req, res, next) {
+  res.render('ranks', {
+    title: 'Ranks | Unique',
     user: req.session.authed ? req.session.user : null
   })
 })
