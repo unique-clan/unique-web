@@ -28,9 +28,6 @@ router.get('/serverstatus', function (req, res, next) {
 router.get('/serverstatus/:location', function (req, res, next) {
   let serverName = String(req.params.location).toUpperCase()
   let serverNames = serverStatus.list.map(x => x.name)
-  debug(serverStatus.list.map(x => x.name))
-  debug(serverName)
-  debug(serverNames.includes(serverName))
   if (!serverNames.includes(serverName)) {
     return next()
   }
