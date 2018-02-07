@@ -60,3 +60,4 @@ router.get('/ranks', function (req, res, next) {
 })
 
 module.exports = router
+require('./serverstatus')
