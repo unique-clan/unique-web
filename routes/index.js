@@ -27,14 +27,14 @@ router.get('/serverstatus', function (req, res, next) {
 
 router.get('/serverstatus/:location', function (req, res, next) {
   let serverName = String(req.params.location).toUpperCase()
-  let serverNames = serverStatus.list.map(x => x.name)
+  let serverNames = serverStatus.list[0].name
   if (!serverNames.includes(serverName)) {
     return next()
   }
   res.render('serverstatus', {
     title: serverName + ' Server Status | Unique',
     user: req.session.authed ? req.session.user : null,
-    server: serverStatus.list.filter(x => x.name === serverName)
+    server: serverStatus.list.filter(x => x.name === serverName)[0]
   })
 })
 
