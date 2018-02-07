@@ -38,5 +38,12 @@ router.get('/ranks', function (req, res, next) {
   })
 })
 
+router.get('/tournaments', function (req, res, next) {
+  res.render('tournaments', {
+    title: 'Tournaments | Unique',
+    user: req.session.authed ? req.session.user : null
+  })
+})
+
 module.exports = router
 require('./serverstatus')
