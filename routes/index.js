@@ -27,9 +27,12 @@ router.get('/serverstatus', function (req, res, next) {
 
 router.get('/serverstatus/:location', function (req, res, next) {
   let serverName = String(req.params.location).toUpperCase()
-  if (!(serverName in serverStatus.list.map(x => x.name))) {
-    res.sendStatus(404)
-    return
+  let serverNames = serverStatus.list.map(x => x.name)
+  debug(serverStatus.list.map(x => x.name))
+  debug(serverName)
+  debug(serverNames.includes(serverName))
+  if (!serverNames.includes(serverName)) {
+    return next()
   }
   res.render('serverstatus', {
     title: serverName + ' Server Status | Unique',
@@ -60,4 +63,3 @@ router.get('/ranks', function (req, res, next) {
 })
 
 module.exports = router
-require('./serverstatus')
