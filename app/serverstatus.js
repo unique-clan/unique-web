@@ -14,7 +14,7 @@ class ServerStatus {
     // Then every x seconds
     setInterval(() => {
       this.updateStatus()
-    }, parseFloat(process.env.SERVER_STATUS_UPDATE || 60) * 1000)
+    }, parseFloat(process.env.SERVER_STATUS_UPDATE || 5) * 1000)
   }
 
   updateStatus () {
@@ -26,7 +26,7 @@ class ServerStatus {
         ping.promise.probe(server.ip).then((res) => {
           server.alive = res.alive
           server.ping = res.avg
-          debug(`${server.name} (${server.ip}) is alive: ${server.alive} ${server.ping} ms`)
+          // debug(`${server.name} (${server.ip}) is alive: ${server.alive} ${server.ping} ms`)
         })
       }
     })
