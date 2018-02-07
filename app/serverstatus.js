@@ -9,27 +9,36 @@ class ServerStatus {
   }
 
   async startUpdating () {
+    // Call also when starting
+    this.updateStatus()
+    // Then every x seconds
     setInterval(() => {
-      fs.readFile(this.path, 'utf8', (err, data) => {
-        if (err) debug(err)
-        this.list = JSON.parse(data)
-        for (var i in this.list) {
-          let server = this.list[i]
-          ping.promise.probe(server.ip).then((res) => {
-            server.alive = res.alive
-            server.ping = res.avg
-            debug(`${server.name} (${server.ip}) is alive: ${server.alive} ${server.ping} ms`)
-          })
-        }
-      })
-    }, parseFloat(process.env.SERVER_STATUS_UPDATE || 5) * 1000)
+      this.updateStatus()
+    }, parseFloat(process.env.SERVER_STATUS_UPDATE || 60) * 1000)
   }
 
-  async getServerstatus (serverName) {
+  updateStatus () {
+    fs.readFile(this.path, 'utf8', (err, data) => {
+      if (err) debug(err)
+      this.list = JSON.parse(data)
+      for (var i in this.list) {
+        let server = this.list[i]
+        ping.promise.probe(server.ip).then((res) => {
+          server.alive = res.alive
+          server.ping = res.avg
+          debug(`${server.name} (${server.ip}) is alive: ${server.alive} ${server.ping} ms`)
+        })
+      }
+    })
+  }
+
+  async getServerstatus () {
     // get serverstatus, see loc.ip and loc.servers
     for (var i in this.list) {
       let server = this.list[i]
 
+      // Note: j is the property name, e.g j = 'race1'
+      // This is for now a placeholder, all sv are same
       for (var j in server.servers) {
         let gameServer = server.servers[j]
 
