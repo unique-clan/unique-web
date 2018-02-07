@@ -26,7 +26,7 @@ class ServerStatus {
         ping.promise.probe(server.ip, {timeout: 2}).then((res) => {
           server.alive = res.alive
           server.ping = res.avg
-          debug(`${server.name} (${server.ip}) is alive: ${server.alive} ${server.ping} ms`)
+          // debug(`${server.name} (${server.ip}) is alive: ${server.alive} ${server.ping} ms`)
         })
       }
     })
