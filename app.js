@@ -10,6 +10,7 @@ var session = require('express-session')
 const MongoStore = require('connect-mongo')(session)
 var mongoSanitize = require('express-mongo-sanitize')
 var debug = require('debug')('uniqueweb:app')
+var fs = require('fs');
 
 // Setup the db connection
 const mongoose = require('mongoose')
