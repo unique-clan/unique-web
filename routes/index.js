@@ -1,7 +1,10 @@
 var express = require('express')
 var router = express.Router()
 var debug = require('debug')('uniqueweb:router')
-var serverstatus = require('./serverstatus')
+const ServerStatus = require('../app/serverstatus')
+
+var serverStatus = new ServerStatus('servers.json')
+serverStatus.startUpdating()
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -19,18 +22,19 @@ router.get('/member', function (req, res, next) {
 })
 
 router.get('/serverstatus', function (req, res, next) {
-  res.redirect('/serverstatus/' + Object.keys(serverstatus.locations)[0])
+  res.redirect('/serverstatus/' + serverStatus.list.map(x => x.name)[0])
 })
 
 router.get('/serverstatus/:location', function (req, res, next) {
-  let location = req.params.location
-  if (!(location in serverstatus.locations))
+  let serverName = String(req.params.location).toUpperCase()
+  if (!(serverName in serverStatus.list.map(x => x.name))) {
     res.sendStatus(404)
+    return
+  }
   res.render('serverstatus', {
-    title: location + ' Server Status | Unique',
+    title: serverName + ' Server Status | Unique',
     user: req.session.authed ? req.session.user : null,
-    locations: serverstatus.locations,
-    location: location
+    server: serverStatus.list.filter(x => x.name === serverName)
   })
 })
 
