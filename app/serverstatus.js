@@ -9,7 +9,7 @@ class ServerStatus {
     this.twFlags = null;
   }
 
-  loadTWFlags() {
+  loadTWFlags () {
     this.twFlags = {}
     var lastLine
     var lines = fs.readFileSync('twflags.txt', 'utf8').split('\n')
@@ -46,32 +46,30 @@ class ServerStatus {
           server.alive = res.alive
           server.ping = res.avg
           // debug(`${server.name} (${server.ip}) is alive: ${server.alive} ${server.ping} ms`)
+          if (server.alive) {
+            this.getServerstatus(server)
+          }
         })
       }
     })
   }
 
-  getServerstatus () {
-    // get serverstatus, see loc.ip and loc.servers
-    for (var i in this.list) {
-      let server = this.list[i]
+  getServerstatus (server) {
+    // Note: j is the property name, e.g j = 'race1'
+    // This is for now a placeholder, all sv are same
+    for (var j in server.servers) {
+      let gameServer = server.servers[j]
 
-      // Note: j is the property name, e.g j = 'race1'
-      // This is for now a placeholder, all sv are same
-      for (var j in server.servers) {
-        let gameServer = server.servers[j]
-
-        gameServer.reachable = true
-        gameServer.map = 'run_blabla'
-        gameServer.gametype = 'Race'
-        gameServer.numclients = 3
-        gameServer.maxclients = 32
-        gameServer.players = [
-          { name: 'timakro', clan: 'υηιqυє', flag: 'default', score: 19 },
-          { name: 'Tezcan', clan: 'Yo xD', flag: this.twFlags[203], score: 19 },
-          { name: 'Ryozuki', clan: 'hallo', flag: this.twFlags[906], score: 19 }
-        ]
-      }
+      gameServer.reachable = true
+      gameServer.map = 'run_blabla'
+      gameServer.gametype = 'Race'
+      gameServer.numclients = 3
+      gameServer.maxclients = 32
+      gameServer.players = [
+        { name: 'timakro', clan: 'υηιqυє', flag: 'default', score: 19 },
+        { name: 'Tezcan', clan: 'Yo xD', flag: this.twFlags[203], score: 19 },
+        { name: 'Ryozuki', clan: 'hallo', flag: this.twFlags[906], score: 19 }
+      ]
     }
   }
 }
