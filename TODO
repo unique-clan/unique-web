@@ -6,6 +6,7 @@ Backend:
   ☐ Ranks
   ☐ Points
   ☐ Map upload
+  ☐ Update serverstatus.list after fetching asynchronous data
 
 Frontend:
   ☐ Form edit members (add, remove, edit)
