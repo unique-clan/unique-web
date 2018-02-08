@@ -27,7 +27,7 @@ block content
               li(class={'is-active': loc.name === location.name})
                 a(href='/serverstatus/'+loc.name)= loc.name
 
-        .columns.columns-swap
+        .columns.is-multiline
           each server in location.servers
             .column.is-half
               .notification.is-white
