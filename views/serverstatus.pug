@@ -26,20 +26,23 @@ block content
             each loc in locations
               li(class={'is-active': loc.name === location.name})
                 a(href='/serverstatus/'+loc.name)= loc.name
-
-        .columns.is-multiline
-          each server in location.servers
-            .column.is-half
-              .notification.is-white
-                | #{server.name} #{server.reachable} #{server.map} #{server.gametype} #{server.numclients} #{server.maxclients}
-                if server.reachable
-                  if server.numclients
-                    table.table
-                      tbody
-                        each player in server.players
-                          tr
-                            td= player.name
-                            td= player.clan
-                            td
-                              img(src='/img/twflags/'+player.flag+'.png', style='height:1em')
-                            td= player.score
+        if !location.alive
+          p.has-text-centered
+            | This location is currently offline.
+        else
+          .columns.is-multiline
+            each server in location.servers
+              .column.is-half-tablet.is-half-desktop.is-one-third-fullhd
+                .notification.is-white
+                  | #{server.name} #{server.reachable} #{server.map} #{server.gametype} #{server.numclients} #{server.maxclients}
+                  if server.reachable
+                    if server.numclients
+                      table.table
+                        tbody
+                          each player in server.players
+                            tr
+                              td= player.name
+                              td= player.clan
+                              td
+                                img(src='/img/twflags/'+player.flag+'.png', style='height:1em')
+                              td= player.score
