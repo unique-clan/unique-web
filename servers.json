@@ -63,10 +63,6 @@
                 "port": "8317",
                 "name": "Gores"
             },
-            "teesmash": {
-                "port": "8318",
-                "name": "TeeSmash"
-            },
             "race_test": {
                 "port": "8319",
                 "name": "Race Test"
@@ -92,10 +88,6 @@
             "fly": {
                 "port": "8305",
                 "name": "Fly"
-            },
-            "teesmash": {
-                "port": "8306",
-                "name": "TeeSmash"
             }
         }
     },
