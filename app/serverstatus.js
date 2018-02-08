@@ -6,9 +6,28 @@ class ServerStatus {
   constructor (jsonPath) {
     this.path = jsonPath
     this.list = null
+    this.twFlags = null;
+  }
+
+  loadTWFlags() {
+    this.twFlags = {}
+    var lastLine
+    var lines = fs.readFileSync('twflags.txt', 'utf8').split('\n')
+    for (var i in lines) {
+      var line = lines[i]
+      var numMatch = line.match(/^== (\d+)/)
+      if (numMatch) {
+        var nameMatch = lastLine.match(/[A-Z]+/)
+        if (nameMatch) {
+          this.twFlags[numMatch[1]] = nameMatch[0]
+        }
+      }
+      lastLine = line
+    }
   }
 
   startUpdating () {
+    this.loadTWFlags()
     // Call also when starting
     this.updateStatus()
     // Then every x seconds
@@ -49,47 +68,11 @@ class ServerStatus {
         gameServer.maxclients = 32
         gameServer.players = [
           { name: 'timakro', clan: 'υηιqυє', flag: 'default', score: 19 },
-          { name: 'Tezcan', clan: 'Yo xD', flag: 'DE', score: 19 },
-          { name: 'Ryozuki', clan: 'hallo', flag: 'XCA', score: 19 }
+          { name: 'Tezcan', clan: 'Yo xD', flag: this.twFlags[203], score: 19 },
+          { name: 'Ryozuki', clan: 'hallo', flag: this.twFlags[906], score: 19 }
         ]
       }
     }
-    // dummy data
-    /* if ('race1' in loc.servers) {
-      loc.servers.race1.reachable = true
-      loc.servers.race1.map = 'run_blabla'
-      loc.servers.race1.gametype = 'Race'
-      loc.servers.race1.numclients = 3
-      loc.servers.race1.maxclients = 32
-      loc.servers.race1.players = [
-        { name: 'timakro', clan: 'υηιqυє', flag: 'default', score: 19 },
-        { name: 'Tezcan', clan: 'Yo xD', flag: twflags[4], score: 19 },
-        { name: 'Ryozuki', clan: 'hallo', flag: twflags[276], score: 19 }
-      ]
-    }
-    if ('openfng' in loc.servers) {
-      loc.servers.openfng.reachable = true
-      loc.servers.openfng.map = 'run_blabla'
-      loc.servers.openfng.gametype = 'OpenFNG'
-      loc.servers.openfng.numclients = 0
-      loc.servers.openfng.maxclients = 16
-      loc.servers.openfng.players = []
-    }
-    if ('bomb' in loc.servers) {
-      loc.servers.bomb.reachable = true
-      loc.servers.bomb.map = 'run_blabla'
-      loc.servers.bomb.gametype = 'Bomb'
-      loc.servers.bomb.numclients = 3
-      loc.servers.bomb.maxclients = 16
-      loc.servers.bomb.players = [
-        { name: 'timakro', clan: 'υηιqυє', flag: twflags[276], score: 19 },
-        { name: 'Tezcan', clan: 'Yo xD', flag: twflags[4], score: 19 },
-        { name: 'Ryozuki', clan: 'hallo', flag: twflags[276], score: 19 }
-      ]
-    }
-    if ('race2' in loc.servers) {
-      loc.servers.race2.reachable = false
-    } */
   }
 }
 

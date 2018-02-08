@@ -1,13 +1,13 @@
 extends layout
 
-mixin member(name, types, flag='Germany', leader=false)
+mixin member(name, types, flag='DE', leader=false)
   .column
     - size_class = leader == true ? 'is-one-third' : 'is-one-quarter'
     .box(class=size_class)
       article.media
         .media-left
-          figure.image.is-64x64
-            img(src=`/img/flags/${flag}.png`, alt=flag)
+          figure.image.is-96x96
+            img(src=`/img/twflags/${flag}.png`, alt=flag, style='margin-top: 10px')
         .media-content
           .content
             h1= name
@@ -23,17 +23,17 @@ block content
       section.section
         h1.title Leaders
         .columns.is-multiline.memberlist
-          +member('Tezcan', 'Race, DDRace', 'Germany', true)
-          +member('timakro', 'Race, DDRace', 'Germany', true)
-          +member('Ryozuki', 'DDRace', 'Catalonia', true)
+          +member('Tezcan', 'Race, DDRace', 'DE', true)
+          +member('timakro', 'Race, DDRace', 'DE', true)
+          +member('Ryozuki', 'DDRace', 'XCA', true)
       section.section
         h1.title Members
         .columns.is-multiline.memberlist
           +member('tobu.', 'DDRace')
           +member('=xPeke=', 'DDRace, Gores')
           +member('Avelton', 'DDRace, Race')
-          +member('AgtBoom c:', 'DDRace, Block', 'Austria')
-          +member('dcgù', 'DDRace', 'France')
+          +member('AgtBoom c:', 'DDRace, Block', 'AT')
+          +member('dcgù', 'DDRace', 'FR')
           +member('Husky', 'DDRace, zCatch')
           +member('bano', 'DDRace, FNG')
           +member('Nocsis', 'DDRace, Gores')
