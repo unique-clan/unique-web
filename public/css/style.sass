@@ -34,3 +34,57 @@ html,body
 
 .article-title
   line-height: 2
+
+.servernot
+  overflow-x: auto
+  padding: 20px 10px
+  .serverbox
+    width: 410px
+    @media screen and (max-width: 500px)
+      width: 100%
+    margin: 0 auto
+    .serverinfobox
+      width: calc(100% - 30px)
+      .servername
+        display: inline
+        margin-right: 15px
+        white-space: nowrap
+      .servermap
+        margin-right: 15px
+        padding: 3px
+        background-color: #ededed
+        white-space: nowrap
+      .servercount
+        text-decoration: underline dashed
+        white-space: nowrap
+    .serverreach
+      position: absolute
+      top: 21px
+      right: 28px
+      font-size: 14
+      border-radius: 0.75em
+    .serveron
+      width: 1.5em
+      background-color: #62ba60
+    .serveroff
+      width: 1.5em
+      background-color: #c14326
+    .serverofftext
+      padding-left: 14px
+      padding-right: 28px
+      background-color: #db8a78
+    .serverplayers
+      table
+        margin: 10px 0px 0px 0px
+        @media screen and (max-width: 500px)
+          font-size: 14px
+        @media screen and (max-width: 420px)
+          font-size: 12px
+        td
+          white-space: nowrap
+        td:last-child
+          width: 100%
+        img
+          height: 1em
+          position: relative
+          top: 3px

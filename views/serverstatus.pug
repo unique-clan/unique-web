@@ -5,7 +5,7 @@ block content
     section.section
       br
       .container
-        section.hero.is-small.is-warning
+        section.hero.is-small.is-dark
           .hero-body
             h1.title
               | Serverstatus
@@ -31,18 +31,35 @@ block content
             | This location is currently offline.
         else
           .columns.is-multiline
-            each server in location.servers
-              .column.is-half-tablet.is-half-desktop.is-one-third-fullhd
-                .notification.is-white
-                  | #{server.name} #{server.reachable} #{server.map} #{server.gametype} #{server.numclients} #{server.maxclients}
-                  if server.reachable
-                    if server.numclients
-                      table.table
-                        tbody
-                          each player in server.players
-                            tr
-                              td= player.name
-                              td= player.clan
-                              td
-                                img(src='/img/twflags/'+player.flag+'.png', style='height:1em')
-                              td= player.score
+            each server in location.servers.sort((a, b) => ((b.reachable ? 1 : 0) - (a.reachable ? 1 : 0)) || ((b.players ? b.players.length : 0) - (a.players ? a.players.length : 0)) || (a.name > b.name ? 1 : -1))
+              .column.is-full-tablet.is-half-desktop.is-one-third-fullhd
+                .notification.is-white.servernot
+                  .serverbox
+                    .serverinfobox
+                      h2.subtitle.servername= server.name
+                      if server.reachable
+                        |  
+                        span.servermap=server.map
+                        |  
+                        span.servercount #{server.players ? server.players.length : 0} / #{server.maxclients}
+                    if server.reachable
+                      .is-unselectable.serverreach.serveron &nbsp;
+                    else
+                      .serverreach.serverofftext Offline
+                      .is-unselectable.serverreach.serveroff &nbsp;
+                    .serverplayers
+                      if server.reachable
+                        if server.numclients
+                          table.table.is-narrow.is-fullwidth
+                            thead
+                              tr
+                                th.is-unselectable &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                th Player
+                                th Clan
+                            tbody
+                              each player in server.players
+                                tr
+                                  td
+                                    img(src='/img/twflags/'+player.flag+'.png')
+                                  td= player.name
+                                  td= player.clan
