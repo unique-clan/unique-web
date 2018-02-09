@@ -12,8 +12,8 @@ block content
             h2.subtitle
               each loc, i in locations
                 if i != 0
-                  |  | 
-                | #{loc.name} Status:
+                  | &nbsp;| 
+                | #{loc.name}&nbsp;Status:&nbsp;
                 if loc.alive
                   span.has-text-success ON
                 else
