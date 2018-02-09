@@ -1,7 +1,7 @@
 extends layout
 
 mixin member(name, types, flag='DE', leader=false)
-  .column
+  .column.is-half-tablet.is-half-desktop.is-one-third-fullhd
     - size_class = leader == true ? 'is-one-third' : 'is-one-quarter'
     .box(class=size_class)
       article.media
@@ -22,13 +22,13 @@ block content
       br
       section.section
         h1.title Leaders
-        .columns.is-multiline.memberlist
+        .columns.is-multiline
           +member('Tezcan', 'Race, DDRace', 'DE', true)
           +member('timakro', 'Race, DDRace', 'DE', true)
           +member('Ryozuki', 'DDRace', 'XCA', true)
       section.section
         h1.title Members
-        .columns.is-multiline.memberlist
+        .columns.is-multiline
           +member('tobu.', 'DDRace')
           +member('=xPeke=', 'DDRace, Gores')
           +member('Avelton', 'DDRace, Race')
