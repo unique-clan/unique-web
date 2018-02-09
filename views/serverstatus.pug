@@ -10,11 +10,11 @@ block content
             h1.title
               | Serverstatus
             h2.subtitle
-              each loc, locname in locations
-                if !loc.first
+              each loc, i in locations
+                if i != 0
                   |  | 
-                | #{locname} Status:
-                if loc.reachable
+                | #{loc.name} Status:
+                if loc.alive
                   span.has-text-success ON
                 else
                   span.has-text-danger OFF
@@ -23,23 +23,26 @@ block content
         br
         .tabs.is-large.is-centered
           ul
-            each loc, locname in locations
-              li(class={'is-active': locname === location})
-                a(href='/serverstatus/'+locname) #{locname}
-
-        .columns.columns-swap
-          each server in locations[location].servers
-            .column.is-half
-              .notification.is-white
-                | #{server.name} #{server.reachable} #{server.map} #{server.gametype} #{server.numclients} #{server.maxclients}
-                if server.reachable
-                  if server.numclients
-                    table.table
-                      tbody
-                        each player in server.players
-                          tr
-                            td= player.name
-                            td= player.clan
-                            td
-                              img(src='/img/twflags/'+player.flag+'.png', style='height:1em')
-                            td= player.score
+            each loc in locations
+              li(class={'is-active': loc.name === location.name})
+                a(href='/serverstatus/'+loc.name)= loc.name
+        if !location.alive
+          p.has-text-centered
+            | This location is currently offline.
+        else
+          .columns.is-multiline
+            each server in location.servers
+              .column.is-half-tablet.is-half-desktop.is-one-third-fullhd
+                .notification.is-white
+                  | #{server.name} #{server.reachable} #{server.map} #{server.gametype} #{server.numclients} #{server.maxclients}
+                  if server.reachable
+                    if server.numclients
+                      table.table
+                        tbody
+                          each player in server.players
+                            tr
+                              td= player.name
+                              td= player.clan
+                              td
+                                img(src='/img/twflags/'+player.flag+'.png', style='height:1em')
+                              td= player.score
