@@ -66,4 +66,10 @@ router.get('/ranks', function (req, res, next) {
   })
 })
 
+router.get('/profile', function (req, res, next) {
+  res.render('profile', {
+    title: 'Profile | Unique',
+    user: req.session.authed ? req.session.user : null
+  })
+})
 module.exports = router
