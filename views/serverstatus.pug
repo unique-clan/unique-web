@@ -49,7 +49,7 @@ block content
                       .is-unselectable.serverreach.serveroff &nbsp;
                     .serverplayers
                       if server.reachable
-                        if server.numclients
+                        if server.players && server.players.length
                           table.table.is-narrow.is-fullwidth
                             thead
                               tr
