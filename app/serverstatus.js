@@ -61,10 +61,8 @@ class ServerStatus {
       getServerInfo(server.ip, parseInt(gameServer.port), (svInfo) => {
         gameServer.reachable = true
         gameServer.map = svInfo.map
-        gameServer.numclients = svInfo.clientCount
         gameServer.maxclients = svInfo.maxClientCount
-        gameServer.players = svInfo.clients
-        gameServer.gameType = svInfo.gameType
+        gameServer.players = svInfo.clients.filter(p => p.name !== '(connecting)')
         gameServer.password = svInfo.password
 
         for (var ply in gameServer.players) {
