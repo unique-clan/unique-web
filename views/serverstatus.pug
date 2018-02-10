@@ -31,7 +31,7 @@ block content
             | This location is currently offline.
         else
           .columns.is-multiline
-            each server in location.servers.sort((a, b) => ((b.reachable ? 1 : 0) - (a.reachable ? 1 : 0)) || ((b.players ? b.players.length : 0) - (a.players ? a.players.length : 0)) || (a.name > b.name ? 1 : -1))
+            each server in location.servers.filter(s => !s.password).sort((a, b) => ((b.reachable ? 1 : 0) - (a.reachable ? 1 : 0)) || ((b.players ? b.players.length : 0) - (a.players ? a.players.length : 0)) || (a.name > b.name ? 1 : -1))
               .column.is-full-tablet.is-half-desktop.is-one-third-fullhd
                 .notification.is-white.servernot
                   .serverbox
