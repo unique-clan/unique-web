@@ -4,18 +4,20 @@
         "ip": "84.38.65.222",
         "servers":
         [
-            { "name": "Race 1" },
-            { "name": "Race 2" },
-            { "name": "Race 3" },
-            { "name": "Fly" },
-            { "name": "Instagib" },
-            { "name": "SoloFNG" },
-            { "name": "BoomFNG 1" },
-            { "name": "BoomFNG 2" },
-            { "name": "OpenFNG" },
-            { "name": "Bomb" },
-            { "name": "Football" },
-            { "name": "Gores" }
+            { "name": "Race 1", "port": "8313" },
+            { "name": "Race 2", "port": "8314" },
+            { "name": "Race 3", "port": "8315" },
+            { "name": "Fly", "port": "8320" },
+            { "name": "Instagib", "port": "8307" },
+            { "name": "SoloFNG", "port": "8306" },
+            { "name": "BoomFNG 1", "port": "8304" },
+            { "name": "BoomFNG 2", "port": "8305" },
+            { "name": "OpenFNG", "port": "8303" },
+            { "name": "Bomb", "port": "8312" },
+            { "name": "Football", "port": "8316" },
+            { "name": "Gores", "port": "8317" },
+            { "name": "TeeSmash", "port": "8318" },
+            { "name": "FreeZe", "port": "8310" }
         ]
     },
     {
@@ -23,9 +25,10 @@
         "ip": "164.132.59.136",
         "servers":
         [
-            { "name": "Football" },
-            { "name": "TeeSmash" },
-            { "name": "Fly" }
+            { "name": "TeeSmash", "port": "8306" },
+            { "name": "Fly", "port": "8305" },
+            { "name": "Race 1", "port": "8303" },
+            { "name": "Race 2", "port": "8304" }
         ]
     },
     {
@@ -33,9 +36,10 @@
         "ip": "144.217.93.75",
         "servers":
         [
-            { "name": "OpenFNG" },
-            { "name": "TeeSmash" },
-            { "name": "Fly" }
+            { "name": "TeeSmash", "port": "8306" },
+            { "name": "Fly", "port": "8305" },
+            { "name": "Race 1", "port": "8303" },
+            { "name": "Race 2", "port": "8304" }
         ]
     },
     {
@@ -43,7 +47,7 @@
         "ip": "1.2.3.4",
         "servers":
         [
-            { "name": "Vanilla" }
+            { "name": "Vanilla", "port": "8303" }
         ]
     }
 ]
