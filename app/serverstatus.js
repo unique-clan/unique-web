@@ -65,6 +65,14 @@ class ServerStatus {
         gameServer.maxclients = svInfo.maxClientCount
         gameServer.players = svInfo.clients
         gameServer.gameType = svInfo.gameType
+
+        for (var ply in gameServer.players) {
+          if (gameServer.players[ply].country in this.twFlags) {
+            gameServer.players[ply].flag = this.twFlags[gameServer.players[ply].country]
+          } else {
+            gameServer.players[ply].flag = 'default'
+          }
+        }
       })
     }
   }
