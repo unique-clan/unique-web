@@ -3,7 +3,7 @@ var router = express.Router()
 var debug = require('debug')('uniqueweb:router')
 const ServerStatus = require('../app/serverstatus')
 
-var serverStatus = new ServerStatus('servers.json')
+var serverStatus = new ServerStatus(process.env.SERVERS_LOCATION || 'servers.json')
 serverStatus.startUpdating()
 
 /* GET home page. */
