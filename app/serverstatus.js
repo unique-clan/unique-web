@@ -65,6 +65,7 @@ class ServerStatus {
         gameServer.maxclients = svInfo.maxClientCount
         gameServer.players = svInfo.clients
         gameServer.gameType = svInfo.gameType
+        gameServer.password = svInfo.password
 
         for (var ply in gameServer.players) {
           if (gameServer.players[ply].country in this.twFlags) {
