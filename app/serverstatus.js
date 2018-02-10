@@ -62,7 +62,9 @@ class ServerStatus {
         gameServer.reachable = true
         gameServer.map = svInfo.map
         gameServer.maxclients = svInfo.maxClientCount
-        gameServer.players = svInfo.clients.filter(p => p.name !== '(connecting)')
+        gameServer.players = svInfo.clients
+          .filter(p => p.name !== '(connecting)')
+          .sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1)
         gameServer.password = svInfo.password
 
         for (var ply in gameServer.players) {
