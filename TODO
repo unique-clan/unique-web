@@ -5,7 +5,8 @@ Backend:
   ☐ Mysql integration with a ORM npm package (such as https://www.npmjs.com/package/orm)
   ☐ Ranks
   ☐ Points
-  ☐ Map upload
+  ☐ Map Upload
+  ☐ Apply
   ☐ Update serverstatus.list after fetching asynchronous data
 
 Frontend:
