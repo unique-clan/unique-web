@@ -3,3 +3,44 @@ extends layout
 block content
   main
     br
+    section.section
+      .container
+        .columns.is-multiline
+          .column.is-full-tablet.is-half-desktop.is-one-third-fullhd
+            .notification.is-white
+              if maxPoints
+                p.title Top Points (#{maxPoints} total)
+              else
+                p.title Top Points
+              if topPoints
+                table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
+                  thead
+                    tr
+                      th Rank
+                      th Player
+                      th Points
+                  tbody
+                    each player, index in topPoints
+                      tr
+                        th= index + 1
+                        td= player.Name
+                        td= player.Points
+          .column.is-full-tablet.is-half-desktop
+              .notification.is-white
+                p.title Last Rank 1 Finishes
+                if lastTopRanks
+                  table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
+                    thead
+                      tr
+                        th Name
+                        th Map
+                        th Time
+                        th When
+                    tbody
+                      each finish, index in lastTopRanks
+                        tr
+                          td= finish.Name
+                          td= finish.Map
+                          td= finish.Time
+                          td= `${finish.Timestamp.toLocaleDateString()} ~ ${finish.Timestamp.toLocaleTimeString()}`
+        // pre= JSON.stringify(lastRanks[0], null, 4)
