@@ -60,13 +60,6 @@ router.get('/tournaments', function (req, res, next) {
   })
 })
 
-router.get('/ranks', function (req, res, next) {
-  res.render('ranks', {
-    title: 'Ranks | Unique',
-    user: req.session.authed ? req.session.user : null
-  })
-})
-
 router.get('/profile', function (req, res, next) {
   res.render('profile', {
     title: 'Profile | Unique',

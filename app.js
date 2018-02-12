@@ -10,7 +10,6 @@ var session = require('express-session')
 const MongoStore = require('connect-mongo')(session)
 var mongoSanitize = require('express-mongo-sanitize')
 var debug = require('debug')('uniqueweb:app')
-var fs = require('fs');
 
 // Setup the db connection
 const mongoose = require('mongoose')
@@ -45,6 +44,7 @@ mongoose.connect(connectionString)
 // Load App routes
 var index = require('./routes/index')
 var auth = require('./routes/auth')
+var ranks = require('./routes/ranks')
 
 var app = express()
 
@@ -94,6 +94,7 @@ app.use(session({
 // Add the app routes
 app.use('/', index)
 app.use('/auth', auth)
+app.use('/ranks', ranks)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
