@@ -9,23 +9,37 @@ block content
           .column
             .box
               section.hero
-                h1.title.has-text-centered
-                  | Map Upload
+                h1.title Race Map Submissions
+                br
+                h2.subtitle
+                  | You may submit your race maps for the Unique Race servers here.
                 h2.subtitle
                   | Before you upload your map,
                   | be aware that if your Map isn't good enough, we will delete it without notifying you.
-                  | Also write your Ingame-Name in the map like that: run_example_[YOUR_NAME].map
           .column
-            .box.has-text-centered
+            .box
               section.hero
-                .file.is-warning.has-name.is-fullwidth
-                  label.file-label
-                    input#file.file-input(type="file" name="resume")
-                    span.file-cta
-                      span.file-icon
-                        i.fa.fa-upload
-                      span.file-label
-                        | Choose a file…
-                    span#filename.file-name
-                      | run_example.map
-                a.button.is-warning.is-outlined.mb Upload
+                form.form#form-mapupload
+                  .file.is-warning.has-name.is-fullwidth
+                    label.file-label
+                      input#file.file-input(type="file" name="mapFile")
+                      span.file-cta
+                        span.file-icon
+                          i.fa.fa-upload
+                        span.file-label
+                          | Choose a file…
+                      span#filename.file-name.has-text-grey-light
+                        | run_example.map
+                  p#help-mapFile
+                  br
+                  label.label Mappers
+                  p.control.is-expanded.has-icons-left.warning-tagsinput
+                    input.input(type="tags", placeholder="Add mapper", name="mappers")
+                    span.icon.is-small.is-left
+                      i.fa.fa-user
+                  p#help-mappers
+                  button.button.is-warning.is-outlined.mb Upload
+                  p#response-message
+
+block scripts
+  script(src="/js/mapupload.js")

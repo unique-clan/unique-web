@@ -52,25 +52,27 @@ block content
     section.section
       .container
         article.tile.is-child.notification.is-white.has-shadow
-          form.form
+          form.form#form-apply
             .field.is-horizontal
               .field-label.is-normal
                 label.label Ingame-Name
               .field-body
                 .field
                   p.control.is-expanded.has-icons-left
-                    input.input(type='text', placeholder='Name')
+                    input.input(type='text', placeholder='Name', name='twName')
                     span.icon.is-small.is-left
                       i.fa.fa-user
+                  p.help#help-twName
             .field.is-horizontal
               .field-label.is-normal
                 label.label Country
               .field-body
                 p.control.has-icons-left
                   span.select
-                    +country_select()
+                    +country_select('country')
                   span.icon.is-small.is-left
                     i.fa.fa-globe
+                  p.help#help-country
             .field.is-horizontal
               .field-label.is-normal
                 label.label Gametypes
@@ -80,6 +82,7 @@ block content
                     input.input(type="tags", placeholder="Add gamemode", value="DDRace,OpenFNG", name='gameModes')
                     span.icon.is-small.is-left
                       i.fa.fa-gamepad
+                  p.help#help-gameModes
             .field.is-horizontal
               .field-label
                 label.label Gender
@@ -87,18 +90,20 @@ block content
                 .field.is-narrow
                   .control
                     label.radio
-                      input(type='radio', name='member')
+                      input(type='radio', name='gender' value='male')
                       |   Male
                     label.radio
-                      input(type='radio', name='member')
+                      input(type='radio', name='gender' value='female')
                       |   Female
+                  p.help#help-gender
             .field.is-horizontal
               .field-label.is-normal
                 label.label Presentation
               .field-body
                 .field
                   .control
-                    textarea.textarea(placeholder='I am fameless tee and i am 16 years old...')
+                    textarea.textarea(placeholder='I am fameless tee and i am 16 years old...', name='presentation')
+                  p.help#help-presentation
             .field.is-horizontal
               .field-label
               .field-body
@@ -106,3 +111,7 @@ block content
                   .control
                     button.button.is-success.is-outlined
                       | Apply
+                  p#response-message
+
+block scripts
+  script(src="/js/apply.js")

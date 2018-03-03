@@ -10,10 +10,11 @@ class FormHandler {
    * @param {*} url The url to perfom the action on.
    * @param {*} type The http request type, e.g POST, GET, PUT
    */
-  constructor (formID, url, type) {
+  constructor (formID, url, type, multipart) {
     this.id = formID
     this.url = url
     this.type = type
+    this.multipart = multipart ? true : false
     this.form = $(this.id)
     this.onSuccessCallbacks = []
     this.onFailureCallbacks = []
@@ -29,6 +30,10 @@ class FormHandler {
     this.form.submit(e => {
       e.preventDefault()
       let ajax = this.buildAjax()
+      if (this.multipart) {
+        ajax.processData = false;
+        ajax.contentType = false;
+      }
       $.ajax(ajax)
     })
   }
@@ -37,7 +42,7 @@ class FormHandler {
     return {
       url: this.url,
       type: this.type,
-      data: this.objectifyForm(),
+      data: this.multipart ? new FormData(this.form[0]) : this.objectifyForm(),
       beforeSend: () => {
         this.beforeSendCallbacks.forEach(x => x(this))
       },
@@ -116,14 +121,33 @@ class FormHandler {
  * - The inputs must have a help paragraph with a id like: #help-{name}
  */
 class BulmaFormHandler extends FormHandler {
+
+  getHelpNode(field) {
+    return this.find('#help-' + field)
+  }
+
+  getIndicatorNode(field) {
+    let input = this.find(`input[name=${field}]`)
+    if (input.attr('type') === 'tags') {
+      input = input.next('div')
+    }
+    if (!input.length) {
+      input = this.find(`textarea[name=${field}]`)
+    }
+    if (!input.length) {
+      input = this.find(`select[name=${field}]`).parent()
+    }
+    return input
+  }
+
   /**
    * Turns the input green and removes the help message.
    * @param {*} field
    */
   turnGreen (field) {
     // If the DOM has the danger class, remove it.
-    let input = this.form.find(`input[name=${field}]`)
-    let help = this.form.find('#help-' + field)
+    let input = this.getIndicatorNode(field)
+    let help = this.getHelpNode(field)
 
     if (input.hasClass('is-danger')) {
       input.toggleClass('is-danger')
@@ -139,9 +163,8 @@ class BulmaFormHandler extends FormHandler {
   handleErrors (errors, prefix = '') {
     for (let fieldName in errors) {
       let err = errors[fieldName]
-      let help = this.form.find('#help-' + prefix + fieldName)
-      // let input = $('#input-' + prefix + fieldName)
-      let input = this.form.find(`input[name=${fieldName}]`)
+      let input = this.getIndicatorNode(fieldName)
+      let help = this.getHelpNode(fieldName)
 
       help.text(err.message)
 
@@ -170,5 +193,6 @@ class BulmaFormHandler extends FormHandler {
     for (let obj in data) {
       this.turnGreen(obj)
     }
+    this.find('button').prop('disabled', true)
   }
 }
