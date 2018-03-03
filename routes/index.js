@@ -91,7 +91,7 @@ router.post('/apply', function (req, res, next) {
 
 router.get('/mapupload', function (req, res, next) {
   res.render('mapupload', {
-    title: 'Map Upload | Unique',
+    title: 'Submit Map | Unique',
     user: req.session.authed ? req.session.user : null
   })
 })
