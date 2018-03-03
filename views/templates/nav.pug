@@ -13,10 +13,10 @@ header
           a.navbar-item(href='/member') Members
           a.navbar-item(href='/serverstatus') Serverstatus
           a.navbar-item(href='/apply') Apply
-          a.navbar-item(href='/mapupload') Map Upload
+          a.navbar-item(href='/mapupload') Submit Map
           a.navbar-item(href='/tournaments') Tournaments
-          a.navbar-item(href='/ranks') Ranks
-        .navbar-end
+          //a.navbar-item(href='/ranks') Ranks
+        //.navbar-end
           if user
             a.navbar-item(href='/user/' + user.username)= user.username
             a.navbar-item(href='/auth/logout') Logout

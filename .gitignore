@@ -40,3 +40,9 @@ npm-debug.log
 *.swp
 /run.sh
 /update.sh
+
+# temporary data storage
+/admintmp/applications/*
+!/admintmp/applications/.gitkeep
+/admintmp/map-submissions/*
+!/admintmp/map-submissions/.gitkeep
