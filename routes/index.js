@@ -9,17 +9,17 @@ const ServerStatus = require('../app/serverstatus')
 var serverStatus = new ServerStatus(process.env.SERVERS_LOCATION || 'servers.json')
 serverStatus.startUpdating()
 
-function getFilename (folder, name) {
+function getFilename (folder, name, ending) {
   let path = folder + '/' + name.replace(/[^\w\s\.]/g, '')
-  if (fs.existsSync(path)) {
+  if (!fs.existsSync(path+ending)) {
+    return path+ending
+  } else {
     let n = 2
     while (true) {
-      if (!fs.existsSync(path+n))
-        return path+n
+      if (!fs.existsSync(path+n+ending))
+        return path+n+ending
       n += 1
     }
-  } else {
-    return path
   }
 }
 
@@ -84,7 +84,7 @@ router.post('/apply', function (req, res, next) {
     res.status(422).json({ errors: errors })
     return
   }
-  let path = getFilename('admintmp/applications', req.body['twName'])
+  let path = getFilename('admintmp/applications', req.body['twName'], '.json')
   fs.writeFileSync(path, JSON.stringify(application, null, 2))
   res.status(201).json({ msg: 'Application sent.' })
 })
@@ -122,11 +122,11 @@ router.post('/mapupload', upload.single('mapFile'), function (req, res, next) {
     return
   }
   let name = req.file.originalname.substring(0, req.file.originalname.length - 4)
-  let path = getFilename('admintmp/map-submissions', name)
+  let path = getFilename('admintmp/map-submissions', name, '')
   fs.mkdirSync(path)
-  fs.renameSync(req.file.path, getFilename(path, req.file.originalname))
+  fs.renameSync(req.file.path, getFilename(path, req.file.originalname, ''))
   let info = { filename: req.file.originalname, mappers: mappers }
-  fs.writeFileSync(path+'/info', JSON.stringify(info, null, 2))
+  fs.writeFileSync(path+'/info.json', JSON.stringify(info, null, 2))
   res.status(201).json({ msg: 'Map submission sent.' })
 })
 
