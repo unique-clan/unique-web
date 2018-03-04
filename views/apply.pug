@@ -59,7 +59,7 @@ block content
               .field-body
                 .field
                   p.control.is-expanded.has-icons-left
-                    input.input(type='text', placeholder='Name', name='twName')
+                    input.input.warning-input(type='text', placeholder='Name', name='twName')
                     span.icon.is-small.is-left
                       i.fa.fa-user
                   p.help#help-twName
@@ -78,7 +78,7 @@ block content
                 label.label Gametypes
               .field-body
                 .field
-                  p.control.is-expanded.has-icons-left
+                  p.control.is-expanded.has-icons-left.warning-tagsinput
                     input.input(type="tags", placeholder="Add gametype", value="DDRace,OpenFNG", name='gameModes')
                     span.icon.is-small.is-left
                       i.fa.fa-gamepad
@@ -102,14 +102,14 @@ block content
               .field-body
                 .field
                   .control
-                    textarea.textarea(placeholder='I am fameless tee and i am 16 years old...', name='presentation')
+                    textarea.textarea.warning-input(placeholder='I am fameless tee and i am 16 years old...', name='presentation')
                   p.help#help-presentation
             .field.is-horizontal
               .field-label
               .field-body
                 .field
                   .control
-                    button.button.is-success.is-outlined
+                    button.button.is-warning.is-outlined
                       | Apply
                   p#response-message
 
