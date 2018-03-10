@@ -5,15 +5,42 @@ block content
     br
     section.section
       .container
-        .columns.is-multiline
-          .column.is-full-tablet.is-half-desktop.is-one-third-fullhd
-            .notification.is-white
-              if maxPoints
-                p.title Top Points (#{maxPoints} total)
-              else
-                p.title Top Points
-              if topPoints
-                table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
+        .tabs.is-large.is-centered
+          ul
+            li.is-active
+              a Global
+            li
+              a Short
+            li
+              a Middle
+            li
+              a Long
+        article.tile.is-child.notification.is-white
+          .columns
+            .column.is-10
+              p.title Global Ranks
+            .column
+              .field.has-addons
+                p.control
+                  input.input(type="text" placeholder="Player search")
+          .columns
+            .column
+              p.subtitle Map Records
+               table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
+                  thead
+                    tr
+                      th Rank
+                      th Player
+                      th Records
+                  tbody
+                    each record, index in mapRecords
+                      tr
+                        th= record.rank
+                        td= record.Name
+                        td= record.recordsCount
+            .column
+              p.subtitle Points (#{maxPoints})
+               table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
                   thead
                     tr
                       th Rank
@@ -22,25 +49,60 @@ block content
                   tbody
                     each player, index in topPoints
                       tr
-                        th= index + 1
+                        th= player.rank
                         td= player.Name
                         td= player.Points
-          .column.is-full-tablet.is-half-desktop
-              .notification.is-white
-                p.title Last Rank 1 Finishes
-                if lastTopRanks
-                  table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
-                    thead
+            .column
+              p.subtitle Last Records
+               table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
+                  thead
+                    tr
+                      th Player
+                      th Map
+                      th Time
+                  tbody
+                    each record, index in lastTopRanks
                       tr
-                        th Name
-                        th Map
-                        th Time
-                        th When
-                    tbody
-                      each finish, index in lastTopRanks
-                        tr
-                          td= finish.Name
-                          td= finish.Map
-                          td= finish.Time
-                          td= `${finish.Timestamp.toLocaleDateString()} ~ ${finish.Timestamp.toLocaleTimeString()}`
-        // pre= JSON.stringify(lastRanks[0], null, 4)
+                        td= record.Name
+                        td= record.Map
+                        td= formatTime(record.Time)
+        br
+        article.tile.is-child.notification.is-white
+          p.title Points Calculation
+          p Players accumulate points from their times on all maps in relation to the map records. The player holding the record is rewarded 100 points while the amount of points drops exponentially for slower times.
+            p
+              | The points a player recieves for a specific map are calculated from the player's time in seconds 
+              img(src='/img/points/tplayer.png', style='position:relative;top:8px;')
+              | , the record time in seconds 
+              img(src='/img/points/trecord.png', style='position:relative;top:5px;')
+              |  and the map category constant 
+              img(src='/img/points/s.png')
+              | :
+            br
+            br
+            .columns
+              .column
+                img(src='/img/points/equation.png', style="padding-top:30px;")
+              .column
+                table.table.is-narrow.has-text-centered
+                  thead
+                    tr
+                      th Map Category
+                      th
+                        img(src='/img/points/s.png')
+                  tbody
+                    tr
+                      td Short
+                      td 5
+                    tr
+                      td Middle
+                      td 3.5
+                    tr
+                      td Long Easy
+                      td 2
+                    tr
+                      td Long Advanced
+                      td 1
+                    tr
+                      td Long Hard
+                      td 0.05
