@@ -3,26 +3,31 @@ extends layout
 block content
   main
     br
+    br
+    br
+    br
+    section.hero.is-dark
+      .hero-body
+        .container
+          h1.title Unique Race Ranks
+          nav.breadcrumb.rank-nav
+            ul
+              li
+                a(href='#short') Short
+              li
+                a(href='#middle') Middle
+              li
+                a(href='#long') Long
     section.section
       .container
-        .tabs.is-large.is-centered
-          ul
-            li.is-active
-              a Global
-            li
-              a Short
-            li
-              a Middle
-            li
-              a Long
         article.tile.is-child.notification.is-white
           .columns
             .column.is-10
-              p.title Global Ranks
+              p.title Ranks (345 Maps)
             .column
               .field.has-addons
                 p.control
-                  input.input(type="text" placeholder="Player search")
+                  input.input.warning-input(type="text" placeholder="Player search")
           .columns
             .column
               p.subtitle Map Records
@@ -39,7 +44,7 @@ block content
                         td= record.Name
                         td= record.recordsCount
             .column
-              p.subtitle Points (#{maxPoints})
+              p.subtitle Points
                table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
                   thead
                     tr
@@ -66,6 +71,142 @@ block content
                         td= record.Name
                         td= record.Map
                         td= formatTime(record.Time)
+          span.rank-anchor#short
+          p.title.is-4 Short Ranks (32 Maps)
+          .columns
+            .column
+              p.subtitle Map Records
+               table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
+                  thead
+                    tr
+                      th Rank
+                      th Player
+                      th Records
+                  tbody
+                    each record, index in mapRecords
+                      tr
+                        th= record.rank
+                        td= record.Name
+                        td= record.recordsCount
+            .column
+              p.subtitle Points
+               table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
+                  thead
+                    tr
+                      th Rank
+                      th Player
+                      th Points
+                  tbody
+                    each player, index in topPoints
+                      tr
+                        th= player.rank
+                        td= player.Name
+                        td= player.Points
+            .column
+              p.subtitle Last Records
+               table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
+                  thead
+                    tr
+                      th Player
+                      th Map
+                      th Time
+                  tbody
+                    each record, index in lastTopRanks
+                      tr
+                        td= record.Name
+                        td= record.Map
+                        td= formatTime(record.Time)
+          span.rank-anchor#middle
+          p.title.is-4 Middle Ranks (210 Maps)
+          .columns
+            .column
+              p.subtitle Map Records
+               table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
+                  thead
+                    tr
+                      th Rank
+                      th Player
+                      th Records
+                  tbody
+                    each record, index in mapRecords
+                      tr
+                        th= record.rank
+                        td= record.Name
+                        td= record.recordsCount
+            .column
+              p.subtitle Points
+               table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
+                  thead
+                    tr
+                      th Rank
+                      th Player
+                      th Points
+                  tbody
+                    each player, index in topPoints
+                      tr
+                        th= player.rank
+                        td= player.Name
+                        td= player.Points
+            .column
+              p.subtitle Last Records
+               table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
+                  thead
+                    tr
+                      th Player
+                      th Map
+                      th Time
+                  tbody
+                    each record, index in lastTopRanks
+                      tr
+                        td= record.Name
+                        td= record.Map
+                        td= formatTime(record.Time)
+          span.rank-anchor#long
+          p.title.is-4 Long Ranks (18 Maps)
+          .columns
+            .column
+              p.subtitle Map Records
+               table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
+                  thead
+                    tr
+                      th Rank
+                      th Player
+                      th Records
+                  tbody
+                    each record, index in mapRecords
+                      tr
+                        th= record.rank
+                        td= record.Name
+                        td= record.recordsCount
+            .column
+              p.subtitle Points
+               table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
+                  thead
+                    tr
+                      th Rank
+                      th Player
+                      th Points
+                  tbody
+                    each player, index in topPoints
+                      tr
+                        th= player.rank
+                        td= player.Name
+                        td= player.Points
+            .column
+              p.subtitle Last Records
+               table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
+                  thead
+                    tr
+                      th Player
+                      th Map
+                      th Time
+                  tbody
+                    each record, index in lastTopRanks
+                      tr
+                        td= record.Name
+                        td= record.Map
+                        td= formatTime(record.Time)
+        br
         br
         article.tile.is-child.notification.is-white
           p.title Points Calculation
