@@ -42,4 +42,11 @@ router.get('/', async function (req, res, next) {
   })
 })
 
+router.get('/timakro', function (req, res, next) {
+  res.render('playerranks', {
+    title: 'Ranks for timakro | Unique',
+    user: req.session.authed ? req.session.user : null
+  })
+})
+
 module.exports = exports = router
