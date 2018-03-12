@@ -23,6 +23,10 @@ function formatTime (time) {
   return `${pad(minutes, 2)}:${pad(seconds, 2)}.${pad(ms, 3)}`
 }
 
+function getMapRecordsQuery (type = 'Short') {
+  return `SELECT @pos := @pos + 1 AS v1, @rank := IF(@prev = recordsCount, @rank, @pos) AS rank, @prev := recordsCount AS v2, Name, recordsCount FROM (SELECT Name, COUNT(*) as recordsCount FROM (SELECT Name, t1.Map as Map FROM (SELECT v1.Map, v1.Name, ROUND(v1.Time, 3) AS playerTime FROM race_race v1 INNER JOIN race_maps v2 ON v1.Map = v2.Map WHERE v2.Server = "${type}") t1 INNER JOIN (SELECT Map, ROUND(MIN(Time), 3) AS bestTime FROM race_race GROUP BY Map) t2 ON t1.Map = t2.Map AND t1.playerTime = t2.bestTime) u GROUP BY Name ORDER BY recordsCount DESC) v, (SELECT @pos := 0) i1, (SELECT @prev := -1) i2 LIMIT 10;`
+}
+
 router.get('/', async function (req, res, next) {
   const connection = await mysql.createConnection(mysqlOptions)
 
@@ -32,13 +36,20 @@ router.get('/', async function (req, res, next) {
 
   const [lastTopRanks] = await connection.execute('SELECT Map, Name, Timestamp, Time FROM race_lastrecords ORDER BY Timestamp DESC LIMIT 10;')
 
+  const [mapRecordsShort] = await connection.execute(getMapRecordsQuery('Short'))
+  const [mapRecordsMiddle] = await connection.execute(getMapRecordsQuery('Middle'))
+  const [mapRecordsLong] = await connection.execute(getMapRecordsQuery('Long'))
+
   res.render('ranks', {
     title: 'Ranks | Unique',
     user: req.session.authed ? req.session.user : null,
     topPoints: topPoints,
     lastTopRanks: lastTopRanks,
     formatTime: formatTime,
-    mapRecords: mapRecords
+    mapRecords: mapRecords,
+    mapRecordsShort: mapRecordsShort,
+    mapRecordsMiddle: mapRecordsMiddle,
+    mapRecordsLong: mapRecordsLong
   })
 })
 
