@@ -91,15 +91,25 @@ html,body
 
 .warning-tagsinput
   div.is-focused:not(.is-danger):not(.is-success)
-    border-color: #FFDD57
-    box-shadow: 0 0 0 0.125em transparentize(#FFDD57, 0.6)
+    border-color: #ffdd57
+    box-shadow: 0 0 0 0.125em transparentize(#ffdd57, 0.6)
   span.tag
-    background-color: #FFDD57 !important
+    background-color: #ffdd57 !important
     color: inherit !important
 
 .warning-input:focus:not(.is-danger):not(.is-success)
-  border-color: #FFDD57
-  box-shadow: 0 0 0 0.125em transparentize(#FFDD57, 0.6)
+  border-color: #ffdd57
+  box-shadow: 0 0 0 0.125em transparentize(#ffdd57, 0.6)
+
+.warning-dark-input
+  background-color: #2b2b2b
+  color: #f5f5f5
+  border-color: #262626
+.warning-dark-input:focus
+  border-color: #e89200
+  box-shadow: 0 0 0 0.125em transparentize(#e89200, 0.6)
+.warning-dark-input::placeholder
+  color: #595959
 
 a.navbar-item:hover
   color: #e89200
