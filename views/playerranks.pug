@@ -1,0 +1,83 @@
+extends layout
+
+block content
+  main
+    br
+    br
+    br
+    br
+    section.hero.is-dark
+      .hero-body
+        .container
+          .columns
+            .column.is-9
+              h1.title Unique Race Ranks
+            .column
+              form
+                input.input.warning-dark-input(type="text",placeholder="Player search",name="player")
+          nav.breadcrumb.rank-nav
+            ul
+              li
+                a(href='#short') Short
+              li
+                a(href='#middle') Middle
+              li
+                a(href='#long') Long
+    section.section
+      .container
+        article.tile.is-child.notification.is-white
+          p.title Ranks for timakro (345 Maps)
+          .columns
+            .column.is-4
+              p.subtitle Map Records
+              p 10. with 20 records
+              br
+              br
+              p.subtitle Points
+              p 12. with 2342 points
+            .column
+              p.subtitle Last Records
+               table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
+                  thead
+                    tr
+                      th Date
+                      th Map
+                      th Time
+                  tbody
+                    tr
+                      td 2018-10-27 15:30:12
+                      td run_baum
+                      td 00:10.001
+                    tr
+                      td 2018-10-27 15:30:12
+                      td run_baum
+                      td 00:10.001
+                    tr
+                      td 2018-10-27 15:30:12
+                      td run_baum
+                      td 00:10.001
+                    tr
+                      td 2018-10-27 15:30:12
+                      td run_baum
+                      td 00:10.001
+          span.rank-anchor#short
+          p.title.is-4 Short Ranks (32 Maps)
+          .columns
+            .column
+              p.subtitle Map Records
+            .column
+              p.subtitle Points
+          span.rank-anchor#middle
+          p.title.is-4 Middle Ranks (210 Maps)
+          .columns
+            .column
+              p.subtitle Map Records
+            .column
+              p.subtitle Points
+          span.rank-anchor#long
+          p.title.is-4 Long Ranks (18 Maps)
+          .columns
+            .column
+              p.subtitle Map Records
+            .column
+              p.subtitle Points
