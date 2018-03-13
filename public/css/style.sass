@@ -105,6 +105,8 @@ html,body
   background-color: #2b2b2b
   color: #f5f5f5
   border-color: #262626
+.warning-dark-input:hover
+  border-color: #191919
 .warning-dark-input:focus
   border-color: #e89200
   box-shadow: 0 0 0 0.125em transparentize(#e89200, 0.6)
@@ -119,6 +121,8 @@ a.navbar-item:hover
   color: #e89200
 
 .rank-nav
+  a
+    outline: none !important
   a:hover
     color: #e89200 !important
   li::before
@@ -129,3 +133,12 @@ a.navbar-item:hover
   position: relative
   top: -70px
   visibility: hidden
+
+.playerranks-header
+  max-width: 800px
+  margin-bottom: 24px
+  .column
+    .subtitle
+      display: inline-block
+      margin-right: 30px
+      margin-bottom: 0

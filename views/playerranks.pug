@@ -27,57 +27,186 @@ block content
       .container
         article.tile.is-child.notification.is-white
           p.title Ranks for timakro (345 Maps)
-          .columns
-            .column.is-4
-              p.subtitle Map Records
-              p 10. with 20 records
-              br
-              br
-              p.subtitle Points
-              p 12. with 2342 points
-            .column
-              p.subtitle Last Records
-               table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
-                  thead
-                    tr
-                      th Date
-                      th Map
-                      th Time
-                  tbody
-                    tr
-                      td 2018-10-27 15:30:12
-                      td run_baum
-                      td 00:10.001
-                    tr
-                      td 2018-10-27 15:30:12
-                      td run_baum
-                      td 00:10.001
-                    tr
-                      td 2018-10-27 15:30:12
-                      td run_baum
-                      td 00:10.001
-                    tr
-                      td 2018-10-27 15:30:12
-                      td run_baum
-                      td 00:10.001
+          .playerranks-header
+            .columns
+              .column
+                p.subtitle Map Records
+                b 10
+                sup th
+                |  with 
+                b 20
+                |  records
+              .column
+                p.subtitle Points
+                b 13
+                sup th
+                |  with 
+                b 2435
+                |  points
+            p.subtitle Last Records
+            table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
+              thead
+                tr
+                  th Date
+                  th Map
+                  th Time
+              tbody
+                each x in [1,2,3,4,5,6,7,8,9,10]
+                  tr
+                    td 2018-10-27 15:30:12
+                    td run_baum
+                    td 00:10.001
+          p.subtitle Map List
+          table.table.is-narrow.is-striped.is-hoverable.is-fullwidth.is-bordered
+            thead
+              tr
+                th Map
+                  span.icon(style='float: right')
+                    i.fa.fa-sort-down
+                th Category
+                  span.icon(style='float: right')
+                    i.fa.fa-sort
+                th Time
+                  span.icon(style='float: right')
+                    i.fa.fa-sort
+                th Rank
+                  span.icon(style='float: right')
+                    i.fa.fa-sort
+                th Map Points
+                  span.icon(style='float: right')
+                    i.fa.fa-sort
+            tbody
+              each x in [1,2,3,4,5,6,7,8,9,10]
+                tr
+                  td run_baum
+                  td Long Advanced
+                  td 00:10.001
+                  td 23
+                    sup th
+                  td 567
           span.rank-anchor#short
           p.title.is-4 Short Ranks (32 Maps)
-          .columns
-            .column
-              p.subtitle Map Records
-            .column
-              p.subtitle Points
+          .playerranks-header
+            .columns
+              .column
+                p.subtitle Map Records
+                b 10
+                sup th
+                |  with 
+                b 20
+                |  records
+              .column
+                p.subtitle Points
+                b 13
+                sup th
+                |  with 
+                b 2435
+                |  points
+          p.subtitle Map List
+          table.table.is-narrow.is-striped.is-hoverable.is-fullwidth.is-bordered
+            thead
+              tr
+                th Map
+                  span.icon(style='float: right')
+                    i.fa.fa-sort
+                th Time
+                  span.icon(style='float: right')
+                    i.fa.fa-sort
+                th Rank
+                  span.icon(style='float: right')
+                    i.fa.fa-sort
+                th Map Points
+                  span.icon(style='float: right')
+                    i.fa.fa-sort
+            tbody
+              each x in [1,2,3,4,5,6,7,8,9,10]
+                tr
+                  td run_baum
+                  td 00:10.001
+                  td 23
+                    sup th
+                  td 567
           span.rank-anchor#middle
           p.title.is-4 Middle Ranks (210 Maps)
-          .columns
-            .column
-              p.subtitle Map Records
-            .column
-              p.subtitle Points
+          .playerranks-header
+            .columns
+              .column
+                p.subtitle Map Records
+                b 10
+                sup th
+                |  with 
+                b 20
+                |  records
+              .column
+                p.subtitle Points
+                b 13
+                sup th
+                |  with 
+                b 2435
+                |  points
+          p.subtitle Map List
+          table.table.is-narrow.is-striped.is-hoverable.is-fullwidth.is-bordered
+            thead
+              tr
+                th Map
+                  span.icon(style='float: right')
+                    i.fa.fa-sort
+                th Time
+                  span.icon(style='float: right')
+                    i.fa.fa-sort
+                th Rank
+                  span.icon(style='float: right')
+                    i.fa.fa-sort
+                th Map Points
+                  span.icon(style='float: right')
+                    i.fa.fa-sort
+            tbody
+              each x in [1,2,3,4,5,6,7,8,9,10]
+                tr
+                  td run_baum
+                  td 00:10.001
+                  td 23
+                    sup th
+                  td 567
           span.rank-anchor#long
           p.title.is-4 Long Ranks (18 Maps)
-          .columns
-            .column
-              p.subtitle Map Records
-            .column
-              p.subtitle Points
+          .playerranks-header
+            .columns
+              .column
+                p.subtitle Map Records
+                b 10
+                sup th
+                |  with 
+                b 20
+                |  records
+              .column
+                p.subtitle Points
+                b 13
+                sup th
+                |  with 
+                b 2435
+                |  points
+          p.subtitle Map List
+          table.table.is-narrow.is-striped.is-hoverable.is-fullwidth.is-bordered
+            thead
+              tr
+                th Map
+                  span.icon(style='float: right')
+                    i.fa.fa-sort
+                th Time
+                  span.icon(style='float: right')
+                    i.fa.fa-sort-up
+                th Rank
+                  span.icon(style='float: right')
+                    i.fa.fa-sort
+                th Map Points
+                  span.icon(style='float: right')
+                    i.fa.fa-sort
+            tbody
+              each x in [1,2,3,4,5,6,7,8,9,10]
+                tr
+                  td run_baum
+                  td 00:10.001
+                  td 23
+                    sup th
+                  td 567
