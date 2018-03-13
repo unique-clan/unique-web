@@ -53,10 +53,20 @@ router.get('/', async function (req, res, next) {
   })
 })
 
-router.get('/timakro', function (req, res, next) {
+router.get('/player/:name', async function (req, res, next) {
+  var player = String(req.params.name)
+
+  const connection = await mysql.createConnection(mysqlOptions)
+
+  const [mapRecords] = await connection.execute('SELECT @pos := @pos + 1 AS v1, @rank := IF(@prev = recordsCount, @rank, @pos) AS rank, @prev := recordsCount AS v2, Name, recordsCount FROM (SELECT Name, COUNT(*) as recordsCount FROM (SELECT Name, t1.Map as Map FROM (SELECT Map, Name, ROUND(Time, 3) AS playerTime FROM race_race) t1 INNER JOIN (SELECT Map, ROUND(MIN(Time), 3) AS bestTime FROM race_race GROUP BY Map) t2 ON t1.Map = t2.Map AND t1.playerTime = t2.bestTime) u GROUP BY Name ORDER BY recordsCount DESC) v, (SELECT @pos := 0) i1, (SELECT @prev := -1) i2 WHERE Name=?;', [player])
+
+  console.log(mapRecords)
+
   res.render('playerranks', {
-    title: 'Ranks for timakro | Unique',
-    user: req.session.authed ? req.session.user : null
+    title: `Ranks for ${player} | Unique`,
+    name: player,
+    user: req.session.authed ? req.session.user : null,
+    mapRecords: mapRecords.length > 0 ? mapRecords[0] : null
   })
 })
 

@@ -26,15 +26,15 @@ block content
     section.section
       .container
         article.tile.is-child.notification.is-white
-          p.title Ranks for timakro (345 Maps)
+          p.title Ranks for #{name} (345 Maps)
           .playerranks-header
             .columns
               .column
                 p.subtitle Map Records
-                b 10
+                b #{mapRecords.rank}
                 sup th
                 |  with 
-                b 20
+                b #{mapRecords.recordsCount}
                 |  records
               .column
                 p.subtitle Points
