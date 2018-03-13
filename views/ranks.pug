@@ -30,139 +30,139 @@ block content
           .columns
             .column
               p.subtitle Map Records
-               table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
-                  thead
+              table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
+                thead
+                  tr
+                    th Rank
+                    th Player
+                    th Records
+                tbody
+                  each record, index in mapRecords
                     tr
-                      th Rank
-                      th Player
-                      th Records
-                  tbody
-                    each record, index in mapRecords
-                      tr
-                        th= record.rank
-                        td= record.Name
-                        td= record.recordsCount
+                      th= record.rank
+                      td= record.Name
+                      td= record.recordsCount
             .column
               p.subtitle Points
-               table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
-                  thead
+              table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
+                thead
+                  tr
+                    th Rank
+                    th Player
+                    th Points
+                tbody
+                  each player, index in topPoints
                     tr
-                      th Rank
-                      th Player
-                      th Points
-                  tbody
-                    each player, index in topPoints
-                      tr
-                        th= player.rank
-                        td= player.Name
-                        td= player.Points
+                      th= player.rank
+                      td= player.Name
+                      td= player.Points
             .column
               p.subtitle Last Records
-               table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
-                  thead
+              table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
+                thead
+                  tr
+                    th Player
+                    th Map
+                    th Time
+                tbody
+                  each record, index in lastTopRanks
                     tr
-                      th Player
-                      th Map
-                      th Time
-                  tbody
-                    each record, index in lastTopRanks
-                      tr
-                        td= record.Name
-                        td= record.Map
-                        td= formatTime(record.Time)
+                      td= record.Name
+                      td= record.Map
+                      td= formatTime(record.Time)
           span.rank-anchor#short
           p.title.is-4 Short Ranks (32 Maps)
           .columns
             .column
               p.subtitle Map Records
-               table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
-                  thead
+              table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
+                thead
+                  tr
+                    th Rank
+                    th Player
+                    th Records
+                tbody
+                  each record, index in mapRecordsShort
                     tr
-                      th Rank
-                      th Player
-                      th Records
-                  tbody
-                    each record, index in mapRecordsShort
-                      tr
-                        th= record.rank
-                        td= record.Name
-                        td= record.recordsCount
-            //-.column
+                      th= record.rank
+                      td= record.Name
+                      td= record.recordsCount
+            .column
               p.subtitle Points
-               table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
-                  thead
+              table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
+                thead
+                  tr
+                    th Rank
+                    th Player
+                    th Points
+                tbody
+                  each player, index in topPoints
                     tr
-                      th Rank
-                      th Player
-                      th Points
-                  tbody
-                    each player, index in topPoints
-                      tr
-                        th= player.rank
-                        td= player.Name
-                        td= player.Points
+                      th= player.rank
+                      td= player.Name
+                      td= player.Points
           span.rank-anchor#middle
           p.title.is-4 Middle Ranks (210 Maps)
           .columns
             .column
               p.subtitle Map Records
-               table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
-                  thead
+              table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
+                thead
+                  tr
+                    th Rank
+                    th Player
+                    th Records
+                tbody
+                  each record, index in mapRecordsMiddle
                     tr
-                      th Rank
-                      th Player
-                      th Records
-                  tbody
-                    each record, index in mapRecordsMiddle
-                      tr
-                        th= record.rank
-                        td= record.Name
-                        td= record.recordsCount
-            //-.column
+                      th= record.rank
+                      td= record.Name
+                      td= record.recordsCount
+            .column
               p.subtitle Points
-               table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
-                  thead
+              table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
+                thead
+                  tr
+                    th Rank
+                    th Player
+                    th Points
+                tbody
+                  each player, index in topPoints
                     tr
-                      th Rank
-                      th Player
-                      th Points
-                  tbody
-                    each player, index in topPoints
-                      tr
-                        th= player.rank
-                        td= player.Name
-                        td= player.Points
+                      th= player.rank
+                      td= player.Name
+                      td= player.Points
           span.rank-anchor#long
           p.title.is-4 Long Ranks (18 Maps)
           .columns
             .column
               p.subtitle Map Records
-               table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
-                  thead
+              table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
+                thead
+                  tr
+                    th Rank
+                    th Player
+                    th Records
+                tbody
+                  each record, index in mapRecordsLong
                     tr
-                      th Rank
-                      th Player
-                      th Records
-                  tbody
-                    each record, index in mapRecordsLong
-                      tr
-                        th= record.rank
-                        td= record.Name
-                        td= record.recordsCount
-            //-.column
+                      th= record.rank
+                      td= record.Name
+                      td= record.recordsCount
+            .column
               p.subtitle Points
-               table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
-                  thead
+              table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
+                thead
+                  tr
+                    th Rank
+                    th Player
+                    th Points
+                tbody
+                  each player, index in topPoints
                     tr
-                      th Rank
-                      th Player
-                      th Points
-                  tbody
-                    each player, index in topPoints
-                      tr
-                        th= player.rank
-                        td= player.Name
-                        td= player.Points
+                      th= player.rank
+                      td= player.Name
+                      td= player.Points
         br
         br
         article.tile.is-child.notification.is-white
