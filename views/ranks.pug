@@ -1,5 +1,7 @@
 extends layout
 
+include templates/mixins.pug
+
 block content
   main
     br
@@ -13,8 +15,8 @@ block content
             .column.is-9
               h1.title Unique Race Ranks
             .column
-              form
-                input.input.warning-dark-input(type="text",placeholder="Player search",name="player")
+              form#search-form(action='/ranks/player/' method='GET')
+                input#player-name.input.warning-dark-input(type="text",placeholder="Player search", name="player")
           nav.breadcrumb.rank-nav
             ul
               li
@@ -204,3 +206,6 @@ block content
                     tr
                       td Long Hard
                       td 0.05
+
+block scripts
+  +player_search()

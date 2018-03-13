@@ -1,5 +1,7 @@
 extends layout
 
+include templates/mixins.pug
+
 block content
   main
     br
@@ -13,8 +15,8 @@ block content
             .column.is-9
               h1.title Unique Race Ranks
             .column
-              form
-                input.input.warning-dark-input(type="text",placeholder="Player search",name="player")
+              form#search-form(action='/ranks/player/' method='GET')
+                input#player-name.input.warning-dark-input(type="text",placeholder="Player search", name="player")
           nav.breadcrumb.rank-nav
             ul
               li
@@ -25,188 +27,174 @@ block content
                 a(href='#long') Long
     section.section
       .container
-        article.tile.is-child.notification.is-white
-          p.title Ranks for #{name} (345 Maps)
-          .playerranks-header
-            .columns
-              .column
-                p.subtitle Map Records
-                b #{mapRecords.rank}
-                sup th
-                |  with 
-                b #{mapRecords.recordsCount}
-                |  records
-              .column
-                p.subtitle Points
-                b 13
-                sup th
-                |  with 
-                b 2435
-                |  points
-            p.subtitle Last Records
-            table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
+        if !playerPoints
+          article.tile.is-child.notification.is-white
+            p.title Player '#{name}' not found
+        else
+          article.tile.is-child.notification.is-white
+            p.title Ranks for #{name} (x/#{totalMapCount} Maps)
+            .playerranks-header
+              .columns
+                .column
+                  p.subtitle Map Records
+                  if mapRecords
+                    b #{mapRecords.rank}
+                    sup= getOrdinal(mapRecords.rank)
+                    |  with 
+                    b #{mapRecords.recordsCount}
+                    |  records
+                  else
+                    b No records :(
+                .column
+                  p.subtitle Points
+                  b= playerPoints.rank
+                  sup= getOrdinal(playerPoints.rank)
+                  |  with 
+                  b= playerPoints.Points
+                  |  points
+              p.subtitle Last Records
+              if lastRecords.length < 1
+                b There are no last records for #{name}
+              else
+                table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
+                  thead
+                    tr
+                      th Date
+                      th Map
+                      th Time
+                  tbody
+                    each x in lastRecords
+                      tr
+                        // 2018-10-27 15:30:12
+                        td= x.Timestamp.toLocaleString()
+                        td= x.Map
+                        td= formatTime(x.Time)
+            span.rank-anchor#short
+            p.title.is-4 Short Ranks (x/#{numShortMaps} Maps)
+            .playerranks-header
+              .columns
+                .column
+                  p.subtitle Map Records
+                  b= shortMapRecords.rank
+                  sup= getOrdinal(shortMapRecords.rank)
+                  |  with 
+                  b= shortMapRecords.recordsCount
+                  |  records
+                .column
+                  p.subtitle Points
+                  b 13
+                  sup th
+                  |  with 
+                  b 2435
+                  |  points
+            p.subtitle Map List
+            table.table.is-narrow.is-striped.is-hoverable.is-fullwidth.is-bordered
               thead
                 tr
-                  th Date
                   th Map
+                    span.icon(style='float: right')
+                      i.fa.fa-sort
                   th Time
+                    span.icon(style='float: right')
+                      i.fa.fa-sort
+                  th Rank
+                    span.icon(style='float: right')
+                      i.fa.fa-sort
+                  th Map Points
+                    span.icon(style='float: right')
+                      i.fa.fa-sort
               tbody
                 each x in [1,2,3,4,5,6,7,8,9,10]
                   tr
-                    td 2018-10-27 15:30:12
                     td run_baum
                     td 00:10.001
-          p.subtitle Map List
-          table.table.is-narrow.is-striped.is-hoverable.is-fullwidth.is-bordered
-            thead
-              tr
-                th Map
-                  span.icon(style='float: right')
-                    i.fa.fa-sort-down
-                th Category
-                  span.icon(style='float: right')
-                    i.fa.fa-sort
-                th Time
-                  span.icon(style='float: right')
-                    i.fa.fa-sort
-                th Rank
-                  span.icon(style='float: right')
-                    i.fa.fa-sort
-                th Map Points
-                  span.icon(style='float: right')
-                    i.fa.fa-sort
-            tbody
-              each x in [1,2,3,4,5,6,7,8,9,10]
+                    td 23
+                      sup th
+                    td 567
+            span.rank-anchor#middle
+            p.title.is-4 Middle Ranks (x/#{numMiddleMaps} Maps)
+            .playerranks-header
+              .columns
+                .column
+                  p.subtitle Map Records
+                  b= middleMapRecords.rank
+                  sup= getOrdinal(middleMapRecords.rank)
+                  |  with 
+                  b= middleMapRecords.recordsCount
+                  |  records
+                .column
+                  p.subtitle Points
+                  b 13
+                  sup th
+                  |  with 
+                  b 2435
+                  |  points
+            p.subtitle Map List
+            table.table.is-narrow.is-striped.is-hoverable.is-fullwidth.is-bordered
+              thead
                 tr
-                  td run_baum
-                  td Long Advanced
-                  td 00:10.001
-                  td 23
-                    sup th
-                  td 567
-          span.rank-anchor#short
-          p.title.is-4 Short Ranks (32 Maps)
-          .playerranks-header
-            .columns
-              .column
-                p.subtitle Map Records
-                b 10
-                sup th
-                |  with 
-                b 20
-                |  records
-              .column
-                p.subtitle Points
-                b 13
-                sup th
-                |  with 
-                b 2435
-                |  points
-          p.subtitle Map List
-          table.table.is-narrow.is-striped.is-hoverable.is-fullwidth.is-bordered
-            thead
-              tr
-                th Map
-                  span.icon(style='float: right')
-                    i.fa.fa-sort
-                th Time
-                  span.icon(style='float: right')
-                    i.fa.fa-sort
-                th Rank
-                  span.icon(style='float: right')
-                    i.fa.fa-sort
-                th Map Points
-                  span.icon(style='float: right')
-                    i.fa.fa-sort
-            tbody
-              each x in [1,2,3,4,5,6,7,8,9,10]
+                  th Map
+                    span.icon(style='float: right')
+                      i.fa.fa-sort
+                  th Time
+                    span.icon(style='float: right')
+                      i.fa.fa-sort
+                  th Rank
+                    span.icon(style='float: right')
+                      i.fa.fa-sort
+                  th Map Points
+                    span.icon(style='float: right')
+                      i.fa.fa-sort
+              tbody
+                each x in [1,2,3,4,5,6,7,8,9,10]
+                  tr
+                    td run_baum
+                    td 00:10.001
+                    td 23
+                      sup th
+                    td 567
+            span.rank-anchor#long
+            p.title.is-4 Long Ranks (x/#{numLongMaps} Maps)
+            .playerranks-header
+              .columns
+                .column
+                  p.subtitle Map Records
+                  b= longMapRecords.rank
+                  sup= getOrdinal(longMapRecords.rank)
+                  |  with 
+                  b= longMapRecords.recordsCount
+                  |  records
+                .column
+                  p.subtitle Points
+                  b 13
+                  sup th
+                  |  with 
+                  b 2435
+                  |  points
+            p.subtitle Map List
+            table.table.is-narrow.is-striped.is-hoverable.is-fullwidth.is-bordered
+              thead
                 tr
-                  td run_baum
-                  td 00:10.001
-                  td 23
-                    sup th
-                  td 567
-          span.rank-anchor#middle
-          p.title.is-4 Middle Ranks (210 Maps)
-          .playerranks-header
-            .columns
-              .column
-                p.subtitle Map Records
-                b 10
-                sup th
-                |  with 
-                b 20
-                |  records
-              .column
-                p.subtitle Points
-                b 13
-                sup th
-                |  with 
-                b 2435
-                |  points
-          p.subtitle Map List
-          table.table.is-narrow.is-striped.is-hoverable.is-fullwidth.is-bordered
-            thead
-              tr
-                th Map
-                  span.icon(style='float: right')
-                    i.fa.fa-sort
-                th Time
-                  span.icon(style='float: right')
-                    i.fa.fa-sort
-                th Rank
-                  span.icon(style='float: right')
-                    i.fa.fa-sort
-                th Map Points
-                  span.icon(style='float: right')
-                    i.fa.fa-sort
-            tbody
-              each x in [1,2,3,4,5,6,7,8,9,10]
-                tr
-                  td run_baum
-                  td 00:10.001
-                  td 23
-                    sup th
-                  td 567
-          span.rank-anchor#long
-          p.title.is-4 Long Ranks (18 Maps)
-          .playerranks-header
-            .columns
-              .column
-                p.subtitle Map Records
-                b 10
-                sup th
-                |  with 
-                b 20
-                |  records
-              .column
-                p.subtitle Points
-                b 13
-                sup th
-                |  with 
-                b 2435
-                |  points
-          p.subtitle Map List
-          table.table.is-narrow.is-striped.is-hoverable.is-fullwidth.is-bordered
-            thead
-              tr
-                th Map
-                  span.icon(style='float: right')
-                    i.fa.fa-sort
-                th Time
-                  span.icon(style='float: right')
-                    i.fa.fa-sort-up
-                th Rank
-                  span.icon(style='float: right')
-                    i.fa.fa-sort
-                th Map Points
-                  span.icon(style='float: right')
-                    i.fa.fa-sort
-            tbody
-              each x in [1,2,3,4,5,6,7,8,9,10]
-                tr
-                  td run_baum
-                  td 00:10.001
-                  td 23
-                    sup th
-                  td 567
+                  th Map
+                    span.icon(style='float: right')
+                      i.fa.fa-sort
+                  th Time
+                    span.icon(style='float: right')
+                      i.fa.fa-sort-up
+                  th Rank
+                    span.icon(style='float: right')
+                      i.fa.fa-sort
+                  th Map Points
+                    span.icon(style='float: right')
+                      i.fa.fa-sort
+              tbody
+                each x in [1,2,3,4,5,6,7,8,9,10]
+                  tr
+                    td run_baum
+                    td 00:10.001
+                    td 23
+                      sup th
+                    td 567
+
+block scripts
+  +player_search()
