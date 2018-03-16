@@ -134,6 +134,15 @@ router.get('/player/:name', async function (req, res, next) {
 
   const connection = await mysql.createConnection(mysqlOptions)
 
+  const totalMapFinishedCount = await getCacheOrUpdate('totalMapFinishedCount_' + player, connection, 'SELECT COUNT(DISTINCT Map) as n FROM race_race WHERE Name=?;', [player])
+
+  if (totalMapFinishedCount.length < 0 || !totalMapFinishedCount[0].n || totalMapFinishedCount[0].n <= 0) {
+    res.render('playerranks', {
+      totalMapFinishedCount: null
+    })
+    return
+  }
+
   const mapRecords = await getCacheOrUpdate('mapRecords_' + player, connection, 'SELECT rank, recordsCount FROM (SELECT @pos := @pos + 1 AS v1, @rank := IF(@prev = recordsCount, @rank, @pos) AS rank, @prev := recordsCount AS v2, Name, recordsCount FROM (SELECT Name, COUNT(*) as recordsCount FROM (SELECT Name, t1.Map as Map FROM (SELECT Map, Name, ROUND(Time, 3) AS playerTime FROM race_race) t1 INNER JOIN (SELECT Map, ROUND(MIN(Time), 3) AS bestTime FROM race_race GROUP BY Map) t2 ON t1.Map = t2.Map AND t1.playerTime = t2.bestTime) u GROUP BY Name ORDER BY recordsCount DESC) v, (SELECT @pos := 0) i1, (SELECT @rank := -1) i2, (SELECT @prev := -1) i3) w WHERE Name=?;', [player])
 
   const lastRecords = await getCacheOrUpdate('lastRecords_' + player, connection, 'SELECT Map, Name, Timestamp, Time FROM race_lastrecords WHERE Name=? ORDER BY Timestamp DESC LIMIT 10;', [player])
@@ -145,7 +154,6 @@ router.get('/player/:name', async function (req, res, next) {
   const middleMapCount = await getCacheOrUpdate('middleMapCount', connection, `SELECT COUNT(*) as n from race_maps where Server="Middle"`)
   const longMapCount = await getCacheOrUpdate('longMapCount', connection, `SELECT COUNT(*) as n from race_maps where Server="Long"`)
 
-  const totalMapFinishedCount = await getCacheOrUpdate('totalMapFinishedCount_' + player, connection, 'SELECT COUNT(DISTINCT Map) as n FROM race_race WHERE Name=?;', [player])
   const shortMapFinishedCount = await getCacheOrUpdate('shortMapFinishedCount_' + player, connection, 'SELECT COUNT(DISTINCT t1.Map) as n FROM race_race t1 INNER JOIN race_maps t2 ON t1.Map = t2.Map WHERE t1.Name=? AND t2.Server="Short";', [player])
   const middleMapFinishedCount = await getCacheOrUpdate('middleMapFinishedCount_' + player, connection, 'SELECT COUNT(DISTINCT t1.Map) as n FROM race_race t1 INNER JOIN race_maps t2 ON t1.Map = t2.Map WHERE t1.Name=? AND t2.Server="Middle";', [player])
   const longMapFinishedCount = await getCacheOrUpdate('longMapFinishedCount_' + player, connection, 'SELECT COUNT(DISTINCT t1.Map) as n FROM race_race t1 INNER JOIN race_maps t2 ON t1.Map = t2.Map WHERE t1.Name=? AND t2.Server="Long";', [player])
