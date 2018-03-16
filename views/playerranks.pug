@@ -27,7 +27,7 @@ block content
                 a(href='#long') Long
     section.section
       .container
-        if !playerPoints
+        if !totalMapFinishedCount || totalMapFinishedCount <= 0
           article.tile.is-child.notification.is-white
             p.title Player '#{name}' not found
         else
