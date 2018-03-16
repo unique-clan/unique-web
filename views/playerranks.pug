@@ -85,11 +85,14 @@ block content
                     b No records :(
                 .column
                   p.subtitle Points
-                  b 13
-                  sup th
-                  |  with 
-                  b 2435
-                  |  points
+                  if shortPoints
+                    b= shortPoints.rank
+                    sup= getOrdinal(shortPoints.rank)
+                    |  with 
+                    b= shortPoints.Points
+                    |  points
+                  else
+                    b No points
             p.subtitle Map List
             table.table.is-narrow.is-striped.is-hoverable.is-fullwidth.is-bordered
               thead
@@ -111,7 +114,7 @@ block content
                   tr
                     td= x.Map
                     td= formatTime(x.playerTime)
-                    td= x.rank
+                    td= x.Rank
                       sup= getOrdinal(x.rank)
                     td= x.mapPoints
             span.rank-anchor#middle
@@ -130,11 +133,14 @@ block content
                     b No records :(
                 .column
                   p.subtitle Points
-                  b 13
-                  sup th
-                  |  with 
-                  b 2435
-                  |  points
+                  if middlePoints
+                    b= middlePoints.rank
+                    sup= getOrdinal(middlePoints.rank)
+                    |  with 
+                    b= middlePoints.Points
+                    |  points
+                  else
+                    b No points
             p.subtitle Map List
             table.table.is-narrow.is-striped.is-hoverable.is-fullwidth.is-bordered
               thead
@@ -156,7 +162,7 @@ block content
                   tr
                     td= x.Map
                     td= formatTime(x.playerTime)
-                    td= x.rank
+                    td= x.Rank
                       sup= getOrdinal(x.rank)
                     td= x.mapPoints
             span.rank-anchor#long
@@ -175,11 +181,14 @@ block content
                     b No records :(
                 .column
                   p.subtitle Points
-                  b 13
-                  sup th
-                  |  with 
-                  b 2435
-                  |  points
+                  if longPoints
+                    b= longPoints.rank
+                    sup= getOrdinal(longPoints.rank)
+                    |  with 
+                    b= longPoints.Points
+                    |  points
+                  else
+                    b No points
             p.subtitle Map List
             table.table.is-narrow.is-striped.is-hoverable.is-fullwidth.is-bordered
               thead
@@ -201,7 +210,7 @@ block content
                   tr
                     td= x.Map
                     td= formatTime(x.playerTime)
-                    td= x.rank
+                    td= x.Rank
                       sup= getOrdinal(x.rank)
                     td= x.mapPoints
 
