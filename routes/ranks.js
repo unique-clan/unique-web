@@ -71,6 +71,10 @@ function getPointsPlayerCategory (category = 'Short') {
   return `SELECT rank, Points FROM (SELECT @pos := @pos + 1 AS v1, @rank := IF(@prev = Points, @rank, @pos) AS rank, @prev := Points AS v2, Name, Points FROM race_catpoints, (SELECT @pos := 0) i1, (SELECT @rank := -1) i2, (SELECT @prev := -1) i3 WHERE Server="${category}" AND Points > 0 ORDER BY Points DESC) t WHERE Name=?;`
 }
 
+function unFinishedMaps (category) {
+  return `SELECT t1.Map FROM (SELECT Map FROM race_maps WHERE Server="${category}") t1 LEFT JOIN (SELECT Map FROM race_race WHERE Name=?) t2 ON t1.Map = t2.Map WHERE t2.Map IS NULL;`
+}
+
 async function getCacheOrUpdate (key, connection, query, params = []) {
   const val = dbCache.get(key)
 
@@ -158,6 +162,10 @@ router.get('/player/:name', async function (req, res, next) {
   const middleMapList = await getCacheOrUpdate('middleMapList_' + player, connection, getMapListPlayerQuery('Middle'), [player, player])
   const longMapList = await getCacheOrUpdate('longMapList_' + player, connection, getMapListPlayerQuery('Long'), [player, player])
 
+  const unfinishedShort = await getCacheOrUpdate('unfinishedShort_' + player, connection, unFinishedMaps('Short'), [player])
+  const unfinishedMiddle = await getCacheOrUpdate('unfinishedMiddle_' + player, connection, unFinishedMaps('Middle'), [player])
+  const unfinishedLong = await getCacheOrUpdate('unfinishedLong_' + player, connection, unFinishedMaps('Long'), [player])
+
   res.render('playerranks', {
     title: `Ranks for ${player} | Unique`,
     name: player,
@@ -190,7 +198,11 @@ router.get('/player/:name', async function (req, res, next) {
 
     shortPoints: shortPoints.length > 0 ? shortPoints[0] : null,
     middlePoints: middlePoints.length > 0 ? middlePoints[0] : null,
-    longPoints: longPoints.length > 0 ? longPoints[0] : null
+    longPoints: longPoints.length > 0 ? longPoints[0] : null,
+
+    unfinishedShort: unfinishedShort,
+    unfinishedMiddle: unfinishedMiddle,
+    unfinishedLong: unfinishedLong
   })
 })
 
