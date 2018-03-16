@@ -32,7 +32,7 @@ block content
             p.title Player '#{name}' not found
         else
           article.tile.is-child.notification.is-white
-            p.title Ranks for #{name} (x/#{totalMapCount} Maps)
+            p.title Ranks for #{name} (#{totalMapFinishedCount}/#{totalMapCount} Maps)
             .playerranks-header
               .columns
                 .column
@@ -70,16 +70,19 @@ block content
                         td= x.Map
                         td= formatTime(x.Time)
             span.rank-anchor#short
-            p.title.is-4 Short Ranks (x/#{numShortMaps} Maps)
+            p.title.is-4 Short Ranks (#{shortMapFinishedCount}/#{numShortMaps} Maps)
             .playerranks-header
               .columns
                 .column
                   p.subtitle Map Records
-                  b= shortMapRecords.rank
-                  sup= getOrdinal(shortMapRecords.rank)
-                  |  with 
-                  b= shortMapRecords.recordsCount
-                  |  records
+                  if shortMapRecords
+                    b= shortMapRecords.rank
+                    sup= getOrdinal(shortMapRecords.rank)
+                    |  with 
+                    b= shortMapRecords.recordsCount
+                    |  records
+                  else
+                    b No records :(
                 .column
                   p.subtitle Points
                   b 13
@@ -104,24 +107,27 @@ block content
                     span.icon(style='float: right')
                       i.fa.fa-sort
               tbody
-                each x in [1,2,3,4,5,6,7,8,9,10]
+                each x in shortMapList
                   tr
-                    td run_baum
-                    td 00:10.001
-                    td 23
-                      sup th
-                    td 567
+                    td= x.Map
+                    td= formatTime(x.playerTime)
+                    td= x.rank
+                      sup= getOrdinal(x.rank)
+                    td= x.mapPoints
             span.rank-anchor#middle
-            p.title.is-4 Middle Ranks (x/#{numMiddleMaps} Maps)
+            p.title.is-4 Middle Ranks (#{middleMapFinishedCount}/#{numMiddleMaps} Maps)
             .playerranks-header
               .columns
                 .column
                   p.subtitle Map Records
-                  b= middleMapRecords.rank
-                  sup= getOrdinal(middleMapRecords.rank)
-                  |  with 
-                  b= middleMapRecords.recordsCount
-                  |  records
+                  if middleMapRecords
+                    b= middleMapRecords.rank
+                    sup= getOrdinal(middleMapRecords.rank)
+                    |  with 
+                    b= middleMapRecords.recordsCount
+                    |  records
+                  else
+                    b No records :(
                 .column
                   p.subtitle Points
                   b 13
@@ -146,24 +152,27 @@ block content
                     span.icon(style='float: right')
                       i.fa.fa-sort
               tbody
-                each x in [1,2,3,4,5,6,7,8,9,10]
+                each x in middleMapList
                   tr
-                    td run_baum
-                    td 00:10.001
-                    td 23
-                      sup th
-                    td 567
+                    td= x.Map
+                    td= formatTime(x.playerTime)
+                    td= x.rank
+                      sup= getOrdinal(x.rank)
+                    td= x.mapPoints
             span.rank-anchor#long
-            p.title.is-4 Long Ranks (x/#{numLongMaps} Maps)
+            p.title.is-4 Long Ranks (#{longMapFinishedCount}/#{numLongMaps} Maps)
             .playerranks-header
               .columns
                 .column
                   p.subtitle Map Records
-                  b= longMapRecords.rank
-                  sup= getOrdinal(longMapRecords.rank)
-                  |  with 
-                  b= longMapRecords.recordsCount
-                  |  records
+                  if longMapRecords
+                    b= longMapRecords.rank
+                    sup= getOrdinal(longMapRecords.rank)
+                    |  with 
+                    b= longMapRecords.recordsCount
+                    |  records
+                  else
+                    b No records :(
                 .column
                   p.subtitle Points
                   b 13
@@ -188,13 +197,13 @@ block content
                     span.icon(style='float: right')
                       i.fa.fa-sort
               tbody
-                each x in [1,2,3,4,5,6,7,8,9,10]
+                each x in longMapList
                   tr
-                    td run_baum
-                    td 00:10.001
-                    td 23
-                      sup th
-                    td 567
+                    td= x.Map
+                    td= formatTime(x.playerTime)
+                    td= x.rank
+                      sup= getOrdinal(x.rank)
+                    td= x.mapPoints
 
 block scripts
   +player_search()
