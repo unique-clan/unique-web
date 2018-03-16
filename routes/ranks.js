@@ -22,13 +22,13 @@ var mysqlOptions = {
 }
 
 setInterval(async () => {
-  debug('Updating ranks cache!')
+  //debug('Updating ranks cache!')
   const connection = await mysql.createConnection(mysqlOptions)
   const [maps] = await connection.execute('SELECT * FROM race_maps;')
   for (let x in maps) {
     await connection.execute(`INSERT INTO race_ranks SELECT Map, Name, Rank FROM (SELECT @pos := @pos + 1 AS v1, @rank := IF(@prev = playerTime, @rank, @pos) AS rank, @prev := playerTime AS v2, Map, Name, playerTime FROM (SELECT Map, Name, ROUND(Time, 3) AS playerTime FROM race_race) t, (SELECT @pos := 0) i1, (SELECT @rank := -1) i2, (SELECT @prev := -1) i3 WHERE Map="${maps[x].Map}" ORDER BY playerTime) u ON DUPLICATE KEY UPDATE Rank=VALUES(Rank);`)
   }
-  debug('Done updating ranks cache!')
+  //debug('Done updating ranks cache!')
 }, 2 * 60 * 1000)
 
 // https://stackoverflow.com/questions/13627308/add-st-nd-rd-and-th-ordinal-suffix-to-a-number#13627586
@@ -136,9 +136,10 @@ router.get('/player/:name', async function (req, res, next) {
 
   const totalMapFinishedCount = await getCacheOrUpdate('totalMapFinishedCount_' + player, connection, 'SELECT COUNT(DISTINCT Map) as n FROM race_race WHERE Name=?;', [player])
 
-  if (totalMapFinishedCount.length < 0 || !totalMapFinishedCount[0].n || totalMapFinishedCount[0].n <= 0) {
+  if (!totalMapFinishedCount[0].n) {
     res.render('playerranks', {
-      totalMapFinishedCount: null
+      name: player,
+      totalMapFinishedCount: totalMapFinishedCount[0].n
     })
     return
   }
