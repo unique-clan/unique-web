@@ -100,21 +100,13 @@ block content
                     | &mdash;
             p.subtitle Map List
             if shortMapList.length
-              table.table.is-narrow.is-striped.is-hoverable.is-fullwidth.is-bordered
+              table.table.is-narrow.is-striped.is-hoverable.is-fullwidth.is-bordered#short-table
                 thead
                   tr
                     th Map
-                      span.icon(style='float: right')
-                        i.fa.fa-sort
                     th Time
-                      span.icon(style='float: right')
-                        i.fa.fa-sort
                     th Rank
-                      span.icon(style='float: right')
-                        i.fa.fa-sort
                     th Map Points
-                      span.icon(style='float: right')
-                        i.fa.fa-sort
                 tbody
                   each x in shortMapList
                     tr
@@ -155,21 +147,13 @@ block content
                     | &mdash;
             p.subtitle Map List
             if middleMapList.length
-              table.table.is-narrow.is-striped.is-hoverable.is-fullwidth.is-bordered
+              table.table.is-narrow.is-striped.is-hoverable.is-fullwidth.is-bordered#middle-table
                 thead
                   tr
                     th Map
-                      span.icon(style='float: right')
-                        i.fa.fa-sort
                     th Time
-                      span.icon(style='float: right')
-                        i.fa.fa-sort
                     th Rank
-                      span.icon(style='float: right')
-                        i.fa.fa-sort
                     th Map Points
-                      span.icon(style='float: right')
-                        i.fa.fa-sort
                 tbody
                   each x in middleMapList
                     tr
@@ -210,21 +194,13 @@ block content
                     | &mdash;
             p.subtitle Map List
             if longMapList.length
-              table.table.is-narrow.is-striped.is-hoverable.is-fullwidth.is-bordered
+              table.table.is-narrow.is-striped.is-hoverable.is-fullwidth.is-bordered#long-table
                 thead
                   tr
                     th Map
-                      span.icon(style='float: right')
-                        i.fa.fa-sort
                     th Time
-                      span.icon(style='float: right')
-                        i.fa.fa-sort-up
                     th Rank
-                      span.icon(style='float: right')
-                        i.fa.fa-sort
                     th Map Points
-                      span.icon(style='float: right')
-                        i.fa.fa-sort
                 tbody
                   each x in longMapList
                     tr
@@ -241,4 +217,7 @@ block content
                     li= x.Map
 
 block scripts
+  script(src="/js/jquery.dataTables.js")
+  script(src="/js/dataTables.bulma.js")
+  script(src="/js/sort.js")
   +player_search()
