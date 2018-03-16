@@ -4,7 +4,7 @@ mixin player_search()
       $('#search-form').submit((e) => {
         e.preventDefault()
         var name = $('#player-name').val()
-        window.location.href = '/ranks/player/' + name
+        window.location.href = '/ranks/player/' + encodeURIComponent(name)
       })
     })
 
