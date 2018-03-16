@@ -27,7 +27,7 @@ block content
                 a(href='#long') Long
     section.section
       .container
-        if !totalMapFinishedCount || totalMapFinishedCount <= 0
+        if !totalMapFinishedCount
           article.tile.is-child.notification.is-white
             p.title Player '#{name}' not found
         else
@@ -44,17 +44,23 @@ block content
                     b #{mapRecords.recordsCount}
                     |  records
                   else
-                    b No records :(
+                    | &mdash;
                 .column
                   p.subtitle Points
-                  b= playerPoints.rank
-                  sup= getOrdinal(playerPoints.rank)
-                  |  with 
-                  b= playerPoints.Points
-                  |  points
+                  if playerPoints
+                    b= playerPoints.rank
+                    sup= getOrdinal(playerPoints.rank)
+                    |  with 
+                    b= playerPoints.Points
+                    |  points
+                  else
+                    | &mdash;
               p.subtitle Last Records
               if lastRecords.length < 1
-                b There are no last records for #{name}
+                if mapRecords
+                  p Sorry, we couldn't find any recent map records of this player.
+                else
+                  p This player holds no map records.
               else
                 table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
                   thead
@@ -65,8 +71,7 @@ block content
                   tbody
                     each x in lastRecords
                       tr
-                        // 2018-10-27 15:30:12
-                        td= x.Timestamp.toLocaleString()
+                        td= x.Timestamp.toISOString().replace(/T/, ' ').replace(/\..+/, '')
                         td= x.Map
                         td= formatTime(x.Time)
             span.rank-anchor#short
@@ -82,7 +87,7 @@ block content
                     b= shortMapRecords.recordsCount
                     |  records
                   else
-                    b No records :(
+                    | &mdash;
                 .column
                   p.subtitle Points
                   if shortPoints
@@ -92,39 +97,38 @@ block content
                     b= shortPoints.Points
                     |  points
                   else
-                    b No points
+                    | &mdash;
             p.subtitle Map List
-            table.table.is-narrow.is-striped.is-hoverable.is-fullwidth.is-bordered
-              thead
-                tr
-                  th Map
-                    span.icon(style='float: right')
-                      i.fa.fa-sort
-                  th Time
-                    span.icon(style='float: right')
-                      i.fa.fa-sort
-                  th Rank
-                    span.icon(style='float: right')
-                      i.fa.fa-sort
-                  th Map Points
-                    span.icon(style='float: right')
-                      i.fa.fa-sort
-              tbody
-                each x in shortMapList
+            if shortMapList.length
+              table.table.is-narrow.is-striped.is-hoverable.is-fullwidth.is-bordered
+                thead
                   tr
-                    td= x.Map
-                    td= formatTime(x.playerTime)
-                    td= x.Rank
-                      sup= getOrdinal(x.rank)
-                    td= x.mapPoints
-            table.table.is-narrow.is-striped.is-hoverable.is-fullwidth.is-bordered
-              thead
-                tr
-                  th Unfinished Maps
-              tbody
-                  each x in unfinishedShort
+                    th Map
+                      span.icon(style='float: right')
+                        i.fa.fa-sort
+                    th Time
+                      span.icon(style='float: right')
+                        i.fa.fa-sort
+                    th Rank
+                      span.icon(style='float: right')
+                        i.fa.fa-sort
+                    th Map Points
+                      span.icon(style='float: right')
+                        i.fa.fa-sort
+                tbody
+                  each x in shortMapList
                     tr
                       td= x.Map
+                      td= formatTime(x.playerTime)
+                      td= x.Rank
+                        sup= getOrdinal(x.Rank)
+                      td= x.mapPoints
+            .unfinished-maps
+              if unfinishedShort.length
+                span Unfinished Maps:
+                ul
+                  each x in unfinishedShort
+                    li= x.Map
             span.rank-anchor#middle
             p.title.is-4 Middle Ranks (#{middleMapFinishedCount}/#{numMiddleMaps} Maps)
             .playerranks-header
@@ -138,7 +142,7 @@ block content
                     b= middleMapRecords.recordsCount
                     |  records
                   else
-                    b No records :(
+                    | &mdash;
                 .column
                   p.subtitle Points
                   if middlePoints
@@ -148,39 +152,38 @@ block content
                     b= middlePoints.Points
                     |  points
                   else
-                    b No points
+                    | &mdash;
             p.subtitle Map List
-            table.table.is-narrow.is-striped.is-hoverable.is-fullwidth.is-bordered
-              thead
-                tr
-                  th Map
-                    span.icon(style='float: right')
-                      i.fa.fa-sort
-                  th Time
-                    span.icon(style='float: right')
-                      i.fa.fa-sort
-                  th Rank
-                    span.icon(style='float: right')
-                      i.fa.fa-sort
-                  th Map Points
-                    span.icon(style='float: right')
-                      i.fa.fa-sort
-              tbody
-                each x in middleMapList
+            if middleMapList.length
+              table.table.is-narrow.is-striped.is-hoverable.is-fullwidth.is-bordered
+                thead
                   tr
-                    td= x.Map
-                    td= formatTime(x.playerTime)
-                    td= x.Rank
-                      sup= getOrdinal(x.rank)
-                    td= x.mapPoints
-            table.table.is-narrow.is-striped.is-hoverable.is-fullwidth.is-bordered
-              thead
-                tr
-                  th Unfinished Maps
-              tbody
-                  each x in unfinishedMiddle
+                    th Map
+                      span.icon(style='float: right')
+                        i.fa.fa-sort
+                    th Time
+                      span.icon(style='float: right')
+                        i.fa.fa-sort
+                    th Rank
+                      span.icon(style='float: right')
+                        i.fa.fa-sort
+                    th Map Points
+                      span.icon(style='float: right')
+                        i.fa.fa-sort
+                tbody
+                  each x in middleMapList
                     tr
                       td= x.Map
+                      td= formatTime(x.playerTime)
+                      td= x.Rank
+                        sup= getOrdinal(x.Rank)
+                      td= x.mapPoints
+            .unfinished-maps
+              if unfinishedMiddle.length
+                span Unfinished Maps:
+                ul
+                  each x in unfinishedMiddle
+                    li= x.Map
             span.rank-anchor#long
             p.title.is-4 Long Ranks (#{longMapFinishedCount}/#{numLongMaps} Maps)
             .playerranks-header
@@ -194,7 +197,7 @@ block content
                     b= longMapRecords.recordsCount
                     |  records
                   else
-                    b No records :(
+                    | &mdash;
                 .column
                   p.subtitle Points
                   if longPoints
@@ -204,39 +207,38 @@ block content
                     b= longPoints.Points
                     |  points
                   else
-                    b No points
+                    | &mdash;
             p.subtitle Map List
-            table.table.is-narrow.is-striped.is-hoverable.is-fullwidth.is-bordered
-              thead
-                tr
-                  th Map
-                    span.icon(style='float: right')
-                      i.fa.fa-sort
-                  th Time
-                    span.icon(style='float: right')
-                      i.fa.fa-sort-up
-                  th Rank
-                    span.icon(style='float: right')
-                      i.fa.fa-sort
-                  th Map Points
-                    span.icon(style='float: right')
-                      i.fa.fa-sort
-              tbody
-                each x in longMapList
+            if longMapList.length
+              table.table.is-narrow.is-striped.is-hoverable.is-fullwidth.is-bordered
+                thead
                   tr
-                    td= x.Map
-                    td= formatTime(x.playerTime)
-                    td= x.Rank
-                      sup= getOrdinal(x.rank)
-                    td= x.mapPoints
-            table.table.is-narrow.is-striped.is-hoverable.is-fullwidth.is-bordered
-              thead
-                tr
-                  th Unfinished Maps
-              tbody
-                  each x in unfinishedLong
+                    th Map
+                      span.icon(style='float: right')
+                        i.fa.fa-sort
+                    th Time
+                      span.icon(style='float: right')
+                        i.fa.fa-sort-up
+                    th Rank
+                      span.icon(style='float: right')
+                        i.fa.fa-sort
+                    th Map Points
+                      span.icon(style='float: right')
+                        i.fa.fa-sort
+                tbody
+                  each x in longMapList
                     tr
                       td= x.Map
+                      td= formatTime(x.playerTime)
+                      td= x.Rank
+                        sup= getOrdinal(x.Rank)
+                      td= x.mapPoints
+            .unfinished-maps
+              if unfinishedLong.length
+                span Unfinished Maps:
+                ul
+                  each x in unfinishedLong
+                    li= x.Map
 
 block scripts
   +player_search()
