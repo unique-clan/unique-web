@@ -1,0 +1,54 @@
+table.dataTable.nowrap
+  th, td
+    white-space: nowrap
+
+div.dataTables_wrapper div
+  &.dataTables_length select
+    width: 75px
+    display: inline-block
+  &.dataTables_filter
+    text-align: right
+    label
+      font-weight: normal
+      white-space: nowrap
+      text-align: left
+    input
+      margin-left: 0.5em
+      display: inline-block
+      width: auto
+  &.dataTables_paginate
+    white-space: nowrap
+    float: right
+
+table.dataTable thead
+  > tr >
+    th
+      &.sorting_asc, &.sorting_desc, &.sorting
+        padding-right: 30px
+    td
+      &.sorting_asc, &.sorting_desc, &.sorting
+        padding-right: 30px
+  .sorting, .sorting_asc, .sorting_desc, .sorting_asc_disabled, .sorting_desc_disabled
+    cursor: pointer
+    position: relative
+  .sorting:after, .sorting_asc:after, .sorting_desc:after, .sorting_asc_disabled:after, .sorting_desc_disabled:after
+    position: absolute
+    bottom: 4px
+    right: 4px
+    display: block
+    font-family: 'FontAwesome'
+    opacity: 0.5
+  .sorting:after
+    opacity: 0.2
+    content: ""
+  .sorting_asc:after
+    content: ""
+  .sorting_desc:after
+    content: ""
+  .sorting_asc_disabled:after, .sorting_desc_disabled:after
+    color: #eee
+
+@media screen and (max-width: 767px)
+  div.dataTables_wrapper div
+    &.dataTables_length, &.dataTables_filter, &.dataTables_info, &.dataTables_paginate
+      text-align: center
