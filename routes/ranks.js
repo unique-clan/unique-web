@@ -28,7 +28,7 @@ setInterval(async () => {
   for (let x in maps) {
     await connection.execute(`INSERT INTO race_ranks SELECT Map, Name, Rank FROM (SELECT @pos := @pos + 1 AS v1, @rank := IF(@prev = playerTime, @rank, @pos) AS rank, @prev := playerTime AS v2, Map, Name, playerTime FROM (SELECT Map, Name, ROUND(Time, 3) AS playerTime FROM race_race) t, (SELECT @pos := 0) i1, (SELECT @rank := -1) i2, (SELECT @prev := -1) i3 WHERE Map="${maps[x].Map}" ORDER BY playerTime) u ON DUPLICATE KEY UPDATE Rank=VALUES(Rank);`)
   }
-  debug('Done updating ranks cache?')
+  debug('Done updating ranks cache!')
 }, 2 * 60 * 1000)
 
 // https://stackoverflow.com/questions/13627308/add-st-nd-rd-and-th-ordinal-suffix-to-a-number#13627586
@@ -157,8 +157,6 @@ router.get('/player/:name', async function (req, res, next) {
   const shortMapList = await getCacheOrUpdate('shortMapList_' + player, connection, getMapListPlayerQuery('Short'), [player, player])
   const middleMapList = await getCacheOrUpdate('middleMapList_' + player, connection, getMapListPlayerQuery('Middle'), [player, player])
   const longMapList = await getCacheOrUpdate('longMapList_' + player, connection, getMapListPlayerQuery('Long'), [player, player])
-
-  console.log(shortMapList)
 
   res.render('playerranks', {
     title: `Ranks for ${player} | Unique`,
