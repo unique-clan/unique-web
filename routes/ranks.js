@@ -3,6 +3,18 @@ var router = express.Router()
 var debug = require('debug')('uniqueweb:ranks')
 const mysql = require('mysql2/promise')
 
+const NodeCache = require('node-cache')
+
+var cacheOptions = {}
+
+if (process.env.TW_DB_CACHE_TIME) {
+  cacheOptions.stdTTL = parseInt(process.env.TW_DB_CACHE_TIME)
+} else {
+  cacheOptions.stdTTL = 120
+}
+
+const dbCache = new NodeCache(cacheOptions)
+
 var mysqlOptions = {
   host: process.env.MYSQL_HOST,
   user: process.env.MYSQL_USER,
@@ -31,25 +43,50 @@ function formatTime (time) {
 }
 
 function getMapRecordsQuery (type = 'Short') {
-  return `SELECT @pos := @pos + 1 AS v1, @rank := IF(@prev = recordsCount, @rank, @pos) AS rank, @prev := recordsCount AS v2, Name, recordsCount FROM (SELECT Name, COUNT(*) as recordsCount FROM (SELECT Name, t1.Map as Map FROM (SELECT v1.Map, v1.Name, ROUND(v1.Time, 3) AS playerTime FROM race_race v1 INNER JOIN race_maps v2 ON v1.Map = v2.Map WHERE v2.Server = "${type}") t1 INNER JOIN (SELECT Map, ROUND(MIN(Time), 3) AS bestTime FROM race_race GROUP BY Map) t2 ON t1.Map = t2.Map AND t1.playerTime = t2.bestTime) u GROUP BY Name ORDER BY recordsCount DESC) v, (SELECT @pos := 0) i1, (SELECT @rank := -1) i2, (SELECT @prev := -1) i3;`
+  return `SELECT @pos := @pos + 1 AS v1, @rank := IF(@prev = recordsCount, @rank, @pos) AS rank, @prev := recordsCount AS v2, Name, recordsCount FROM (SELECT Name, COUNT(*) as recordsCount FROM (SELECT Name, t1.Map as Map FROM (SELECT v1.Map, v1.Name, ROUND(v1.Time, 3) AS playerTime FROM race_race v1 INNER JOIN race_maps v2 ON v1.Map = v2.Map WHERE v2.Server = "${type}") t1 INNER JOIN (SELECT Map, ROUND(MIN(Time), 3) AS bestTime FROM race_race GROUP BY Map) t2 ON t1.Map = t2.Map AND t1.playerTime = t2.bestTime) u GROUP BY Name ORDER BY recordsCount DESC) v, (SELECT @pos := 0) i1, (SELECT @rank := -1) i2, (SELECT @prev := -1) i3 LIMIT 10;`
 }
 
 function getMapRecordsCategoryQuery (server = 'Short') {
   return `SELECT rank, recordsCount FROM (SELECT @pos := @pos + 1 AS v1, @rank := IF(@prev = recordsCount, @rank, @pos) AS rank, @prev := recordsCount AS v2, Name, recordsCount FROM (SELECT Name, COUNT(*) as recordsCount FROM (SELECT Name, t1.Map as Map FROM (SELECT v1.Map, v1.Name, ROUND(v1.Time, 3) AS playerTime FROM race_race v1 INNER JOIN race_maps v2 ON v1.Map = v2.Map WHERE v2.Server = "${server}") t1 INNER JOIN (SELECT Map, ROUND(MIN(Time), 3) AS bestTime FROM race_race GROUP BY Map) t2 ON t1.Map = t2.Map AND t1.playerTime = t2.bestTime) u GROUP BY Name ORDER BY recordsCount DESC) v, (SELECT @pos := 0) i1, (SELECT @rank := -1) i2, (SELECT @prev := -1) i3) w WHERE Name=?;`
 }
 
+function getTopPointsCategory (server = 'Short') {
+  return `SELECT @pos := @pos + 1 AS v1, @rank := IF(@prev = Points, @rank, @pos) AS rank, @prev := Points AS v2, Name, Points FROM race_catpoints, (SELECT @pos := 0) i1, (SELECT @rank := -1) i2, (SELECT @prev := -1) i3 WHERE Server="${server}" AND Points > 0 ORDER BY Points DESC LIMIT 10;`
+}
+
+async function getCacheOrUpdate (key, connection, query, params = []) {
+  const val = dbCache.get(key)
+
+  if (val === undefined) {
+    const [updatedValue] = await connection.execute(query, params)
+    dbCache.set(key, updatedValue)
+    return updatedValue
+  } else {
+    return val
+  }
+}
+
 router.get('/', async function (req, res, next) {
   const connection = await mysql.createConnection(mysqlOptions)
 
-  const [mapRecords] = await connection.execute('SELECT @pos := @pos + 1 AS v1, @rank := IF(@prev = recordsCount, @rank, @pos) AS rank, @prev := recordsCount AS v2, Name, recordsCount FROM (SELECT Name, COUNT(*) as recordsCount FROM (SELECT Name, t1.Map as Map FROM (SELECT Map, Name, ROUND(Time, 3) AS playerTime FROM race_race) t1 INNER JOIN (SELECT Map, ROUND(MIN(Time), 3) AS bestTime FROM race_race GROUP BY Map) t2 ON t1.Map = t2.Map AND t1.playerTime = t2.bestTime) u GROUP BY Name ORDER BY recordsCount DESC) v, (SELECT @pos := 0) i1, (SELECT @rank := -1) i2, (SELECT @prev := -1) i3 LIMIT 10;')
+  const mapRecords = await getCacheOrUpdate('mapRecords', connection, 'SELECT @pos := @pos + 1 AS v1, @rank := IF(@prev = recordsCount, @rank, @pos) AS rank, @prev := recordsCount AS v2, Name, recordsCount FROM (SELECT Name, COUNT(*) as recordsCount FROM (SELECT Name, t1.Map as Map FROM (SELECT Map, Name, ROUND(Time, 3) AS playerTime FROM race_race) t1 INNER JOIN (SELECT Map, ROUND(MIN(Time), 3) AS bestTime FROM race_race GROUP BY Map) t2 ON t1.Map = t2.Map AND t1.playerTime = t2.bestTime) u GROUP BY Name ORDER BY recordsCount DESC) v, (SELECT @pos := 0) i1, (SELECT @rank := -1) i2, (SELECT @prev := -1) i3 LIMIT 10;')
 
-  const [topPoints] = await connection.execute('SELECT @pos := @pos + 1 AS v1, @rank := IF(@prev = Points, @rank, @pos) AS rank, @prev := Points AS v2, Name, Points FROM race_points, (SELECT @pos := 0) i1, (SELECT @rank := -1) i2, (SELECT @prev := -1) i3 WHERE Points > 0 ORDER BY Points DESC LIMIT 10;')
+  const topPoints = await getCacheOrUpdate('topPoints', connection, 'SELECT @pos := @pos + 1 AS v1, @rank := IF(@prev = Points, @rank, @pos) AS rank, @prev := Points AS v2, Name, Points FROM race_points, (SELECT @pos := 0) i1, (SELECT @rank := -1) i2, (SELECT @prev := -1) i3 WHERE Points > 0 ORDER BY Points DESC LIMIT 10;')
 
-  const [lastTopRanks] = await connection.execute('SELECT Map, Name, Timestamp, Time FROM race_lastrecords ORDER BY Timestamp DESC LIMIT 10;')
+  const topPointsShort = await getCacheOrUpdate('topPointsShort', connection, getTopPointsCategory('Short'))
+  const topPointsMiddle = await getCacheOrUpdate('topPointsMiddle', connection, getTopPointsCategory('Middle'))
+  const topPointsLong = await getCacheOrUpdate('topPointsLong', connection, getTopPointsCategory('Long'))
 
-  const [mapRecordsShort] = await connection.execute(getMapRecordsQuery('Short'))
-  const [mapRecordsMiddle] = await connection.execute(getMapRecordsQuery('Middle'))
-  const [mapRecordsLong] = await connection.execute(getMapRecordsQuery('Long'))
+  const lastTopRanks = await getCacheOrUpdate('lastTopRanks', connection, 'SELECT Map, Name, Timestamp, Time FROM race_lastrecords ORDER BY Timestamp DESC LIMIT 10;')
+
+  const mapRecordsShort = await getCacheOrUpdate('mapRecordsShort', connection, getMapRecordsQuery('Short'))
+  const mapRecordsMiddle = await getCacheOrUpdate('mapRecordsMiddle', connection, getMapRecordsQuery('Middle'))
+  const mapRecordsLong = await getCacheOrUpdate('mapRecordsLong', connection, getMapRecordsQuery('Long'))
+
+  const totalMapCount = await getCacheOrUpdate('totalMapCount', connection, `SELECT COUNT(*) as n from race_maps`)
+  const shortMapCount = await getCacheOrUpdate('shortMapCount', connection, `SELECT COUNT(*) as n from race_maps where Server="Short"`)
+  const middleMapCount = await getCacheOrUpdate('middleMapCount', connection, `SELECT COUNT(*) as n from race_maps where Server="Middle"`)
+  const longMapCount = await getCacheOrUpdate('longMapCount', connection, `SELECT COUNT(*) as n from race_maps where Server="Long"`)
 
   res.render('ranks', {
     title: 'Ranks | Unique',
@@ -60,7 +97,14 @@ router.get('/', async function (req, res, next) {
     mapRecords: mapRecords,
     mapRecordsShort: mapRecordsShort,
     mapRecordsMiddle: mapRecordsMiddle,
-    mapRecordsLong: mapRecordsLong
+    mapRecordsLong: mapRecordsLong,
+    topPointsShort: topPointsShort,
+    topPointsMiddle: topPointsMiddle,
+    topPointsLong: topPointsLong,
+    totalMapCount: totalMapCount.length > 0 ? totalMapCount[0].n : 'Unknown',
+    numShortMaps: shortMapCount.length > 0 ? shortMapCount[0].n : 'Unknown',
+    numMiddleMaps: middleMapCount.length > 0 ? middleMapCount[0].n : 'Unknown',
+    numLongMaps: longMapCount.length > 0 ? longMapCount[0].n : 'Unknown',
   })
 })
 
@@ -69,23 +113,22 @@ router.get('/player/:name', async function (req, res, next) {
 
   const connection = await mysql.createConnection(mysqlOptions)
 
-  const [mapRecords] = await connection.execute('SELECT rank, recordsCount FROM (SELECT @pos := @pos + 1 AS v1, @rank := IF(@prev = recordsCount, @rank, @pos) AS rank, @prev := recordsCount AS v2, Name, recordsCount FROM (SELECT Name, COUNT(*) as recordsCount FROM (SELECT Name, t1.Map as Map FROM (SELECT Map, Name, ROUND(Time, 3) AS playerTime FROM race_race) t1 INNER JOIN (SELECT Map, ROUND(MIN(Time), 3) AS bestTime FROM race_race GROUP BY Map) t2 ON t1.Map = t2.Map AND t1.playerTime = t2.bestTime) u GROUP BY Name ORDER BY recordsCount DESC) v, (SELECT @pos := 0) i1, (SELECT @rank := -1) i2, (SELECT @prev := -1) i3) w WHERE Name=?;', [player])
+  const mapRecords = await getCacheOrUpdate('mapRecords_' + player, connection, 'SELECT rank, recordsCount FROM (SELECT @pos := @pos + 1 AS v1, @rank := IF(@prev = recordsCount, @rank, @pos) AS rank, @prev := recordsCount AS v2, Name, recordsCount FROM (SELECT Name, COUNT(*) as recordsCount FROM (SELECT Name, t1.Map as Map FROM (SELECT Map, Name, ROUND(Time, 3) AS playerTime FROM race_race) t1 INNER JOIN (SELECT Map, ROUND(MIN(Time), 3) AS bestTime FROM race_race GROUP BY Map) t2 ON t1.Map = t2.Map AND t1.playerTime = t2.bestTime) u GROUP BY Name ORDER BY recordsCount DESC) v, (SELECT @pos := 0) i1, (SELECT @rank := -1) i2, (SELECT @prev := -1) i3) w WHERE Name=?;', [player])
 
-  const [lastRecords] = await connection.execute(
-    'SELECT Map, Name, Timestamp, Time FROM race_lastrecords WHERE Name=? ORDER BY Timestamp DESC LIMIT 10;', [player])
+  const lastRecords = await getCacheOrUpdate('lastRecords_' + player, connection, 'SELECT Map, Name, Timestamp, Time FROM race_lastrecords WHERE Name=? ORDER BY Timestamp DESC LIMIT 10;', [player])
 
-  const [playerPoints] = await connection.execute('SELECT rank, Points FROM (SELECT @pos := @pos + 1 AS v1, @rank := IF(@prev = Points, @rank, @pos) AS rank, @prev := Points AS v2, Name, Points FROM race_points, (SELECT @pos := 0) i1, (SELECT @rank := -1) i2, (SELECT @prev := -1) i3 WHERE Points > 0 ORDER BY Points DESC) t WHERE Name=?;', [player])
+  const playerPoints = await getCacheOrUpdate('playerPoints_' + player, connection, 'SELECT rank, Points FROM (SELECT @pos := @pos + 1 AS v1, @rank := IF(@prev = Points, @rank, @pos) AS rank, @prev := Points AS v2, Name, Points FROM race_points, (SELECT @pos := 0) i1, (SELECT @rank := -1) i2, (SELECT @prev := -1) i3 WHERE Points > 0 ORDER BY Points DESC) t WHERE Name=?;', [player])
 
-  const [totalMapCount] = await connection.execute(`SELECT COUNT(*) as n from race_maps`)
-  const [shortMapCount] = await connection.execute(`SELECT COUNT(*) as n from race_maps where Server="Short"`)
-  const [middleMapCount] = await connection.execute(`SELECT COUNT(*) as n from race_maps where Server="Middle"`)
-  const [longMapCount] = await connection.execute(`SELECT COUNT(*) as n from race_maps where Server="Long"`)
+  const totalMapCount = await getCacheOrUpdate('totalMapCount', connection, `SELECT COUNT(*) as n from race_maps`)
+  const shortMapCount = await getCacheOrUpdate('shortMapCount', connection, `SELECT COUNT(*) as n from race_maps where Server="Short"`)
+  const middleMapCount = await getCacheOrUpdate('middleMapCount', connection, `SELECT COUNT(*) as n from race_maps where Server="Middle"`)
+  const longMapCount = await getCacheOrUpdate('longMapCount', connection, `SELECT COUNT(*) as n from race_maps where Server="Long"`)
 
-  const [shortMapRecords] = await connection.execute(getMapRecordsCategoryQuery('Short'), [player])
-  const [middleMapRecords] = await connection.execute(getMapRecordsCategoryQuery('Middle'), [player])
-  const [longMapRecords] = await connection.execute(getMapRecordsCategoryQuery('Long'), [player])
+  const shortMapRecordsCount = await getCacheOrUpdate('shortMapRecordsCount_' + player, connection, getMapRecordsCategoryQuery('Short'), [player])
+  const middleMapRecordsCount = await getCacheOrUpdate('middleMapRecordsCount_' + player, connection, getMapRecordsCategoryQuery('Middle'), [player])
+  const longMapRecordsCount = await getCacheOrUpdate('longMapRecordsCount_' + player, connection, getMapRecordsCategoryQuery('Long'), [player])
 
-  console.log(middleMapRecords)
+  console.log(shortMapRecordsCount)
 
   res.render('playerranks', {
     title: `Ranks for ${player} | Unique`,
@@ -104,9 +147,9 @@ router.get('/player/:name', async function (req, res, next) {
     numMiddleMaps: middleMapCount.length > 0 ? middleMapCount[0].n : 'Unknown',
     numLongMaps: longMapCount.length > 0 ? longMapCount[0].n : 'Unknown',
 
-    shortMapRecords: shortMapRecords.length > 0 ? shortMapRecords[0] : 'Unknown',
-    middleMapRecords: middleMapRecords.length > 0 ? middleMapRecords[0] : 'Unknown',
-    longMapRecords: longMapRecords.length > 0 ? longMapRecords[0] : 'Unknown'
+    shortMapRecords: shortMapRecordsCount.length > 0 ? shortMapRecordsCount[0] : 'Unknown',
+    middleMapRecords: middleMapRecordsCount.length > 0 ? middleMapRecordsCount[0] : 'Unknown',
+    longMapRecords: longMapRecordsCount.length > 0 ? longMapRecordsCount[0] : 'Unknown'
   })
 })
 

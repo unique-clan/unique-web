@@ -28,7 +28,7 @@ block content
     section.section
       .container
         article.tile.is-child.notification.is-white
-          p.title Ranks (345 Maps)
+          p.title Ranks (#{totalMapCount} Maps)
           .columns
             .column
               p.subtitle Map Records
@@ -73,7 +73,7 @@ block content
                       td= record.Map
                       td= formatTime(record.Time)
           span.rank-anchor#short
-          p.title.is-4 Short Ranks (32 Maps)
+          p.title.is-4 Short Ranks (#{numShortMaps} Maps)
           .columns
             .column
               p.subtitle Map Records
@@ -98,13 +98,13 @@ block content
                     th Player
                     th Points
                 tbody
-                  each player, index in topPoints
+                  each player, index in topPointsShort
                     tr
                       th= player.rank
                       td= player.Name
                       td= player.Points
           span.rank-anchor#middle
-          p.title.is-4 Middle Ranks (210 Maps)
+          p.title.is-4 Middle Ranks (#{numMiddleMaps} Maps)
           .columns
             .column
               p.subtitle Map Records
@@ -129,13 +129,13 @@ block content
                     th Player
                     th Points
                 tbody
-                  each player, index in topPoints
+                  each player, index in topPointsMiddle
                     tr
                       th= player.rank
                       td= player.Name
                       td= player.Points
           span.rank-anchor#long
-          p.title.is-4 Long Ranks (18 Maps)
+          p.title.is-4 Long Ranks (#{numLongMaps} Maps)
           .columns
             .column
               p.subtitle Map Records
@@ -160,7 +160,7 @@ block content
                     th Player
                     th Points
                 tbody
-                  each player, index in topPoints
+                  each player, index in topPointsLong
                     tr
                       th= player.rank
                       td= player.Name
