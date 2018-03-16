@@ -27,7 +27,7 @@ block content
                 a(href='#long') Long
     section.section
       .container
-        article.tile.is-child.notification.is-white
+        article.tile.is-child.notification.is-white.ranks-main-section
           p.title Ranks (#{totalMapCount} Maps)
           .columns
             .column
@@ -42,7 +42,8 @@ block content
                   each record, index in mapRecords
                     tr
                       th= record.rank
-                      td= record.Name
+                      td
+                        a(href='/ranks/player/'+encodeURIComponent(record.Name))= record.Name
                       td= record.recordsCount
             .column
               p.subtitle Points
@@ -56,7 +57,8 @@ block content
                   each player, index in topPoints
                     tr
                       th= player.rank
-                      td= player.Name
+                      td
+                        a(href='/ranks/player/'+encodeURIComponent(player.Name))= player.Name
                       td= player.Points
             .column
               p.subtitle Last Records
@@ -69,7 +71,8 @@ block content
                 tbody
                   each record, index in lastTopRanks
                     tr
-                      td= record.Name
+                      td
+                        a(href='/ranks/player/'+encodeURIComponent(record.Name))= record.Name
                       td= record.Map
                       td= formatTime(record.Time)
           span.rank-anchor#short
@@ -87,7 +90,8 @@ block content
                   each record, index in mapRecordsShort
                     tr
                       th= record.rank
-                      td= record.Name
+                      td
+                        a(href='/ranks/player/'+encodeURIComponent(record.Name))= record.Name
                       td= record.recordsCount
             .column
               p.subtitle Points
@@ -101,7 +105,8 @@ block content
                   each player, index in topPointsShort
                     tr
                       th= player.rank
-                      td= player.Name
+                      td
+                        a(href='/ranks/player/'+encodeURIComponent(player.Name))= player.Name
                       td= player.Points
           span.rank-anchor#middle
           p.title.is-4 Middle Ranks (#{numMiddleMaps} Maps)
@@ -118,7 +123,8 @@ block content
                   each record, index in mapRecordsMiddle
                     tr
                       th= record.rank
-                      td= record.Name
+                      td
+                        a(href='/ranks/player/'+encodeURIComponent(record.Name))= record.Name
                       td= record.recordsCount
             .column
               p.subtitle Points
@@ -132,7 +138,8 @@ block content
                   each player, index in topPointsMiddle
                     tr
                       th= player.rank
-                      td= player.Name
+                      td
+                        a(href='/ranks/player/'+encodeURIComponent(player.Name))= player.Name
                       td= player.Points
           span.rank-anchor#long
           p.title.is-4 Long Ranks (#{numLongMaps} Maps)
@@ -149,7 +156,8 @@ block content
                   each record, index in mapRecordsLong
                     tr
                       th= record.rank
-                      td= record.Name
+                      td
+                        a(href='/ranks/player/'+encodeURIComponent(record.Name))= record.Name
                       td= record.recordsCount
             .column
               p.subtitle Points
@@ -163,7 +171,8 @@ block content
                   each player, index in topPointsLong
                     tr
                       th= player.rank
-                      td= player.Name
+                      td
+                        a(href='/ranks/player/'+encodeURIComponent(player.Name))= player.Name
                       td= player.Points
         br
         br
