@@ -147,15 +147,17 @@ a.navbar-item:hover
   margin-bottom: 40px
   span
     text-decoration: underline
-    margin-right: 10px
+    margin-right: 5px
   ul
     display: inline
     list-style: none
     li
       display: inline
       margin-right: 5px
+    li:before
+      content: " "
     li:after
-      content: ", "
+      content: ","
     li:last-child:after
       content: ""
 
@@ -164,3 +166,7 @@ a.navbar-item:hover
     text-decoration: none !important
   a:hover
     text-decoration: underline !important
+
+.horizontal-scroll
+  overflow-x: auto
+  white-space: nowrap
