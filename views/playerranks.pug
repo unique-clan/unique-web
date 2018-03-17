@@ -62,18 +62,19 @@ block content
                 else
                   p This player holds no map records.
               else
-                table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
-                  thead
-                    tr
-                      th Date
-                      th Map
-                      th Time
-                  tbody
-                    each x in lastRecords
+                .horizontal-scroll
+                  table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
+                    thead
                       tr
-                        td= x.Timestamp.toISOString().replace(/T/, ' ').replace(/\..+/, '')
-                        td= x.Map
-                        td= formatTime(x.Time)
+                        th Date
+                        th Map
+                        th Time
+                    tbody
+                      each x in lastRecords
+                        tr
+                          td= x.Timestamp.toISOString().replace(/T/, ' ').replace(/\..+/, '')
+                          td= x.Map
+                          td= formatTime(x.Time)
             span.rank-anchor#short
             p.title.is-4 Short Ranks (#{shortMapFinishedCount}/#{numShortMaps} Maps)
             .playerranks-header
@@ -100,24 +101,25 @@ block content
                     | &mdash;
             p.subtitle Map List
             if shortMapList.length
-              table.table.is-narrow.is-striped.is-hoverable.is-fullwidth.is-bordered#short-table
-                thead
-                  tr
-                    th Map
-                    th Time
-                    th Rank
-                    th Map Points
-                tbody
-                  each x in shortMapList
+              .horizontal-scroll
+                table.table.is-narrow.is-striped.is-hoverable.is-fullwidth.is-bordered#short-table
+                  thead
                     tr
-                      td= x.Map
-                      td= formatTime(x.playerTime)
-                      td(data-order=x.Rank)= x.Rank
-                        sup= getOrdinal(x.Rank)
-                      td= x.mapPoints
+                      th Map
+                      th Time
+                      th Rank
+                      th Map Points
+                  tbody
+                    each x in shortMapList
+                      tr
+                        td= x.Map
+                        td= formatTime(x.playerTime)
+                        td(data-order=x.Rank)= x.Rank
+                          sup= getOrdinal(x.Rank)
+                        td= x.mapPoints
             .unfinished-maps
               if unfinishedShort.length
-                span Unfinished Maps:
+                span Unfinished&nbsp;Maps:
                 ul
                   each x in unfinishedShort
                     li= x.Map
@@ -147,24 +149,25 @@ block content
                     | &mdash;
             p.subtitle Map List
             if middleMapList.length
-              table.table.is-narrow.is-striped.is-hoverable.is-fullwidth.is-bordered#middle-table
-                thead
-                  tr
-                    th Map
-                    th Time
-                    th Rank
-                    th Map Points
-                tbody
-                  each x in middleMapList
+              .horizontal-scroll
+                table.table.is-narrow.is-striped.is-hoverable.is-fullwidth.is-bordered#middle-table
+                  thead
                     tr
-                      td= x.Map
-                      td= formatTime(x.playerTime)
-                      td(data-order=x.Rank)= x.Rank
-                        sup= getOrdinal(x.Rank)
-                      td= x.mapPoints
+                      th Map
+                      th Time
+                      th Rank
+                      th Map Points
+                  tbody
+                    each x in middleMapList
+                      tr
+                        td= x.Map
+                        td= formatTime(x.playerTime)
+                        td(data-order=x.Rank)= x.Rank
+                          sup= getOrdinal(x.Rank)
+                        td= x.mapPoints
             .unfinished-maps
               if unfinishedMiddle.length
-                span Unfinished Maps:
+                span Unfinished&nbsp;Maps:
                 ul
                   each x in unfinishedMiddle
                     li= x.Map
@@ -194,24 +197,25 @@ block content
                     | &mdash;
             p.subtitle Map List
             if longMapList.length
-              table.table.is-narrow.is-striped.is-hoverable.is-fullwidth.is-bordered#long-table
-                thead
-                  tr
-                    th Map
-                    th Time
-                    th Rank
-                    th Map Points
-                tbody
-                  each x in longMapList
+              .horizontal-scroll
+                table.table.is-narrow.is-striped.is-hoverable.is-fullwidth.is-bordered#long-table
+                  thead
                     tr
-                      td= x.Map
-                      td= formatTime(x.playerTime)
-                      td(data-order=x.Rank)= x.Rank
-                        sup= getOrdinal(x.Rank)
-                      td= x.mapPoints
+                      th Map
+                      th Time
+                      th Rank
+                      th Map Points
+                  tbody
+                    each x in longMapList
+                      tr
+                        td= x.Map
+                        td= formatTime(x.playerTime)
+                        td(data-order=x.Rank)= x.Rank
+                          sup= getOrdinal(x.Rank)
+                        td= x.mapPoints
             .unfinished-maps
               if unfinishedLong.length
-                span Unfinished Maps:
+                span Unfinished&nbsp;Maps:
                 ul
                   each x in unfinishedLong
                     li= x.Map

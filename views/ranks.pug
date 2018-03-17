@@ -32,148 +32,157 @@ block content
           .columns
             .column
               p.subtitle Map Records
-              table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
-                thead
-                  tr
-                    th Rank
-                    th Player
-                    th Records
-                tbody
-                  each record, index in mapRecords
+              .horizontal-scroll
+                table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
+                  thead
                     tr
-                      th= record.rank
-                      td
-                        a(href='/ranks/player/'+encodeURIComponent(record.Name))= record.Name
-                      td= record.recordsCount
+                      th Rank
+                      th Player
+                      th Records
+                  tbody
+                    each record, index in mapRecords
+                      tr
+                        th= record.rank
+                        td
+                          a(href='/ranks/player/'+encodeURIComponent(record.Name))= record.Name
+                        td= record.recordsCount
             .column
               p.subtitle Points
-              table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
-                thead
-                  tr
-                    th Rank
-                    th Player
-                    th Points
-                tbody
-                  each player, index in topPoints
+              .horizontal-scroll
+                table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
+                  thead
                     tr
-                      th= player.rank
-                      td
-                        a(href='/ranks/player/'+encodeURIComponent(player.Name))= player.Name
-                      td= player.Points
+                      th Rank
+                      th Player
+                      th Points
+                  tbody
+                    each player, index in topPoints
+                      tr
+                        th= player.rank
+                        td
+                          a(href='/ranks/player/'+encodeURIComponent(player.Name))= player.Name
+                        td= player.Points
             .column
               p.subtitle Last Records
-              table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
-                thead
-                  tr
-                    th Player
-                    th Map
-                    th Time
-                tbody
-                  each record, index in lastTopRanks
+              .horizontal-scroll
+                table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
+                  thead
                     tr
-                      td
-                        a(href='/ranks/player/'+encodeURIComponent(record.Name))= record.Name
-                      td= record.Map
-                      td= formatTime(record.Time)
+                      th Player
+                      th Map
+                      th Time
+                  tbody
+                    each record, index in lastTopRanks
+                      tr
+                        td
+                          a(href='/ranks/player/'+encodeURIComponent(record.Name))= record.Name
+                        td= record.Map
+                        td= formatTime(record.Time)
           span.rank-anchor#short
           p.title.is-4 Short Ranks (#{numShortMaps} Maps)
           .columns
             .column
               p.subtitle Map Records
-              table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
-                thead
-                  tr
-                    th Rank
-                    th Player
-                    th Records
-                tbody
-                  each record, index in mapRecordsShort
+              .horizontal-scroll
+                table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
+                  thead
                     tr
-                      th= record.rank
-                      td
-                        a(href='/ranks/player/'+encodeURIComponent(record.Name))= record.Name
-                      td= record.recordsCount
+                      th Rank
+                      th Player
+                      th Records
+                  tbody
+                    each record, index in mapRecordsShort
+                      tr
+                        th= record.rank
+                        td
+                          a(href='/ranks/player/'+encodeURIComponent(record.Name))= record.Name
+                        td= record.recordsCount
             .column
               p.subtitle Points
-              table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
-                thead
-                  tr
-                    th Rank
-                    th Player
-                    th Points
-                tbody
-                  each player, index in topPointsShort
+              .horizontal-scroll
+                table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
+                  thead
                     tr
-                      th= player.rank
-                      td
-                        a(href='/ranks/player/'+encodeURIComponent(player.Name))= player.Name
-                      td= player.Points
+                      th Rank
+                      th Player
+                      th Points
+                  tbody
+                    each player, index in topPointsShort
+                      tr
+                        th= player.rank
+                        td
+                          a(href='/ranks/player/'+encodeURIComponent(player.Name))= player.Name
+                        td= player.Points
           span.rank-anchor#middle
           p.title.is-4 Middle Ranks (#{numMiddleMaps} Maps)
           .columns
             .column
               p.subtitle Map Records
-              table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
-                thead
-                  tr
-                    th Rank
-                    th Player
-                    th Records
-                tbody
-                  each record, index in mapRecordsMiddle
+              .horizontal-scroll
+                table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
+                  thead
                     tr
-                      th= record.rank
-                      td
-                        a(href='/ranks/player/'+encodeURIComponent(record.Name))= record.Name
-                      td= record.recordsCount
+                      th Rank
+                      th Player
+                      th Records
+                  tbody
+                    each record, index in mapRecordsMiddle
+                      tr
+                        th= record.rank
+                        td
+                          a(href='/ranks/player/'+encodeURIComponent(record.Name))= record.Name
+                        td= record.recordsCount
             .column
               p.subtitle Points
-              table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
-                thead
-                  tr
-                    th Rank
-                    th Player
-                    th Points
-                tbody
-                  each player, index in topPointsMiddle
+              .horizontal-scroll
+                table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
+                  thead
                     tr
-                      th= player.rank
-                      td
-                        a(href='/ranks/player/'+encodeURIComponent(player.Name))= player.Name
-                      td= player.Points
+                      th Rank
+                      th Player
+                      th Points
+                  tbody
+                    each player, index in topPointsMiddle
+                      tr
+                        th= player.rank
+                        td
+                          a(href='/ranks/player/'+encodeURIComponent(player.Name))= player.Name
+                        td= player.Points
           span.rank-anchor#long
           p.title.is-4 Long Ranks (#{numLongMaps} Maps)
           .columns
             .column
               p.subtitle Map Records
-              table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
-                thead
-                  tr
-                    th Rank
-                    th Player
-                    th Records
-                tbody
-                  each record, index in mapRecordsLong
+              .horizontal-scroll
+                table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
+                  thead
                     tr
-                      th= record.rank
-                      td
-                        a(href='/ranks/player/'+encodeURIComponent(record.Name))= record.Name
-                      td= record.recordsCount
+                      th Rank
+                      th Player
+                      th Records
+                  tbody
+                    each record, index in mapRecordsLong
+                      tr
+                        th= record.rank
+                        td
+                          a(href='/ranks/player/'+encodeURIComponent(record.Name))= record.Name
+                        td= record.recordsCount
             .column
               p.subtitle Points
-              table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
-                thead
-                  tr
-                    th Rank
-                    th Player
-                    th Points
-                tbody
-                  each player, index in topPointsLong
+              .horizontal-scroll
+                table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
+                  thead
                     tr
-                      th= player.rank
-                      td
-                        a(href='/ranks/player/'+encodeURIComponent(player.Name))= player.Name
-                      td= player.Points
+                      th Rank
+                      th Player
+                      th Points
+                  tbody
+                    each player, index in topPointsLong
+                      tr
+                        th= player.rank
+                        td
+                          a(href='/ranks/player/'+encodeURIComponent(player.Name))= player.Name
+                        td= player.Points
         br
         br
         article.tile.is-child.notification.is-white
