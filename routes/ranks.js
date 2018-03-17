@@ -79,6 +79,7 @@ async function getCacheOrUpdate (key, connection, query, params = []) {
   if (val === undefined) {
     const [updatedValue] = await connection.execute(query, params)
     dbCache.set(key, updatedValue)
+    await connection.unprepare(query)
     return updatedValue
   } else {
     return val
