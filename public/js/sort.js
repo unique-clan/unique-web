@@ -1,23 +1,12 @@
 $(document).ready(function () {
-  $('#short-table').DataTable({
-    'paging': false,
-    'scrollCollapse': true,
-    'scrollY': '400px',
-    autoWidth: false,
-    responsive: false
+  $.extend($.fn.dataTable.defaults, {
+    paging: false,
+    searching: false,
+    info: false,
+    autoWidth: false
   })
 
-  $('#middle-table').DataTable({
-    'paging': false,
-    'scrollCollapse': true,
-    'scrollY': '400px',
-    autoWidth: false,
-    responsive: false
-  })
-
-  $('#long-table').DataTable({
-    'paging': false,
-    'scrollCollapse': true,
-    'scrollY': '400px'
-  })
+  $('#short-table').DataTable()
+  $('#middle-table').DataTable()
+  $('#long-table').DataTable()
 })
