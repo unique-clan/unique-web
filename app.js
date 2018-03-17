@@ -93,7 +93,7 @@ app.use(session({
 
 // Add the app routes
 app.use('/', index)
-//app.use('/auth', auth)
+// app.use('/auth', auth)
 app.use('/ranks', ranks)
 
 // catch 404 and forward to error handler
