@@ -18,13 +18,14 @@
     "express-recaptcha": "^3.0.1",
     "express-session": "^1.15.6",
     "helmet": "^3.12.0",
-    "mongoose": "^5.0.8",
+    "mongoose": "^5.0.9",
     "morgan": "~1.9.0",
     "multer": "^1.3.0",
     "mysql2": "^1.5.2",
+    "node-cache": "^4.1.1",
     "node-sass-middleware": "^0.11.0",
     "ping": "^0.2.2",
-    "pug": "2.0.0-rc.4",
+    "pug": "2.0.1",
     "serve-favicon": "~2.4.5",
     "teeworlds-server-status": "^1.0.2"
   },
@@ -32,8 +33,8 @@
     "eslint-config-standard": "^11.0.0",
     "eslint-plugin-import": "^2.9.0",
     "eslint-plugin-node": "^6.0.1",
-    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-promise": "^3.7.0",
     "eslint-plugin-standard": "^3.0.1",
-    "snyk": "^1.69.10"
+    "snyk": "^1.69.11"
   }
 }
