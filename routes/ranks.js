@@ -62,7 +62,7 @@ function getTopPointsCategory (server = 'Short') {
 }
 
 function getMapListPlayerQuery (category) {
-  return `SELECT t1.Map as Map, playerTime, Rank, FLOOR(100*EXP(-S*(playerTime/bestTime-1))) as mapPoints FROM (SELECT Map, ROUND(MIN(Time), 3) AS playerTime FROM race_race WHERE Name=? GROUP BY Map) t1 INNER JOIN (SELECT Map, ROUND(MIN(Time), 3) AS bestTime FROM race_race GROUP BY Map) t2 ON t1.Map = t2.Map INNER JOIN (SELECT Map, CASE WHEN Server="Short" THEN 5.0 WHEN Server="Middle" THEN 3.5 WHEN Server="Long" THEN CASE WHEN Stars=0 THEN 2.0 WHEN Stars=1 THEN 1.0 WHEN Stars=2 THEN 0.05 END END AS S FROM race_maps WHERE Server="${category}") t3 ON t1.Map = t3.Map INNER JOIN (SELECT Map, Rank FROM race_ranks WHERE Name=?) t4 ON t1.Map = t4.Map;`
+  return `SELECT t1.Map as Map, playerTime, Rank, FLOOR(100*EXP(-S*(playerTime/bestTime-1))) as mapPoints FROM (SELECT Map, ROUND(MIN(Time), 3) AS playerTime FROM race_race WHERE Name=? GROUP BY Map) t1 INNER JOIN (SELECT Map, ROUND(MIN(Time), 3) AS bestTime FROM race_race GROUP BY Map) t2 ON t1.Map = t2.Map INNER JOIN (SELECT Map, CASE WHEN Server="Short" THEN 5.0 WHEN Server="Middle" THEN 3.5 WHEN Server="Long" THEN CASE WHEN Stars=0 THEN 2.0 WHEN Stars=1 THEN 1.0 WHEN Stars=2 THEN 0.05 END END AS S FROM race_maps WHERE Server="${category}") t3 ON t1.Map = t3.Map INNER JOIN (SELECT Map, Rank FROM race_ranks WHERE Name=?) t4 ON t1.Map = t4.Map ORDER BY LOWER(t1.Map);`
 }
 
 function getPointsPlayerCategory (category = 'Short') {

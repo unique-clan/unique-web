@@ -112,7 +112,7 @@ block content
                     tr
                       td= x.Map
                       td= formatTime(x.playerTime)
-                      td= x.Rank
+                      td(data-order=x.Rank)= x.Rank
                         sup= getOrdinal(x.Rank)
                       td= x.mapPoints
             .unfinished-maps
@@ -159,7 +159,7 @@ block content
                     tr
                       td= x.Map
                       td= formatTime(x.playerTime)
-                      td= x.Rank
+                      td(data-order=x.Rank)= x.Rank
                         sup= getOrdinal(x.Rank)
                       td= x.mapPoints
             .unfinished-maps
@@ -206,7 +206,7 @@ block content
                     tr
                       td= x.Map
                       td= formatTime(x.playerTime)
-                      td= x.Rank
+                      td(data-order=x.Rank)= x.Rank
                         sup= getOrdinal(x.Rank)
                       td= x.mapPoints
             .unfinished-maps
