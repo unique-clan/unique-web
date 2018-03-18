@@ -16,7 +16,7 @@ header
           a.navbar-item(href='/mapupload') Submit Map
           a.navbar-item(href='/tournaments') Tournaments
           a.navbar-item(href='/ranks') Ranks
-        //.navbar-end
+        .navbar-end
           if user
             a.navbar-item(href='/user/' + user.username)= user.username
             a.navbar-item(href='/auth/logout') Logout
