@@ -131,7 +131,7 @@ router.get('/player/:name', async function (req, res, next) {
 
   const connection = await mysql.createConnection(mysqlOptions)
 
-  const totalMapFinishedCount = await getCacheOrUpdate('totalMapFinishedCount_'+player, connection, mapFinishedCountQuery, [player])
+  const totalMapFinishedCount = await getCacheOrUpdate('totalMapFinishedCount_' + player, connection, mapFinishedCountQuery, [player])
 
   if (!totalMapFinishedCount[0].n) {
     res.render('playerranks', {
@@ -141,36 +141,36 @@ router.get('/player/:name', async function (req, res, next) {
     return
   }
 
-  const mapRecords = await getCacheOrUpdate('mapRecords_'+player, connection, recordsPlayerQuery, [player])
+  const mapRecords = await getCacheOrUpdate('mapRecords_' + player, connection, recordsPlayerQuery, [player])
 
-  const lastRecords = await getCacheOrUpdate('lastRecords_'+player, connection, lastRecordsPlayerQuery, [player])
+  const lastRecords = await getCacheOrUpdate('lastRecords_' + player, connection, lastRecordsPlayerQuery, [player])
 
-  const playerPoints = await getCacheOrUpdate('playerPoints_'+player, connection, pointsPlayerQuery, [player])
+  const playerPoints = await getCacheOrUpdate('playerPoints_' + player, connection, pointsPlayerQuery, [player])
 
   const totalMapCount = await getCacheOrUpdate('totalMapCount', connection, mapCountQuery)
   const shortMapCount = await getCacheOrUpdate('shortMapCount', connection, mapCountCategoryQuery, ['Short'])
   const middleMapCount = await getCacheOrUpdate('middleMapCount', connection, mapCountCategoryQuery, ['Middle'])
   const longMapCount = await getCacheOrUpdate('longMapCount', connection, mapCountCategoryQuery, ['Long'])
 
-  const shortMapFinishedCount = await getCacheOrUpdate('shortMapFinishedCount_'+player, connection, mapFinishedCountCategoryQuery, [player, 'Short'])
-  const middleMapFinishedCount = await getCacheOrUpdate('middleMapFinishedCount_'+player, connection, mapFinishedCountCategoryQuery, [player, 'Middle'])
-  const longMapFinishedCount = await getCacheOrUpdate('longMapFinishedCount_'+player, connection, mapFinishedCountCategoryQuery, [player, 'Long'])
+  const shortMapFinishedCount = await getCacheOrUpdate('shortMapFinishedCount_' + player, connection, mapFinishedCountCategoryQuery, [player, 'Short'])
+  const middleMapFinishedCount = await getCacheOrUpdate('middleMapFinishedCount_' + player, connection, mapFinishedCountCategoryQuery, [player, 'Middle'])
+  const longMapFinishedCount = await getCacheOrUpdate('longMapFinishedCount_' + player, connection, mapFinishedCountCategoryQuery, [player, 'Long'])
 
-  const shortMapRecordsCount = await getCacheOrUpdate('shortMapRecordsCount_'+player, connection, recordsCategoryPlayerQuery, ['Short', player])
-  const middleMapRecordsCount = await getCacheOrUpdate('middleMapRecordsCount_'+player, connection, recordsCategoryPlayerQuery, ['Middle', player])
-  const longMapRecordsCount = await getCacheOrUpdate('longMapRecordsCount_'+player, connection, recordsCategoryPlayerQuery, ['Long', player])
+  const shortMapRecordsCount = await getCacheOrUpdate('shortMapRecordsCount_' + player, connection, recordsCategoryPlayerQuery, ['Short', player])
+  const middleMapRecordsCount = await getCacheOrUpdate('middleMapRecordsCount_' + player, connection, recordsCategoryPlayerQuery, ['Middle', player])
+  const longMapRecordsCount = await getCacheOrUpdate('longMapRecordsCount_' + player, connection, recordsCategoryPlayerQuery, ['Long', player])
 
-  const shortPoints = await getCacheOrUpdate('shortPoints_'+player, connection, pointsPlayerCategoryQuery, ['Short', player])
-  const middlePoints = await getCacheOrUpdate('middlePoints_'+player, connection, pointsPlayerCategoryQuery, ['Middle', player])
-  const longPoints = await getCacheOrUpdate('longPoints_'+player, connection, pointsPlayerCategoryQuery, ['Long', player])
+  const shortPoints = await getCacheOrUpdate('shortPoints_' + player, connection, pointsPlayerCategoryQuery, ['Short', player])
+  const middlePoints = await getCacheOrUpdate('middlePoints_' + player, connection, pointsPlayerCategoryQuery, ['Middle', player])
+  const longPoints = await getCacheOrUpdate('longPoints_' + player, connection, pointsPlayerCategoryQuery, ['Long', player])
 
-  const shortMapList = await getCacheOrUpdate('shortMapList_'+player, connection, mapListQuery, [player, 'Short', player])
-  const middleMapList = await getCacheOrUpdate('middleMapList_'+player, connection, mapListQuery, [player, 'Middle', player])
-  const longMapList = await getCacheOrUpdate('longMapList_'+player, connection, mapListQuery, [player, 'Long', player])
+  const shortMapList = await getCacheOrUpdate('shortMapList_' + player, connection, mapListQuery, [player, 'Short', player])
+  const middleMapList = await getCacheOrUpdate('middleMapList_' + player, connection, mapListQuery, [player, 'Middle', player])
+  const longMapList = await getCacheOrUpdate('longMapList_' + player, connection, mapListQuery, [player, 'Long', player])
 
-  const unfinishedShort = await getCacheOrUpdate('unfinishedShort_'+player, connection, unfinishedMapsQuery, ['Short', player])
-  const unfinishedMiddle = await getCacheOrUpdate('unfinishedMiddle_'+player, connection, unfinishedMapsQuery, ['Middle', player])
-  const unfinishedLong = await getCacheOrUpdate('unfinishedLong_'+player, connection, unfinishedMapsQuery, ['Long', player])
+  const unfinishedShort = await getCacheOrUpdate('unfinishedShort_' + player, connection, unfinishedMapsQuery, ['Short', player])
+  const unfinishedMiddle = await getCacheOrUpdate('unfinishedMiddle_' + player, connection, unfinishedMapsQuery, ['Middle', player])
+  const unfinishedLong = await getCacheOrUpdate('unfinishedLong_' + player, connection, unfinishedMapsQuery, ['Long', player])
 
   connection.end()
 
