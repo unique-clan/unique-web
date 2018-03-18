@@ -24,6 +24,7 @@
     "mysql2": "^1.5.2",
     "node-cache": "^4.1.1",
     "node-sass-middleware": "^0.11.0",
+    "nodemailer": "^4.6.3",
     "ping": "^0.2.2",
     "pug": "2.0.1",
     "serve-favicon": "~2.4.5",

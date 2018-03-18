@@ -1,10 +1,31 @@
 var express = require('express')
 var router = express.Router()
 var debug = require('debug')('uniqueweb:auth')
+var maildebug = require('debug')('uniqueweb:mail')
 var mongoose = require('mongoose')
 var middleware = require('./middleware')
-
 var Recaptcha = require('express-recaptcha')
+const nodemailer = require('nodemailer')
+
+let smtpConfig = {
+  host: process.env.SMTP_HOST,
+  port: parseInt(process.env.SMTP_PORT),
+  secure: false, // upgrade later with STARTTLS
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASSWORD
+  }
+}
+
+let transporter = nodemailer.createTransport(smtpConfig)
+
+transporter.verify(function (error, success) {
+  if (error) {
+    maildebug(error)
+  } else {
+    maildebug('Server is ready to take our messages')
+  }
+})
 
 var recaptcha = new Recaptcha(process.env.RECAPTCHA_SITE_KEY || '', process.env.RECAPTCHA_SECRET_KEY || '')
 
