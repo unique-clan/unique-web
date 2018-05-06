@@ -1,0 +1,12 @@
+doctype html
+html(lang="en")
+  head
+    title= title
+    include templates/header.pug
+    link(rel='stylesheet', href='/css/style-bgimage.css')
+  body
+    include templates/nav.pug
+    block content
+    include templates/footer.pug
+    include templates/globalscripts.pug
+    block scripts
