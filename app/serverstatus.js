@@ -38,7 +38,7 @@ class ServerStatus {
   }
 
   updateStatus () {
-    fs.readFile(this.path, 'utf8', (err, data) => {
+    fs.readFile(this.path, 'utf8', async (err, data) => {
       if (err) debug(err)
 
       let newlist = JSON.parse(data)
