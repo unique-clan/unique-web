@@ -2,33 +2,33 @@ var fs = require('fs')
 var ping = require('ping').promise
 var debug = require('debug')('uniqueweb:serverstatus')
 var getServerInfo = require('teeworlds-server-status').getServerInfo
+var twFlags = null
+
+function loadTWFlags () {
+  twFlags = {}
+  var lastLine
+  var lines = fs.readFileSync('twflags.txt', 'utf8').split('\n')
+  for (var i in lines) {
+    var line = lines[i]
+    var numMatch = line.match(/^== (\d+)/)
+    if (numMatch) {
+      var nameMatch = lastLine.match(/[A-Z]+/)
+      if (nameMatch) {
+        twFlags[numMatch[1]] = nameMatch[0]
+      }
+    }
+    lastLine = line
+  }
+}
 
 class ServerStatus {
   constructor (jsonPath) {
     this.path = jsonPath
     this.list = null
-    this.twFlags = null
-  }
-
-  loadTWFlags () {
-    this.twFlags = {}
-    var lastLine
-    var lines = fs.readFileSync('twflags.txt', 'utf8').split('\n')
-    for (var i in lines) {
-      var line = lines[i]
-      var numMatch = line.match(/^== (\d+)/)
-      if (numMatch) {
-        var nameMatch = lastLine.match(/[A-Z]+/)
-        if (nameMatch) {
-          this.twFlags[numMatch[1]] = nameMatch[0]
-        }
-      }
-      lastLine = line
-    }
   }
 
   startUpdating () {
-    this.loadTWFlags()
+    loadTWFlags()
     // Call also when starting
     this.updateStatus()
     // Then every x seconds
@@ -51,7 +51,7 @@ class ServerStatus {
         server.alive = res.alive;
         server.ping = res.avg;
 
-        if (server.alive) {
+        if (server.alive || true) {
           await this.getServerstatus(server)
         }
       }
@@ -75,8 +75,8 @@ class ServerStatus {
           gameServer.password = svInfo.password
   
           for (var ply in gameServer.players) {
-            if (gameServer.players[ply].country in this.twFlags) {
-              gameServer.players[ply].flag = this.twFlags[gameServer.players[ply].country]
+            if (gameServer.players[ply].country in twFlags) {
+              gameServer.players[ply].flag = twFlags[gameServer.players[ply].country]
             } else {
               gameServer.players[ply].flag = 'default'
             }
