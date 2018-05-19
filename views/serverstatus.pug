@@ -32,8 +32,8 @@ block content
             | This location is currently offline.
         else
           if location.name === 'CAN'
-            p.has-text-centered
-              | Unique CAN is sponsored by Fudgy.
+            p.has-text-centered.background-text
+              | Unique CAN is sponsored by Fudgyking.
             br
           .columns.is-multiline
             each server in location.servers.filter(s => !s.password).sort((a, b) => ((b.reachable ? 1 : 0) - (a.reachable ? 1 : 0)) || ((b.players ? b.players.length : 0) - (a.players ? a.players.length : 0)) || (a.name > b.name ? 1 : -1))
