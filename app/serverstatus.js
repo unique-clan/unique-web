@@ -41,10 +41,10 @@ class ServerStatus {
     fs.readFile(this.path, 'utf8', async (err, data) => {
       if (err) debug(err)
 
-      let newlist = JSON.parse(data)
+      let svlist = JSON.parse(data)
       
-      for (var i in this.list) {
-        let server = this.list[i]
+      for (var i in svlist) {
+        let server = svlist[i]
 
         let res = await ping.probe(server.ip, {timeout: 2});
 
@@ -56,7 +56,7 @@ class ServerStatus {
         }
       }
 
-      this.list = newlist
+      this.list = svlist
     })
   }
 
