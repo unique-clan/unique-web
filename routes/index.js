@@ -26,15 +26,39 @@ function getFilename (folder, name, ending) {
 /* GET home page. */
 router.get('/', function (req, res, next) {
   res.render('index', {
-    title: 'Unique Clan',
-    user: req.session.authed ? req.session.user : null
+    title: 'Unique Clan'
   })
+})
+
+router.get('/admin', function (req, res, next) {
+  if (req.session && req.session.admin_authed) {
+    return res.render('admin', {
+      title: 'Unique Clan'
+    })
+  } else {
+    res.redirect('/admin/login')
+  }
+})
+
+router.get('/admin/login', function (req, res, next) {
+  res.render('admin_login', {
+    title: 'Admin login | Unique'
+  })
+})
+
+router.post('/admin/login', function (req, res, next) {
+  var pass = process.env.ADMIN_DASHBOARD_PW || "1234"
+
+  if (req.body.adminpass === pass) {
+    req.session.admin_authed = true
+    return res.status(201).send()
+  }
+  return res.status(400).send()
 })
 
 router.get('/member', function (req, res, next) {
   res.render('member', {
-    title: 'Members | Unique',
-    user: req.session.authed ? req.session.user : null
+    title: 'Members | Unique'
   })
 })
 
@@ -58,8 +82,7 @@ router.get('/serverstatus/:location', function (req, res, next) {
 
 router.get('/apply', function (req, res, next) {
   res.render('apply', {
-    title: 'Apply | Unique',
-    user: req.session.authed ? req.session.user : null
+    title: 'Apply | Unique'
   })
 })
 
@@ -91,8 +114,7 @@ router.post('/apply', function (req, res, next) {
 
 router.get('/submit', function (req, res, next) {
   res.render('mapupload', {
-    title: 'Submit Map | Unique',
-    user: req.session.authed ? req.session.user : null
+    title: 'Submit Map | Unique'
   })
 })
 
@@ -132,15 +154,13 @@ router.post('/mapupload', upload.single('mapFile'), function (req, res, next) {
 
 router.get('/tournaments', function (req, res, next) {
   res.render('tournaments', {
-    title: 'Tournaments | Unique',
-    user: req.session.authed ? req.session.user : null
+    title: 'Tournaments | Unique'
   })
 })
 
 router.get('/profile', function (req, res, next) {
   res.render('profile', {
-    title: 'Profile | Unique',
-    user: req.session.authed ? req.session.user : null
+    title: 'Profile | Unique'
   })
 })
 module.exports = router
