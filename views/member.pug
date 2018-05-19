@@ -1,20 +1,6 @@
 extends layout
 
-mixin member(name, types, flag='DE', leader=false)
-  .column.is-half-tablet.is-half-desktop.is-one-third-fullhd
-    - size_class = leader == true ? 'is-one-third' : 'is-one-quarter'
-    .box(class=size_class)
-      article.media
-        .media-left
-          figure.image.is-96x96
-            img(src=`/img/twflags/${flag}.png`, alt=flag, style='margin-top: 10px')
-        .media-content
-          .content
-            h1= name
-            if leader
-              h3= types
-            else
-              h4= types
+include templates/mixins.pug
 
 block content
   main

@@ -1,0 +1,227 @@
+extends layout
+
+include templates/mixins.pug
+
+block content
+  main
+    br
+    br
+    br
+    br
+    section.hero.is-dark
+      .hero-body
+        .container
+          .columns
+            .column.is-9
+              h1.title Unique Race Ranks
+            .column
+              form#search-form(action='/ranks/player/' method='GET')
+                input#player-name.input.warning-dark-input(type="text",placeholder="Player search", name="player")
+          nav.breadcrumb.rank-nav
+            ul
+              li
+                a(href='#short') Short
+              li
+                a(href='#middle') Middle
+              li
+                a(href='#long') Long
+    section.section
+      .container
+        if !totalMapFinishedCount
+          article.tile.is-child.notification.is-white
+            p.title Player '#{name}' not found
+        else
+          article.tile.is-child.notification.is-white
+            p.title Ranks for #{name} (#{totalMapFinishedCount}/#{totalMapCount} Maps)
+            .playerranks-header
+              .columns
+                .column
+                  p.subtitle Map Records
+                  if mapRecords
+                    b #{mapRecords.rank}
+                    sup= getOrdinal(mapRecords.rank)
+                    |  with 
+                    b #{mapRecords.recordsCount}
+                    |  records
+                  else
+                    | &mdash;
+                .column
+                  p.subtitle Points
+                  if playerPoints
+                    b= playerPoints.rank
+                    sup= getOrdinal(playerPoints.rank)
+                    |  with 
+                    b= playerPoints.Points
+                    |  points
+                  else
+                    | &mdash;
+              p.subtitle Last Records
+              if lastRecords.length < 1
+                if mapRecords
+                  p Sorry, we couldn't find any recent map records of this player.
+                else
+                  p This player holds no map records.
+              else
+                .horizontal-scroll
+                  table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
+                    thead
+                      tr
+                        th Date
+                        th Map
+                        th Time
+                    tbody
+                      each x in lastRecords
+                        tr
+                          td= x.Timestamp.toISOString().replace(/T/, ' ').replace(/\..+/, '')
+                          td= x.Map
+                          td= formatTime(x.Time)
+            span.rank-anchor#short
+            p.title.is-4 Short Ranks (#{shortMapFinishedCount}/#{numShortMaps} Maps)
+            .playerranks-header
+              .columns
+                .column
+                  p.subtitle Map Records
+                  if shortMapRecords
+                    b= shortMapRecords.rank
+                    sup= getOrdinal(shortMapRecords.rank)
+                    |  with 
+                    b= shortMapRecords.recordsCount
+                    |  records
+                  else
+                    | &mdash;
+                .column
+                  p.subtitle Points
+                  if shortPoints
+                    b= shortPoints.rank
+                    sup= getOrdinal(shortPoints.rank)
+                    |  with 
+                    b= shortPoints.Points
+                    |  points
+                  else
+                    | &mdash;
+            p.subtitle Map List
+            if shortMapList.length
+              .horizontal-scroll
+                table.table.is-narrow.is-striped.is-hoverable.is-fullwidth.is-bordered#short-table
+                  thead
+                    tr
+                      th Map
+                      th Time
+                      th Rank
+                      th Map Points
+                  tbody
+                    each x in shortMapList
+                      tr
+                        td= x.Map
+                        td= formatTime(x.playerTime)
+                        td(data-order=x.Rank)= x.Rank
+                          sup= getOrdinal(x.Rank)
+                        td= x.mapPoints
+            .unfinished-maps
+              if unfinishedShort.length
+                span Unfinished&nbsp;Maps:
+                ul
+                  each x in unfinishedShort
+                    li= x.Map
+            span.rank-anchor#middle
+            p.title.is-4 Middle Ranks (#{middleMapFinishedCount}/#{numMiddleMaps} Maps)
+            .playerranks-header
+              .columns
+                .column
+                  p.subtitle Map Records
+                  if middleMapRecords
+                    b= middleMapRecords.rank
+                    sup= getOrdinal(middleMapRecords.rank)
+                    |  with 
+                    b= middleMapRecords.recordsCount
+                    |  records
+                  else
+                    | &mdash;
+                .column
+                  p.subtitle Points
+                  if middlePoints
+                    b= middlePoints.rank
+                    sup= getOrdinal(middlePoints.rank)
+                    |  with 
+                    b= middlePoints.Points
+                    |  points
+                  else
+                    | &mdash;
+            p.subtitle Map List
+            if middleMapList.length
+              .horizontal-scroll
+                table.table.is-narrow.is-striped.is-hoverable.is-fullwidth.is-bordered#middle-table
+                  thead
+                    tr
+                      th Map
+                      th Time
+                      th Rank
+                      th Map Points
+                  tbody
+                    each x in middleMapList
+                      tr
+                        td= x.Map
+                        td= formatTime(x.playerTime)
+                        td(data-order=x.Rank)= x.Rank
+                          sup= getOrdinal(x.Rank)
+                        td= x.mapPoints
+            .unfinished-maps
+              if unfinishedMiddle.length
+                span Unfinished&nbsp;Maps:
+                ul
+                  each x in unfinishedMiddle
+                    li= x.Map
+            span.rank-anchor#long
+            p.title.is-4 Long Ranks (#{longMapFinishedCount}/#{numLongMaps} Maps)
+            .playerranks-header
+              .columns
+                .column
+                  p.subtitle Map Records
+                  if longMapRecords
+                    b= longMapRecords.rank
+                    sup= getOrdinal(longMapRecords.rank)
+                    |  with 
+                    b= longMapRecords.recordsCount
+                    |  records
+                  else
+                    | &mdash;
+                .column
+                  p.subtitle Points
+                  if longPoints
+                    b= longPoints.rank
+                    sup= getOrdinal(longPoints.rank)
+                    |  with 
+                    b= longPoints.Points
+                    |  points
+                  else
+                    | &mdash;
+            p.subtitle Map List
+            if longMapList.length
+              .horizontal-scroll
+                table.table.is-narrow.is-striped.is-hoverable.is-fullwidth.is-bordered#long-table
+                  thead
+                    tr
+                      th Map
+                      th Time
+                      th Rank
+                      th Map Points
+                  tbody
+                    each x in longMapList
+                      tr
+                        td= x.Map
+                        td= formatTime(x.playerTime)
+                        td(data-order=x.Rank)= x.Rank
+                          sup= getOrdinal(x.Rank)
+                        td= x.mapPoints
+            .unfinished-maps
+              if unfinishedLong.length
+                span Unfinished&nbsp;Maps:
+                ul
+                  each x in unfinishedLong
+                    li= x.Map
+
+block scripts
+  script(src="/js/jquery.dataTables.js")
+  script(src="/js/dataTables.bulma.js")
+  script(src="/js/sort.js")
+  +player_search()
