@@ -3,7 +3,7 @@ header
     .container
       .navbar-brand
         a.navbar-item(href='/')
-          img(src='/img/logo.png', alt='Unique - Be smart, be Unique!')
+          img(src='/static/img/logo.png', alt='Unique - Be smart, be Unique!')
         button.button.navbar-burger(data-target='navMenu')
           span
           span
@@ -16,42 +16,3 @@ header
           a.navbar-item(href='/submit') Submit Map
           a.navbar-item(href='/tournaments') Tournaments
           a.navbar-item(href='/ranks') Ranks
-        //.navbar-end
-          if user
-            a.navbar-item(href='/user/' + user.username)= user.username
-            a.navbar-item(href='/auth/logout') Logout
-          else
-            a.navbar-item(href='/auth/register') Register
-            a.navbar-item#login-enable(href='javascript:void(0)') Login
-  .modal#login-modal
-    .modal-background
-    .modal-card#login-card
-      header.modal-card-head
-        p.modal-card-title Login
-        button.delete#login-close(aria-label='close')
-      form#form-login
-        section.modal-card-body
-          .field.is-horizontal
-              .field-label.is-normal
-                label.label Username
-              .field-body
-                .field
-                  p.control.is-expanded.has-icons-left
-                    input.input(type='text', placeholder='Username' name='username')
-                    span.icon.is-small.is-left
-                      i.fa.fa-user
-                  p.help#help-username
-          .field.is-horizontal
-            .field-label.is-normal
-              label.label Password
-            .field-body
-              .field
-                p.control.is-expanded.has-icons-left
-                  input.input(type='password', placeholder='Password' name='password')
-                  span.icon.is-small.is-left
-                    i.fa.fa-key
-                p.help#help-password
-          p#response-message
-        footer.modal-card-foot
-          button.button.is-success Login
-          button.button#login-modal-close Close
