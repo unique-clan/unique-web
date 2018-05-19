@@ -43,7 +43,7 @@ mongoose.connect(connectionString)
 
 // Load App routes
 var index = require('./routes/index')
-var auth = require('./routes/auth')
+// var auth = require('./routes/auth')
 var ranks = require('./routes/ranks')
 
 var app = express()
