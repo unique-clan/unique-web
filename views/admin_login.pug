@@ -1,0 +1,30 @@
+extends layout
+
+block content
+  main
+    br
+    section.section
+      .container
+        article.tile.is-child.notification.is-white.has-shadow
+          form.form#form-admin
+            .field.is-horizontal
+              .field-label.is-normal
+                label.label Password
+              .field-body
+                .field
+                  p.control.is-expanded.has-icons-left
+                    input.input.warning-input(type='password', placeholder='Password', name='adminpass')
+                    span.icon.is-small.is-left
+                        i.fa.fa-key
+                  p.help#help-admin
+            .field.is-horizontal
+              .field-label
+              .field-body
+                .field
+                  .control
+                    button.button.is-success.is-outlined
+                      | Log in
+                  p#response-message
+
+block scripts
+  script(src="/static/js/adminlogin.js")
