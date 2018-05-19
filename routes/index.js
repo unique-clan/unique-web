@@ -89,7 +89,7 @@ router.post('/apply', function (req, res, next) {
   res.status(201).json({ msg: 'Application sent.' })
 })
 
-router.get('/mapupload', function (req, res, next) {
+router.get('/submit', function (req, res, next) {
   res.render('mapupload', {
     title: 'Submit Map | Unique',
     user: req.session.authed ? req.session.user : null
