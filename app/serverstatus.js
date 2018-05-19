@@ -51,7 +51,7 @@ class ServerStatus {
         server.alive = res.alive;
         server.ping = res.avg;
 
-        if (server.alive || true) {
+        if (server.alive) {
           await this.getServerstatus(server)
         }
       }
