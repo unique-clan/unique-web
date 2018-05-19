@@ -52,7 +52,7 @@ class ServerStatus {
         server.ping = res.avg;
 
         if (server.alive) {
-          this.getServerstatus(server)
+          await this.getServerstatus(server)
         }
       }
 
@@ -61,26 +61,31 @@ class ServerStatus {
   }
 
   getServerstatus (server) {
+    let promises = []
     for (var i in server.servers) {
       let gameServer = server.servers[i]
-      getServerInfo(server.ip, parseInt(gameServer.port), (svInfo) => {
-        gameServer.reachable = true
-        gameServer.map = svInfo.map
-        gameServer.maxclients = svInfo.maxClientCount
-        gameServer.players = svInfo.clients
-          .filter(p => p.name !== '(connecting)')
-          .sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1)
-        gameServer.password = svInfo.password
-
-        for (var ply in gameServer.players) {
-          if (gameServer.players[ply].country in this.twFlags) {
-            gameServer.players[ply].flag = this.twFlags[gameServer.players[ply].country]
-          } else {
-            gameServer.players[ply].flag = 'default'
+      promises.push(new Promise(function (resolve, reject) {
+        getServerInfo(server.ip, parseInt(gameServer.port), (svInfo) => {
+          gameServer.reachable = true
+          gameServer.map = svInfo.map
+          gameServer.maxclients = svInfo.maxClientCount
+          gameServer.players = svInfo.clients
+            .filter(p => p.name !== '(connecting)')
+            .sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1)
+          gameServer.password = svInfo.password
+  
+          for (var ply in gameServer.players) {
+            if (gameServer.players[ply].country in this.twFlags) {
+              gameServer.players[ply].flag = this.twFlags[gameServer.players[ply].country]
+            } else {
+              gameServer.players[ply].flag = 'default'
+            }
           }
-        }
-      })
+          resolve()
+        })
+      }))
     }
+    return Promise.all(promises)
   }
 }
 
