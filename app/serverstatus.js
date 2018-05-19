@@ -1,5 +1,5 @@
 var fs = require('fs')
-var ping = require('ping')
+var ping = require('ping').promise
 var debug = require('debug')('uniqueweb:serverstatus')
 var getServerInfo = require('teeworlds-server-status').getServerInfo
 
@@ -40,18 +40,23 @@ class ServerStatus {
   updateStatus () {
     fs.readFile(this.path, 'utf8', (err, data) => {
       if (err) debug(err)
-      this.list = JSON.parse(data)
+
+      let newlist = JSON.parse(data)
+      
       for (var i in this.list) {
         let server = this.list[i]
-        ping.promise.probe(server.ip, {timeout: 2}).then((res) => {
-          server.alive = res.alive
-          server.ping = res.avg
-          // debug(`${server.name} (${server.ip}) is alive: ${server.alive} ${server.ping} ms`)
-          if (server.alive) {
-            this.getServerstatus(server)
-          }
-        })
+
+        let res = await ping.probe(server.ip, {timeout: 2});
+
+        server.alive = res.alive;
+        server.ping = res.avg;
+
+        if (server.alive) {
+          this.getServerstatus(server)
+        }
       }
+
+      this.list = newlist
     })
   }
 
