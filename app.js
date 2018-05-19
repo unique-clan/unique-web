@@ -64,13 +64,21 @@ app.use(mongoSanitize({
 }))
 app.use(cookieParser())
 // app.use(stylus.middleware(path.join(__dirname, 'public')))
+
+app.use('/static', express.static(path.join(__dirname, 'public')))
+app.use('/static/css', express.static(path.join(__dirname, 'node_modules/bulma/css')))
+app.use('/static/css', express.static(path.join(__dirname, 'node_modules/bulma-extensions/dist')))
+var bulmaExtensions = ['tagsinput']
+for(var x in bulmaExtensions) {
+  var ext = bulmaExtensions[x]
+  app.use('/static/js', express.static(path.join(__dirname, `node_modules/bulma-extensions/bulma-${ext}/dist`)))
+}
 app.use(sassMiddleware({
   src: path.join(__dirname, 'public'),
   dest: path.join(__dirname, 'public'),
   indentedSyntax: true, // true = .sass and false = .scss
   sourceMap: true
 }))
-app.use(express.static(path.join(__dirname, 'public')))
 app.use(logger('dev'))
 
 if (process.env.BEHIND_PROXY === 'true') {
