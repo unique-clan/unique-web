@@ -1,0 +1,30 @@
+extends ../layout
+
+block content
+  script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js')
+  main
+    br
+    section.section
+      .container
+        .columns
+          .column.is-one-quarter
+            aside.menu.box
+              p.menu-label
+                | General
+              ul.menu-list
+                li
+                  a(href='/admin') Dashboard
+              p.menu-label Administration
+              ul.menu-list
+                li
+                  a(href='/admin/applications') Applications
+                li
+                  a(href='/admin/maps') Submitted maps
+              p.menu-label Account
+              ul.menu-list
+                li
+                  a(href='/admin/logout') Log out
+          .column
+            .box.content
+              block admincontent
+              

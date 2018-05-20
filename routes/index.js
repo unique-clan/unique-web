@@ -5,6 +5,7 @@ var fs = require('fs');
 var multer  = require('multer')
 var upload = multer({ dest: 'uploads/' })
 const ServerStatus = require('../app/serverstatus')
+const middleware = require('./middleware')
 
 var serverStatus = new ServerStatus(process.env.SERVERS_LOCATION || 'servers.json')
 serverStatus.startUpdating()
@@ -30,20 +31,21 @@ router.get('/', function (req, res, next) {
   })
 })
 
-router.get('/admin', function (req, res, next) {
-  if (req.session && req.session.admin_authed) {
-    return res.render('admin', {
-      title: 'Unique Clan'
-    })
-  } else {
-    res.redirect('/admin/login')
-  }
+router.get('/admin', middleware.isAdminAuthed, function (req, res, next) {
+  return res.render('admin/index', {
+    title: 'Admin Zone | Unique Clan'
+  })
 })
 
 router.get('/admin/login', function (req, res, next) {
-  res.render('admin_login', {
+  res.render('admin/login', {
     title: 'Admin login | Unique'
   })
+})
+
+router.get('/admin/logout', function (req, res, next) {
+  req.session.admin_authed = false
+  res.redirect('/')
 })
 
 router.post('/admin/login', function (req, res, next) {

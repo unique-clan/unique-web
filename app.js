@@ -73,7 +73,6 @@ app.use('/static', sassMiddleware({
 app.use('/static', express.static(path.join(__dirname, 'public')))
 app.use('/static/css', express.static(path.join(__dirname, 'node_modules/bulma-extensions/dist')))
 app.use('/static/css', express.static(path.join(__dirname, 'node_modules/bulma/css')))
-app.use('/static/css', express.static(path.join(__dirname, 'node_modules/chart.js/dist')))
 var bulmaExtensions = ['tagsinput']
 for(var x in bulmaExtensions) {
   var ext = bulmaExtensions[x]

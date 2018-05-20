@@ -1,10 +1,10 @@
 const mongoose = require('mongoose')
 // Models
-var user = require('./models/user')
+var applications = require('./models/applications')
 // Plugins
 var lastmod = require('./plugins/lastmod')
 
 module.exports = exports = function load () {
-  user.plugin(lastmod)
-  mongoose.model('User', user)
+  applications.plugin(lastmod)
+  mongoose.model('Application', applications)
 }

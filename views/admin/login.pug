@@ -1,0 +1,28 @@
+extends ../layout
+
+block content
+  main
+    br
+    section.section
+      .container
+        article.tile.is-child.notification
+          .columns
+            .column.is-half.is-offset-one-quarter
+              .box
+                .content
+                  h1 Admin Login
+                  p This page is for Unique clan leaders only.
+                  hr
+                form.form#form-admin
+                  .field
+                    label.label Password
+                    .control
+                      input.input(type='password' name='adminpass' placeholder='Password')
+                  .field
+                    .control
+                      button.button.is-success.is-outlined
+                        | Log in
+                    p#response-message
+
+block scripts
+  script(src="/static/js/adminlogin.js")
