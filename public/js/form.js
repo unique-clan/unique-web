@@ -127,15 +127,15 @@ class BulmaFormHandler extends FormHandler {
   }
 
   getIndicatorNode(field) {
-    let input = this.find(`input[name=${field}]`)
+    let input = this.find(`input[name='${field}']`)
     if (input.attr('type') === 'tags') {
       input = input.next('div')
     }
     if (!input.length) {
-      input = this.find(`textarea[name=${field}]`)
+      input = this.find(`textarea[name='${field}']`)
     }
     if (!input.length) {
-      input = this.find(`select[name=${field}]`).parent()
+      input = this.find(`select[name='${field}']`).parent()
     }
     return input
   }

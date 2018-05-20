@@ -9,6 +9,8 @@
   "dependencies": {
     "bcrypt": "^2.0.1",
     "body-parser": "^1.18.3",
+    "bulma": "^0.7.1",
+    "bulma-extensions": "^1.0.30",
     "connect-mongo": "^2.0.1",
     "cookie-parser": "~1.4.3",
     "debug": "~3.1.0",
@@ -24,7 +26,7 @@
     "mysql2": "^1.5.3",
     "node-cache": "^4.2.0",
     "node-sass-middleware": "^0.11.0",
-    "npm": "^5.7.1",
+    "npm": "^6.0.1",
     "ping": "^0.2.2",
     "pug": "2.0.3",
     "serve-favicon": "~2.5.0",

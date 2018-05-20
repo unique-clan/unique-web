@@ -43,6 +43,7 @@ mongoose.connect(connectionString)
 
 // Load App routes
 var index = require('./routes/index')
+var admin = require('./routes/admin')
 // var auth = require('./routes/auth')
 var ranks = require('./routes/ranks')
 
@@ -64,13 +65,20 @@ app.use(mongoSanitize({
 }))
 app.use(cookieParser())
 // app.use(stylus.middleware(path.join(__dirname, 'public')))
-app.use(sassMiddleware({
+app.use('/static', sassMiddleware({
   src: path.join(__dirname, 'public'),
   dest: path.join(__dirname, 'public'),
   indentedSyntax: true, // true = .sass and false = .scss
   sourceMap: true
 }))
-app.use(express.static(path.join(__dirname, 'public')))
+app.use('/static', express.static(path.join(__dirname, 'public')))
+app.use('/static/css', express.static(path.join(__dirname, 'node_modules/bulma-extensions/dist')))
+app.use('/static/css', express.static(path.join(__dirname, 'node_modules/bulma/css')))
+var bulmaExtensions = ['tagsinput']
+for(var x in bulmaExtensions) {
+  var ext = bulmaExtensions[x]
+  app.use('/static/js', express.static(path.join(__dirname, `node_modules/bulma-extensions/bulma-${ext}/dist`)))
+}
 app.use(logger('dev'))
 
 if (process.env.BEHIND_PROXY === 'true') {
@@ -93,6 +101,7 @@ app.use(session({
 
 // Add the app routes
 app.use('/', index)
+app.use('/admin', admin)
 // app.use('/auth', auth)
 app.use('/ranks', ranks)
 

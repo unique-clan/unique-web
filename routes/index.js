@@ -5,6 +5,7 @@ var fs = require('fs');
 var multer  = require('multer')
 var upload = multer({ dest: 'uploads/' })
 const ServerStatus = require('../app/serverstatus')
+const mongoose = require('mongoose')
 
 var serverStatus = new ServerStatus(process.env.SERVERS_LOCATION || 'servers.json')
 serverStatus.startUpdating()
@@ -26,15 +27,13 @@ function getFilename (folder, name, ending) {
 /* GET home page. */
 router.get('/', function (req, res, next) {
   res.render('index', {
-    title: 'Unique Clan',
-    user: req.session.authed ? req.session.user : null
+    title: 'Unique Clan'
   })
 })
 
 router.get('/member', function (req, res, next) {
   res.render('member', {
-    title: 'Members | Unique',
-    user: req.session.authed ? req.session.user : null
+    title: 'Members | Unique'
   })
 })
 
@@ -58,41 +57,37 @@ router.get('/serverstatus/:location', function (req, res, next) {
 
 router.get('/apply', function (req, res, next) {
   res.render('apply', {
-    title: 'Apply | Unique',
-    user: req.session.authed ? req.session.user : null
+    title: 'Apply | Unique'
   })
 })
 
 router.post('/apply', function (req, res, next) {
-  let errors = {}
-  let error = false
-  let application = {}
-  const fields = ['twName', 'country', 'gameModes', 'gender', 'presentation']
-  for (var i in fields) {
-    let f = fields[i]
-    let value = req.body[f]
-    if (f === 'gameModes') {
-      value = value.split(',').filter(g => g.length)
+  let application = req.body
+  if(application.gameModes && typeof(application.gameModes) === 'string')
+    application.gameModes = application.gameModes.split(',')
+
+  const Application = mongoose.model('Application')
+  debug(application)
+  const userapp = new Application(application)
+
+  userapp.save().then(() => {
+    res.status(201).json({ msg: 'Application sent.' })
+  }).catch(err => {
+    debug(err)
+    if(err.code == 11000) {
+      err = {
+        message: "A application with that ingame-name already exists.",
+        duplicate: true
+      }
+      return res.status(422).json(err)
     }
-    if (!value || !value.length) {
-      errors[f] = { message: 'Field is required.' }
-      error = true;
-    }
-    application[f] = value
-  }
-  if (error) {
-    res.status(422).json({ errors: errors })
-    return
-  }
-  let path = getFilename('admintmp/applications', req.body['twName'], '.json')
-  fs.writeFileSync(path, JSON.stringify(application, null, 2))
-  res.status(201).json({ msg: 'Application sent.' })
+    res.status(422).json({errors: err.errors})
+  })
 })
 
 router.get('/submit', function (req, res, next) {
   res.render('mapupload', {
-    title: 'Submit Map | Unique',
-    user: req.session.authed ? req.session.user : null
+    title: 'Submit Map | Unique'
   })
 })
 
@@ -132,15 +127,13 @@ router.post('/mapupload', upload.single('mapFile'), function (req, res, next) {
 
 router.get('/tournaments', function (req, res, next) {
   res.render('tournaments', {
-    title: 'Tournaments | Unique',
-    user: req.session.authed ? req.session.user : null
+    title: 'Tournaments | Unique'
   })
 })
 
 router.get('/profile', function (req, res, next) {
   res.render('profile', {
-    title: 'Profile | Unique',
-    user: req.session.authed ? req.session.user : null
+    title: 'Profile | Unique'
   })
 })
 module.exports = router
