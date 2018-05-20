@@ -5,7 +5,11 @@ $(document).ready(function () {
       case 400:
       case 422:
       {
-        form.handleErrors(res.responseJSON.errors)
+        console.log(res.responseJSON)
+        if(res.responseJSON.duplicate)
+          form.find('p#response-message').html(res.responseJSON.message)
+        else
+          form.handleErrors(res.responseJSON.errors)
         break
       }
       case 201:

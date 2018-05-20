@@ -1,4 +1,17 @@
 extends layout
 
 block admincontent
-  h1 TODO
+  h1.title Applications
+  each app in apps
+    .tile.is-parent.is-vertical
+      article.box
+        p.is-pulled-right #{app.date.toDateString()}
+        p #[strong Name:] #{app.twName}
+        p #[strong Country:] #{app.country}
+        p #[strong Gender:] #{app.gender}
+        p #[strong Game Modes:] #{app.gameModes.join(', ')}
+        p #[strong Presentation:] #{app.presentation}
+
+
+
+//-pre= JSON.stringify(apps, null, '  ')

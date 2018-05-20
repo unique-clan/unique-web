@@ -2,6 +2,7 @@ var express = require('express')
 var router = express.Router()
 var debug = require('debug')('uniqueweb:router-admin')
 const middleware = require('./middleware')
+const mongoose = require('mongoose')
 
 router.get('/', middleware.isAdminAuthed, function (req, res, next) {
   return res.render('admin/index', {
@@ -10,8 +11,14 @@ router.get('/', middleware.isAdminAuthed, function (req, res, next) {
 })
 
 router.get('/applications', middleware.isAdminAuthed, function (req, res, next) {
-  return res.render('admin/applications', {
-    title: 'Applications | Unique Clan'
+  const Applications = mongoose.model('Application')
+  Applications.find({}).sort({date: -1}).then(apps => {
+    res.render('admin/applications', {
+      title: 'Applications | Unique Clan',
+      apps: apps
+    })
+  }).catch(err => {
+    next(err)
   })
 })
 

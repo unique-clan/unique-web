@@ -5,6 +5,7 @@ var fs = require('fs');
 var multer  = require('multer')
 var upload = multer({ dest: 'uploads/' })
 const ServerStatus = require('../app/serverstatus')
+const mongoose = require('mongoose')
 
 var serverStatus = new ServerStatus(process.env.SERVERS_LOCATION || 'servers.json')
 serverStatus.startUpdating()
@@ -61,29 +62,27 @@ router.get('/apply', function (req, res, next) {
 })
 
 router.post('/apply', function (req, res, next) {
-  let errors = {}
-  let error = false
-  let application = {}
-  const fields = ['twName', 'country', 'gameModes', 'gender', 'presentation']
-  for (var i in fields) {
-    let f = fields[i]
-    let value = req.body[f]
-    if (f === 'gameModes') {
-      value = value.split(',').filter(g => g.length)
+  let application = req.body
+  if(application.gameModes && typeof(application.gameModes) === 'string')
+    application.gameModes = application.gameModes.split(',')
+
+  const Application = mongoose.model('Application')
+  debug(application)
+  const userapp = new Application(application)
+
+  userapp.save().then(() => {
+    res.status(201).json({ msg: 'Application sent.' })
+  }).catch(err => {
+    debug(err)
+    if(err.code == 11000) {
+      err = {
+        message: "A application with that ingame-name already exists.",
+        duplicate: true
+      }
+      return res.status(422).json(err)
     }
-    if (!value || !value.length) {
-      errors[f] = { message: 'Field is required.' }
-      error = true;
-    }
-    application[f] = value
-  }
-  if (error) {
-    res.status(422).json({ errors: errors })
-    return
-  }
-  let path = getFilename('admintmp/applications', req.body['twName'], '.json')
-  fs.writeFileSync(path, JSON.stringify(application, null, 2))
-  res.status(201).json({ msg: 'Application sent.' })
+    res.status(422).json({errors: err.errors})
+  })
 })
 
 router.get('/submit', function (req, res, next) {
