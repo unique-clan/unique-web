@@ -4,10 +4,10 @@ header
       .navbar-brand
         a.navbar-item(href='/')
           img(src='/static/img/logo.png', alt='Unique - Be smart, be Unique!')
-        button.button.navbar-burger(data-target='navMenu')
-          span
-          span
-          span
+        a.navbar-burger(role='button', data-target='navMenu', aria-label='menu', aria-expanded='false')
+          span(aria-hidden='true')
+          span(aria-hidden='true')
+          span(aria-hidden='true')
       #navMenu.navbar-menu
         .navbar-start
           a.navbar-item(href='/member') Members
