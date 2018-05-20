@@ -43,6 +43,7 @@ mongoose.connect(connectionString)
 
 // Load App routes
 var index = require('./routes/index')
+var admin = require('./routes/admin')
 // var auth = require('./routes/auth')
 var ranks = require('./routes/ranks')
 
@@ -100,6 +101,7 @@ app.use(session({
 
 // Add the app routes
 app.use('/', index)
+app.use('/admin', admin)
 // app.use('/auth', auth)
 app.use('/ranks', ranks)
 
