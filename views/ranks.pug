@@ -16,7 +16,11 @@ block content
               h1.title Unique Race Ranks
             .column
               form#search-form(action='/ranks/player/' method='GET')
-                input#player-name.input.warning-dark-input(type="text",placeholder="Player search", name="player")
+                field
+                  p.control.has-icons-right
+                    input#player-name.input.warning-dark-input(type="text",placeholder="Player search", name="player")
+                    span.icon.is-small.is-right
+                      i.fa.fa-search
           nav.breadcrumb.rank-nav
             ul
               li
