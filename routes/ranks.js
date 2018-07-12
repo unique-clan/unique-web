@@ -25,7 +25,7 @@ setInterval(async () => {
   const connection = await mysql.createConnection(mysqlOptions)
   const [maps] = await connection.execute('SELECT Map FROM race_maps;')
   for (let x in maps) {
-    var query = 'INSERT INTO race_ranks SELECT Map, Name, Rank FROM (SELECT @pos := @pos + 1 AS v1, @rank := IF(@prev = playerTime, @rank, @pos) AS rank, @prev := playerTime AS v2, Map, Name, playerTime FROM (SELECT Map, Name, ROUND(Time, 3) AS playerTime FROM race_race) t, (SELECT @pos := 0) i1, (SELECT @rank := -1) i2, (SELECT @prev := -1) i3 WHERE Map=? ORDER BY playerTime) u ON DUPLICATE KEY UPDATE Rank=VALUES(Rank);'
+    var query = 'INSERT INTO race_ranks SELECT Map, Name, Rank FROM (SELECT @pos := @pos + 1 AS v1, @rank := IF(@prev = playerTime, @rank, @pos) AS rank, @prev := playerTime AS v2, Map, Name, playerTime FROM (SELECT Map, Name, ROUND(MIN(Time), 3) AS playerTime FROM race_race WHERE Map=? GROUP BY Name) t, (SELECT @pos := 0) i1, (SELECT @rank := -1) i2, (SELECT @prev := -1) i3 ORDER BY playerTime) u ON DUPLICATE KEY UPDATE Rank=VALUES(Rank);'
     await connection.execute(query, [maps[x].Map])
   }
   connection.end()
