@@ -7,6 +7,9 @@ $(document).ready(function () {
       case 422:
       {
         form.handleErrors(res.responseJSON.errors)
+        if(res.responseJSON.message) {
+          $('#response-message').html(res.responseJSON.message)
+        }
         break
       }
       case 201:
