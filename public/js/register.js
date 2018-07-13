@@ -1,3 +1,4 @@
+/* eslint-disable */
 $(document).ready(function () {
   var form = new BulmaFormHandler('#form-register', '/auth/register', 'POST')
   form.onResponse((status, res) => {

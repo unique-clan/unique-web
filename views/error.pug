@@ -5,10 +5,10 @@ block content
     br
     section.section
       .container
-        .card
-          .card-header
-            .card-header-title
-              p.title= message
-          .card-content
-            p.subtitle Status: #{error.status}
-            pre #{error.stack}
+        .box
+          .content
+            h1.has-text-centered= message
+            hr
+            h3.has-text-centered Status: #{error.status}
+            if error.stack
+              pre #{error.stack}

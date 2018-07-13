@@ -1,3 +1,4 @@
+/* eslint-disable */
 $(document).ready(function () {
   var form = new BulmaFormHandler('#form-apply', '/apply', 'POST')
   form.onResponse((status, res) => {
