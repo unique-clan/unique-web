@@ -6,6 +6,7 @@ var multer = require('multer');
 var upload = multer({ dest: 'uploads/' });
 const mongoose = require('mongoose');
 const ApplicationModel = mongoose.model('Application');
+const MapModel = mongoose.model('Map');
 
 const isAuthed = (req, res, next) => {
   if (req.session && req.session.admin_authed) {
@@ -17,9 +18,11 @@ const isAuthed = (req, res, next) => {
 
 router.get('/', isAuthed, async function (req, res, next) {
   let apps = await ApplicationModel.find({}).sort({lastMod: -1}).exec();
+  let maps = await MapModel.find({}).sort({uploadDate: -1}).exec();
   return res.render('admin', {
     title: 'Unique Clan',
-    apps: apps
+    apps: apps,
+    maps: maps
   });
 });
 
@@ -27,6 +30,34 @@ router.get('/delete/:name', isAuthed, async function (req, res, next) {
   try {
     await ApplicationModel.deleteMany({twName: req.params.name});
     res.redirect('/admin');
+  } catch(e) {
+    next(e);
+  }
+});
+
+
+router.get('/map/delete/:name', isAuthed, async function (req, res, next) {
+  try {
+    await MapModel.deleteMany({fileName: req.params.name});
+    res.redirect('/admin');
+  } catch(e) {
+    next(e);
+  }
+});
+
+router.get('/map/download/:name', isAuthed, async function (req, res, next) {
+  try {
+    let maps = await MapModel.find({fileName: req.params.name}).sort({uploadDate: -1}).exec();
+    if(maps.length < 1) {
+      return next();
+    }
+    let map = maps[0];
+    res.writeHead(200, {
+      'Content-Type': map.mimetype,
+      'Content-disposition': 'attachment;filename=' + map.fileName,
+      'Content-Length': map.mapFile.length
+    });
+    res.end(map.mapFile, map.encoding);
   } catch(e) {
     next(e);
   }
