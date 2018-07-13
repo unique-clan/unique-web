@@ -14,6 +14,7 @@ var debugDB = require('debug')('uniqueweb:app:dberror');
 
 // Setup the db connection
 const mongoose = require('mongoose');
+
 // Load models
 require('./database/index')();
 

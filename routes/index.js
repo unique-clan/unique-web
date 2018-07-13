@@ -5,6 +5,8 @@ var fs = require('fs');
 var multer = require('multer');
 var upload = multer({ dest: 'uploads/' });
 const ServerStatus = require('../app/serverstatus');
+const mongoose = require('mongoose');
+const ApplicationModel = mongoose.model('Application');
 
 var serverStatus = new ServerStatus(process.env.SERVERS_LOCATION || 'servers.json');
 serverStatus.startUpdating();
@@ -59,30 +61,27 @@ router.get('/apply', function (req, res, next) {
   });
 });
 
-router.post('/apply', function (req, res, next) {
-  let errors = {};
-  let error = false;
-  let application = {};
-  const fields = ['twName', 'country', 'gameModes', 'gender', 'presentation'];
-  for (var i in fields) {
-    let f = fields[i];
-    let value = req.body[f];
-    if (f === 'gameModes') {
-      value = value.split(',').filter(g => g.length);
+router.post('/apply', async function (req, res, next) {
+  try {
+    if(req.body.gameModes && typeof req.body.gameModes === 'string') {
+      req.body.gameModes = req.body.gameModes.split(',');
     }
-    if (!value || !value.length) {
-      errors[f] = { message: 'Field is required.' };
-      error = true;
+    let App = new ApplicationModel(req.body);
+    await App.save();
+    res.status(201).json({ msg: 'Application sent.' });
+  } catch(e) {
+    debug(JSON.stringify(e));
+    if(e.code === 11000) {
+      return res.status(422).json({
+        errors: {
+          twName: {
+            message:'Application with this name already found.'
+          }
+        }
+      });
     }
-    application[f] = value;
+    res.status(422).json(e);
   }
-  if (error) {
-    res.status(422).json({ errors: errors });
-    return;
-  }
-  let path = getFilename('admintmp/applications', req.body['twName'], '.json');
-  fs.writeFileSync(path, JSON.stringify(application, null, 2));
-  res.status(201).json({ msg: 'Application sent.' });
 });
 
 router.get('/submit', function (req, res, next) {
