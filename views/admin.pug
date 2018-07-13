@@ -31,7 +31,7 @@ block content
                                 a.delete.is-pulled-right(href="/admin/map/delete/" + map.fileName)
                                 p #[strong Name]: #{map.fileName}
                                 p #[strong Mappers]: #{map.mappers.join(", ")}
-                                p #[strong Date]: #{app.uploadDate}
+                                p #[strong Date]: #{map.uploadDate}
                                 a.button.is-link(href="/admin/map/download/" + map.fileName) Download
 
 block scripts
