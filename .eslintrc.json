@@ -10,7 +10,9 @@
     },
     "rules": {
         "no-unused-vars": "off",
-        "no-tabs": "off"
+        "no-tabs": "off",
+        "semi": "error",
+        "no-extra-semi": "error"
     },
     "env": {
         "es6": true,

@@ -1,20 +1,20 @@
 var isAuthed = function (req, res, next) {
   if (req.session && req.session.authed) {
-    next()
+    next();
   } else {
-    res.redirect('/')
+    res.redirect('/');
   }
-}
+};
 
 var isNotAuthed = function (req, res, next) {
   if (!req.session || !req.session.authed) {
-    next()
+    next();
   } else {
-    res.redirect('/')
+    res.redirect('/');
   }
-}
+};
 
 module.exports = exports = {
   isAuthed: isAuthed,
   isNotAuthed: isNotAuthed
-}
+};
