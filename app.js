@@ -1,73 +1,72 @@
-var express = require('express')
-var path = require('path')
-var favicon = require('serve-favicon')
-var logger = require('morgan')
-var cookieParser = require('cookie-parser')
-var bodyParser = require('body-parser')
-var helmet = require('helmet')
-var sassMiddleware = require('node-sass-middleware')
-var session = require('express-session')
-const MongoStore = require('connect-mongo')(session)
-var mongoSanitize = require('express-mongo-sanitize')
-var debug = require('debug')('uniqueweb:app')
-var debugDB = require('debug')('uniqueweb:app:dberror')
+var express = require('express');
+var path = require('path');
+var favicon = require('serve-favicon');
+var logger = require('morgan');
+var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
+var helmet = require('helmet');
+var sassMiddleware = require('node-sass-middleware');
+var session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
+var mongoSanitize = require('express-mongo-sanitize');
+var debug = require('debug')('uniqueweb:app');
+var debugDB = require('debug')('uniqueweb:app:dberror');
 
 // Setup the db connection
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 // Load models
-require('./database/index')()
+require('./database/index')();
 
-mongoose.Promise = global.Promise
+mongoose.Promise = global.Promise;
 
-var db = mongoose.connection
-db.on('error', debugDB)
+var db = mongoose.connection;
+db.on('error', debugDB);
 db.once('open', function callback () {
-  debug('Connection to database succesfull.')
-})
+  debug('Connection to database succesfull.');
+});
 
 // Build the connection string
-var connectionString = 'mongodb://'
+var connectionString = 'mongodb://';
 
 if (process.env.DATABASE_USERNAME && process.env.DATABASE_PASSWORD) {
-  connectionString += `${process.env.DATABASE_USERNAME}:${process.env.DATABASE_PASSWORD}@`
+  connectionString += `${process.env.DATABASE_USERNAME}:${process.env.DATABASE_PASSWORD}@`;
 }
 
 if (process.env.DATABASE_HOST && process.env.DATABASE_PORT) {
-  connectionString += `${process.env.DATABASE_HOST}:${process.env.DATABASE_PORT}`
+  connectionString += `${process.env.DATABASE_HOST}:${process.env.DATABASE_PORT}`;
 } else {
-  connectionString += 'localhost:27017'
+  connectionString += 'localhost:27017';
 }
 
-connectionString += '/' + (process.env.DATABASE_NAME || 'uniqueweb')
+connectionString += '/' + (process.env.DATABASE_NAME || 'uniqueweb');
 
-mongoose.connect(connectionString, {useNewUrlParser: true})
+mongoose.connect(connectionString, {useNewUrlParser: true});
 
 // Load App routes
-var index = require('./routes/index')
-var admin = require('./routes/admin')
-var ranks = require('./routes/ranks')
+var index = require('./routes/index');
+var admin = require('./routes/admin');
+var ranks = require('./routes/ranks');
 
-var app = express()
+var app = express();
 
 // Production security
-app.use(helmet())
+app.use(helmet());
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'))
-app.set('view engine', 'pug')
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'pug');
 
-// uncomment after placing your favicon in /public
-app.use(favicon(path.join(__dirname, 'public', 'favicon/favicon.ico')))
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(favicon(path.join(__dirname, 'public', 'favicon/favicon.ico')));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(mongoSanitize({
   replaceWith: '_'
-}))
-app.use(cookieParser())
+}));
+app.use(cookieParser());
 
-app.use('/static', express.static(path.join(__dirname, 'public')))
-app.use('/static/css', express.static(path.join(__dirname, 'node_modules/bulma/css')))
-app.use('/static', express.static(path.join(__dirname, 'node_modules/bulma-extensions/dist')))
+app.use('/static', express.static(path.join(__dirname, 'public')));
+app.use('/static/css', express.static(path.join(__dirname, 'node_modules/bulma/css')));
+app.use('/static', express.static(path.join(__dirname, 'node_modules/bulma-extensions/dist')));
 app.use(sassMiddleware({
   src: path.join(__dirname, 'public'),
   dest: path.join(__dirname, 'public'),
@@ -75,11 +74,11 @@ app.use(sassMiddleware({
   sourceMap: true,
   outputStyle: 'compressed',
   prefix: '/static'
-}))
-app.use(logger('dev'))
+}));
+app.use(logger('dev'));
 
 if (process.env.BEHIND_PROXY === 'true') {
-  app.set('trust proxy', 1) // trust first proxy
+  app.set('trust proxy', 1); // trust first proxy
 }
 app.use(session({
   secret: process.env.COOKIE_SECRET || 'unique is the best clan in teeworlds',
@@ -94,30 +93,30 @@ app.use(session({
     mongooseConnection: mongoose.connection,
     ttl: 14 * 24 * 60 * 60 // = 14 days. Default
   })
-}))
+}));
 
 // Add the app routes
-app.use('/', index)
-// app.use('/auth', auth)
-app.use('/ranks', ranks)
+app.use('/', index);
+app.use('/admin', admin);
+app.use('/ranks', ranks);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-  var err = new Error('Not Found')
-  err.status = 404
-  next(err)
-})
+  var err = new Error('Not Found');
+  err.status = 404;
+  next(err);
+});
 
 // error handler
 app.use(function (err, req, res, next) {
   // set locals, only providing error in development
-  res.locals.message = err.message
-  res.locals.error = req.app.get('env') === 'development' ? err : {}
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
   // render the error page
   if (!res.headersSent) {
-    res.status(err.status || 500)
-    res.render('error')
+    res.status(err.status || 500);
+    res.render('error');
   }
-})
+});
 
-module.exports = app
+module.exports = app;
