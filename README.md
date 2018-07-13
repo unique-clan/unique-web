@@ -14,6 +14,7 @@ Copyright (c) 2018 Ryozuki, Tezcan, timakro
 - ReCAPTCHA: `RECAPTCHA_SITE_KEY`, `RECAPTCHA_SECRET_KEY`
 - Password storage: `SALT_WORK_FACTOR` (default `10`)
 - Serverstatus: `SERVERS_LOCATION` location of servers.json file (default `servers.json`)
+- Admin dashboard password: `ADMIN_DASHBOARD_PW` the password (default `1234`)
 
 # How-to
 - `git clone https://github.com/unique-clan/unique-web`
