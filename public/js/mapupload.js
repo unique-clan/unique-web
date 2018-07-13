@@ -1,3 +1,4 @@
+/* eslint-disable */
 $(document).ready(function () {
   var form = new BulmaFormHandler('#form-mapupload', '/mapupload', 'POST', true)
   form.onResponse((status, res) => {

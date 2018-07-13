@@ -1,3 +1,4 @@
+/* eslint-disable */
 (function(b) {
   "function" === typeof define && define.amd ? define(["jquery", "datatables.net"], function(a) {
     return b(a, window, document)

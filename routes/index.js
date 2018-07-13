@@ -1,8 +1,8 @@
 var express = require('express')
 var router = express.Router()
 var debug = require('debug')('uniqueweb:router')
-var fs = require('fs');
-var multer  = require('multer')
+var fs = require('fs')
+var multer = require('multer')
 var upload = multer({ dest: 'uploads/' })
 const ServerStatus = require('../app/serverstatus')
 
@@ -10,16 +10,15 @@ var serverStatus = new ServerStatus(process.env.SERVERS_LOCATION || 'servers.jso
 serverStatus.startUpdating()
 
 function getFilename (folder, name, ending) {
-  let path = folder + '/' + name.replace(/[^\w\s\.]/g, '')
-  if (!fs.existsSync(path+ending)) {
-    return path+ending
+  let path = folder + '/' + name.replace(/[^\w\s.]/g, '')
+  if (!fs.existsSync(path + ending)) {
+    return path + ending
   } else {
     let n = 2
-    while (true) {
-      if (!fs.existsSync(path+n+ending))
-        return path+n+ending
+    while (fs.existsSync(path + n + ending)) {
       n += 1
     }
+    return path + n + ending
   }
 }
 
@@ -28,32 +27,6 @@ router.get('/', function (req, res, next) {
   res.render('index', {
     title: 'Unique Clan'
   })
-})
-
-router.get('/admin', function (req, res, next) {
-  if (req.session && req.session.admin_authed) {
-    return res.render('admin', {
-      title: 'Unique Clan'
-    })
-  } else {
-    res.redirect('/admin/login')
-  }
-})
-
-router.get('/admin/login', function (req, res, next) {
-  res.render('admin_login', {
-    title: 'Admin login | Unique'
-  })
-})
-
-router.post('/admin/login', function (req, res, next) {
-  var pass = process.env.ADMIN_DASHBOARD_PW || "1234"
-
-  if (req.body.adminpass === pass) {
-    req.session.admin_authed = true
-    return res.status(201).send()
-  }
-  return res.status(400).send()
 })
 
 router.get('/member', function (req, res, next) {
@@ -99,7 +72,7 @@ router.post('/apply', function (req, res, next) {
     }
     if (!value || !value.length) {
       errors[f] = { message: 'Field is required.' }
-      error = true;
+      error = true
     }
     application[f] = value
   }
@@ -148,7 +121,7 @@ router.post('/mapupload', upload.single('mapFile'), function (req, res, next) {
   fs.mkdirSync(path)
   fs.renameSync(req.file.path, getFilename(path, req.file.originalname, ''))
   let info = { filename: req.file.originalname, mappers: mappers }
-  fs.writeFileSync(path+'/info.json', JSON.stringify(info, null, 2))
+  fs.writeFileSync(path + '/info.json', JSON.stringify(info, null, 2))
   res.status(201).json({ msg: 'Map submission sent.' })
 })
 
