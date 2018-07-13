@@ -4,14 +4,31 @@ var debug = require('debug')('uniqueweb:router');
 var fs = require('fs');
 var multer = require('multer');
 var upload = multer({ dest: 'uploads/' });
+const mongoose = require('mongoose');
+const ApplicationModel = mongoose.model('Application');
 
-router.get('/', function (req, res, next) {
+const isAuthed = (req, res, next) => {
   if (req.session && req.session.admin_authed) {
-    return res.render('admin', {
-      title: 'Unique Clan'
-    });
+    next();
   } else {
     res.redirect('/admin/login');
+  }
+};
+
+router.get('/', isAuthed, async function (req, res, next) {
+  let apps = await ApplicationModel.find({}).sort({lastMod: -1}).exec();
+  return res.render('admin', {
+    title: 'Unique Clan',
+    apps: apps
+  });
+});
+
+router.get('/delete/:name', isAuthed, async function (req, res, next) {
+  try {
+    await ApplicationModel.deleteMany({twName: req.params.name});
+    res.redirect('/admin');
+  } catch(e) {
+    next(e);
   }
 });
 
