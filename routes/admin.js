@@ -20,7 +20,7 @@ router.get('/', isAuthed, async function (req, res, next) {
   let apps = await ApplicationModel.find({}).sort({lastMod: -1}).exec();
   let maps = await MapModel.find({}).sort({uploadDate: -1}).exec();
   return res.render('admin', {
-    title: 'Unique Clan',
+    title: 'Admin | Unique Clan',
     apps: apps,
     maps: maps
   });
