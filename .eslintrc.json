@@ -1,6 +1,28 @@
 {
-    "extends": "standard",
+    "extends": ["eslint:recommended", "plugin:node/recommended"],
+    "plugins": [
+        "eslint-plugin-node"
+    ],
     "globals": {
-        "$": true
+        "$": true,
+        "BulmaFormHandler": true,
+        "grecaptcha": true
+    },
+    "rules": {
+        "no-unused-vars": "off",
+        "semi": "error",
+        "no-extra-semi": "error",
+        "no-mixed-spaces-and-tabs": "error",
+        "indent": ["error", 2],
+        "quotes": ["error", "single"]
+    },
+    "env": {
+        "es6": true,
+        "browser": true,
+        "node": true,
+        "jquery": true
+    },
+    "parserOptions": {
+        "ecmaVersion": 2018
     }
 }

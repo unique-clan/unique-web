@@ -6,12 +6,31 @@ block content
     section.section
       .container
         .columns
-            .column.is-one-third
-                | First column
-            .column.is-one-third
-                | Second column
-            .column.is-one-third
-                | Third column
+            .column.is-one-half
+                .box
+                    .content
+                        h2.has-text-centered Applications
+                        hr
+                        each app in apps
+                            .box
+                                a.delete.is-pulled-right(href="/admin/delete/" + app.twName)
+                                p #[strong Name]: #{app.twName}
+                                p #[strong Country]: #{app.country}
+                                p #[strong GameModes]: #{app.gameModes.join(", ")}
+                                p #[strong Gender]: #{app.gender}
+                                p #[strong Presentation]: #{app.presentation}
+
+            .column.is-one-half
+                .box
+                    .content
+                        h2.has-text-centered Maps
+                        hr
+                        each map in maps
+                            .box
+                                a.delete.is-pulled-right(href="/admin/map/delete/" + map.fileName)
+                                p #[strong Name]: #{map.fileName}
+                                p #[strong Mappers]: #{map.mappers.join(", ")}
+                                a.button.is-link(href="/admin/map/download/" + map.fileName) Download
 
 block scripts
   script(src="/static/js/adminlogin.js")
