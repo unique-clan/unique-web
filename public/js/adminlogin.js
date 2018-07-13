@@ -1,3 +1,4 @@
+/* eslint-disable */
 $(document).ready(function () {
     var form = new BulmaFormHandler('#form-admin', '/admin/login', 'POST')
     form.onResponse((status, res) => {
@@ -16,4 +17,3 @@ $(document).ready(function () {
       }
     })
   })
-  
