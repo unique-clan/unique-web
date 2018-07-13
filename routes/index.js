@@ -12,19 +12,6 @@ const MapModel = mongoose.model('Map');
 var serverStatus = new ServerStatus(process.env.SERVERS_LOCATION || 'servers.json');
 serverStatus.startUpdating();
 
-function getFilename (folder, name, ending) {
-  let path = folder + '/' + name.replace(/[^\w]/g, '');
-  if (!fs.existsSync(path + ending)) {
-    return path + ending;
-  } else {
-    let n = 2;
-    while (fs.existsSync(path + n + ending)) {
-      n += 1;
-    }
-    return path + n + ending;
-  }
-}
-
 /* GET home page. */
 router.get('/', function (req, res, next) {
   res.render('index', {
@@ -71,7 +58,6 @@ router.post('/apply', async function (req, res, next) {
     await App.save();
     res.status(201).json({ msg: 'Application sent.' });
   } catch(e) {
-    debug(JSON.stringify(e));
     if(e.code === 11000) {
       return res.status(422).json({
         errors: {

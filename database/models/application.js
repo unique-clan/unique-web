@@ -22,6 +22,10 @@ const ApplicationSchema = new Schema({
     type: String,
     required: [true, 'The presentation is required.'],
     minlength: [100, 'A minimum length of 100 characters is required.']
+  },
+  addDate: {
+    type: Date,
+    default: new Date
   }
 });
 
