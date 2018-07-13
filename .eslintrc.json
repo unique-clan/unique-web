@@ -1,6 +1,24 @@
 {
-    "extends": "standard",
+    "extends": ["eslint:recommended", "plugin:node/recommended"],
+    "plugins": [
+        "eslint-plugin-node"
+    ],
     "globals": {
-        "$": true
+        "$": true,
+        "BulmaFormHandler": true,
+        "grecaptcha": true
+    },
+    "rules": {
+        "no-unused-vars": "off",
+        "no-tabs": "off"
+    },
+    "env": {
+        "es6": true,
+        "browser": true,
+        "node": true,
+        "jquery": true
+    },
+    "parserOptions": {
+        "ecmaVersion": 2018
     }
 }

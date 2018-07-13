@@ -1,3 +1,4 @@
+/* eslint-disable */
 'use strict'
 
 /**
@@ -172,7 +173,7 @@ class BulmaFormHandler extends FormHandler {
       if (!input.length) {
         continue
       }
-      
+
       if (!input.hasClass('is-danger')) {
         input.toggleClass('is-danger')
       }

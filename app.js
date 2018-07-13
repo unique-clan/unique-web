@@ -10,6 +10,7 @@ var session = require('express-session')
 const MongoStore = require('connect-mongo')(session)
 var mongoSanitize = require('express-mongo-sanitize')
 var debug = require('debug')('uniqueweb:app')
+var debugDB = require('debug')('uniqueweb:app:dberror')
 
 // Setup the db connection
 const mongoose = require('mongoose')
@@ -19,7 +20,7 @@ require('./database/index')()
 mongoose.Promise = global.Promise
 
 var db = mongoose.connection
-db.on('error', console.error.bind(console, 'connection error:'))
+db.on('error', debugDB)
 db.once('open', function callback () {
   debug('Connection to database succesfull.')
 })
@@ -43,7 +44,7 @@ mongoose.connect(connectionString, {useNewUrlParser: true})
 
 // Load App routes
 var index = require('./routes/index')
-// var auth = require('./routes/auth')
+var admin = require('./routes/admin')
 var ranks = require('./routes/ranks')
 
 var app = express()
@@ -63,7 +64,6 @@ app.use(mongoSanitize({
   replaceWith: '_'
 }))
 app.use(cookieParser())
-// app.use(stylus.middleware(path.join(__dirname, 'public')))
 
 app.use('/static', express.static(path.join(__dirname, 'public')))
 app.use('/static/css', express.static(path.join(__dirname, 'node_modules/bulma/css')))
