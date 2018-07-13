@@ -34,12 +34,12 @@ if (process.env.DATABASE_USERNAME && process.env.DATABASE_PASSWORD) {
 if (process.env.DATABASE_HOST && process.env.DATABASE_PORT) {
   connectionString += `${process.env.DATABASE_HOST}:${process.env.DATABASE_PORT}`
 } else {
-  connectionString += 'localhost'
+  connectionString += 'localhost:27017'
 }
 
 connectionString += '/' + (process.env.DATABASE_NAME || 'uniqueweb')
 
-mongoose.connect(connectionString)
+mongoose.connect(connectionString, {useNewUrlParser: true})
 
 // Load App routes
 var index = require('./routes/index')
