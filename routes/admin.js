@@ -17,8 +17,8 @@ const isAuthed = (req, res, next) => {
 };
 
 router.get('/', isAuthed, async function (req, res, next) {
-  let apps = await ApplicationModel.find({}).sort({addDate: -1}).exec();
-  let maps = await MapModel.find({}).sort({uploadDate: -1}).exec();
+  let apps = await ApplicationModel.find({}).sort({createdAt: -1}).exec();
+  let maps = await MapModel.find({}).sort({createdAt: -1}).exec();
   return res.render('admin', {
     title: 'Admin | Unique Clan',
     apps: apps,
