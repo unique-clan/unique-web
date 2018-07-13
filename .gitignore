@@ -1,7 +1,7 @@
 
 public/css/**/*.css
 public/css/**/*.css.map
-
+!public/css/old/*.css
 
 # nodejs thingies
 
