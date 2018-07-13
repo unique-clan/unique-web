@@ -6,7 +6,7 @@ block content
     section.section
       .container
         .columns
-            .column.is-one-half
+            .column.is-one-half(style='min-width: 0')
                 .box
                     .content
                         h2.has-text-centered Applications
@@ -18,9 +18,9 @@ block content
                                 p #[strong Country]: #{app.country}
                                 p #[strong GameModes]: #{app.gameModes.join(", ")}
                                 p #[strong Gender]: #{app.gender}
-                                p #[strong Presentation]: #[p #{app.presentation}]
+                                p #[strong Presentation]: #[p(style='overflow-wrap: break-word') #{app.presentation}]
 
-            .column.is-one-half
+            .column.is-one-half(style='min-width: 0')
                 .box
                     .content
                         h2.has-text-centered Maps
