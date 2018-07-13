@@ -23,7 +23,14 @@ block content
             .column.is-one-half
                 .box
                     .content
-                        h2.has-text-centered Maps (WIP)
+                        h2.has-text-centered Maps
+                        hr
+                        each map in maps
+                            .box
+                                a.delete.is-pulled-right(href="/admin/map/delete/" + map.fileName)
+                                p #[strong Name]: #{map.fileName}
+                                p #[strong Mappers]: #{map.mappers.join(", ")}
+                                a.button.is-link(href="/admin/map/download/" + map.fileName) Download
 
 block scripts
   script(src="/static/js/adminlogin.js")

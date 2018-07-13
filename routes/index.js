@@ -7,12 +7,13 @@ var upload = multer({ dest: 'uploads/' });
 const ServerStatus = require('../app/serverstatus');
 const mongoose = require('mongoose');
 const ApplicationModel = mongoose.model('Application');
+const MapModel = mongoose.model('Map');
 
 var serverStatus = new ServerStatus(process.env.SERVERS_LOCATION || 'servers.json');
 serverStatus.startUpdating();
 
 function getFilename (folder, name, ending) {
-  let path = folder + '/' + name.replace(/[^\w\s.]/g, '');
+  let path = folder + '/' + name.replace(/[^\w]/g, '');
   if (!fs.existsSync(path + ending)) {
     return path + ending;
   } else {
@@ -90,38 +91,81 @@ router.get('/submit', function (req, res, next) {
   });
 });
 
-router.post('/mapupload', upload.single('mapFile'), function (req, res, next) {
+router.post('/mapupload', upload.single('mapFile'), async function (req, res, next) {
   let errors = {};
+  let errMessages = [];
   let error = false;
-  let mappers = [];
+
   if (req.body.mappers) {
-    mappers = req.body.mappers.split(',').filter(g => g.length);
+    req.body.mappers = req.body.mappers.split(',').filter(g => g.length);
   }
-  if (!mappers.length) {
-    errors.mappers = { message: 'Field is required.' };
+
+  if(req.body.mappers.length < 1) {
+    errors.mappers = {
+      message: 'Mappers is required.'
+    };
     error = true;
   }
-  if (!req.file) {
-    errors.mapFile = { message: 'File is required.' };
-    error = true;
-  } else if (!req.file.originalname.endsWith('.map')) {
-    errors.mapFile = { message: 'Filename must end on .map' };
+
+  if(typeof req.file === 'undefined' || !req.file || !req.file.originalname) {
+    errMessages.push('Missing file');
     error = true;
   }
-  if (error) {
+
+  if (req.file && !req.file.originalname.endsWith('.map')) {
+    errMessages.push('Filename must end on .map');
+    error = true;
+  }
+
+  if (req.file && /[^\w]/g.test(req.file.originalname.replace(/\.map$/g, ''))) {
+    errMessages.push('Invalid characters in map name, only allowed: a-Z 0-9 _');
+    error = true;
+  }
+
+  // Max 8mb file size
+  if(req.file && req.file.size > 8 * 1024 * 1024) {
+    errMessages.push('Maximum file size is 8mb');
+    error = true;
+  }
+
+  let mapFile = null;
+
+  try {
+    if(req.file)
+      mapFile = fs.readFileSync(req.file.path);
+  } catch(e) {
+    errMessages.push('Error uploading the file, please retry.');
+    error = true;
+  }
+
+  if(!mapFile && req.file) {
+    errMessages.push('Error uploading the file, please retry.');
+    error = true;
+  }
+
+  if(error) {
     if (req.file) {
       fs.unlinkSync(req.file.path);
     }
-    res.status(422).json({ errors: errors });
-    return;
+    return res.status(422).json({ errors: errors, message: errMessages.join('<br>') });
   }
-  let name = req.file.originalname.substring(0, req.file.originalname.length - 4);
-  let path = getFilename('admintmp/map-submissions', name, '');
-  fs.mkdirSync(path);
-  fs.renameSync(req.file.path, getFilename(path, req.file.originalname, ''));
-  let info = { filename: req.file.originalname, mappers: mappers };
-  fs.writeFileSync(path + '/info.json', JSON.stringify(info, null, 2));
-  res.status(201).json({ msg: 'Map submission sent.' });
+
+  try {
+    await MapModel.create({
+      fileName: req.file.originalname,
+      mappers: req.body.mappers,
+      mapFile: mapFile,
+      encoding: req.file.encoding,
+      size: req.file.size,
+      mimetype: req.file.mimetype
+    });
+  } catch(e) {
+    fs.unlinkSync(req.file.path);
+    return next(e);
+  }
+
+  fs.unlinkSync(req.file.path);
+  return res.status(201).json({msg:'Map submission sent.'});
 });
 
 router.get('/tournaments', function (req, res, next) {
