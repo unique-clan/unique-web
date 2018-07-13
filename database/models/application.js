@@ -27,6 +27,6 @@ const ApplicationSchema = new Schema({
     type: Date,
     default: new Date
   }
-});
+}, { timestamps: {} });
 
 module.exports = exports = ApplicationSchema;

@@ -29,6 +29,6 @@ const MapSchema = new Schema({
     type: Number,
     required: true
   }
-});
+}, { timestamps: {} });
 
 module.exports = exports = MapSchema;
