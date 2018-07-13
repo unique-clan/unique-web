@@ -18,6 +18,7 @@ block content
                                 p #[strong Country]: #{app.country}
                                 p #[strong GameModes]: #{app.gameModes.join(", ")}
                                 p #[strong Gender]: #{app.gender}
+                                p #[strong Date]: #{app.addDate}
                                 p #[strong Presentation]: #[p(style='overflow-wrap: break-word') #{app.presentation}]
 
             .column.is-one-half(style='min-width: 0')
@@ -30,6 +31,7 @@ block content
                                 a.delete.is-pulled-right(href="/admin/map/delete/" + map.fileName)
                                 p #[strong Name]: #{map.fileName}
                                 p #[strong Mappers]: #{map.mappers.join(", ")}
+                                p #[strong Date]: #{app.uploadDate}
                                 a.button.is-link(href="/admin/map/download/" + map.fileName) Download
 
 block scripts
