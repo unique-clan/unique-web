@@ -67,12 +67,7 @@ app.use(cookieParser())
 
 app.use('/static', express.static(path.join(__dirname, 'public')))
 app.use('/static/css', express.static(path.join(__dirname, 'node_modules/bulma/css')))
-app.use('/static/css', express.static(path.join(__dirname, 'node_modules/bulma-extensions/dist')))
-var bulmaExtensions = ['tagsinput']
-for (var x in bulmaExtensions) {
-  var ext = bulmaExtensions[x]
-  app.use('/static/js', express.static(path.join(__dirname, `node_modules/bulma-extensions/bulma-${ext}/dist`)))
-}
+app.use('/static/', express.static(path.join(__dirname, 'node_modules/bulma-extensions/dist')))
 app.use(sassMiddleware({
   src: path.join(__dirname, 'public'),
   dest: path.join(__dirname, 'public'),
