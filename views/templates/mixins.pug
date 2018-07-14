@@ -10,19 +10,17 @@ mixin player_search()
 
 mixin member(name, types, flag='DE', leader=false)
   .column.is-half-tablet.is-half-desktop.is-one-third-fullhd
-    - size_class = leader == true ? 'is-one-third' : 'is-one-quarter'
     .box(class=size_class)
       article.media
         .media-left
-          figure.image.is-96x96
-            img(src=`/static/img/twflags/${flag}.png`, alt=flag, style='margin-top: 10px')
+          img(src=`/static/img/twflags/${flag}.png`, alt=flag, style='margin-top: 10px', width=96)
         .media-content
           .content
-            h1= name
+            h1.is-size-5-mobile= name
             if leader
-              h3= types
+              h3.is-size-6-mobile= types
             else
-              h4= types
+              h4.is-size-6-mobile= types
 
 mixin country_select(name)
   select.warning-input(name=name)
