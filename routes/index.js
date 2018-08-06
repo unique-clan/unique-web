@@ -165,4 +165,16 @@ router.get('/profile', function (req, res, next) {
     title: 'Profile | Unique'
   });
 });
+
+router.get('/map', function (req, res, next) {
+  res.render('map', {
+    title: 'Map | Unique'
+  });
+});
+
+router.get('/maps', function (req, res, next) {
+  res.render('maps', {
+    title: 'Maps | Unique'
+  });
+});
 module.exports = router;
