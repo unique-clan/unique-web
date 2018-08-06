@@ -1,0 +1,79 @@
+extends layout
+
+block content
+  main
+    br
+    br
+    br
+    br
+    section.hero.is-dark
+      .hero-body
+        .container
+          .columns
+            .column.is-9
+              h1.title Unique Race Maps
+            .column
+              form#search-form
+                field
+                  p.control.has-icons-right
+                    input#player-name.input.warning-dark-input(type="text",placeholder="Map Search", name="map")
+                    span.icon.is-small.is-right
+                      i.fa.fa-search
+    section.section
+      .container
+        .columns
+          .column.is-4
+            .card
+              .card-image
+                img(src=`static/img/mapimage/run_4DoNe.png`)
+              .card-content
+                p.title.has-text-centered run_4DoNe
+          .column.is-4
+            .card
+              .card-image
+                img(src=`static/img/mapimage/run_4DoNe.png`)
+              .card-content
+                p.title.has-text-centered run_4DoNe
+          .column.is-4
+            .card
+              .card-image
+                img(src=`static/img/mapimage/run_4DoNe.png`)
+              .card-content
+                p.title.has-text-centered run_4DoNe
+        .columns
+          .column.is-4
+            .card
+              .card-image
+                img(src=`static/img/mapimage/run_4DoNe.png`)
+              .card-content
+                p.title.has-text-centered run_4DoNe
+          .column.is-4
+            .card
+              .card-image
+                img(src=`static/img/mapimage/run_4DoNe.png`)
+              .card-content
+                p.title.has-text-centered run_4DoNe
+          .column.is-4
+            .card
+              .card-image
+                img(src=`static/img/mapimage/run_4DoNe.png`)
+              .card-content
+                p.title.has-text-centered run_4DoNe
+        nav.pagination.is-centered(role='navigation', aria-label='pagination')
+          a.pagination-previous Previous
+          a.pagination-next Next page
+          ul.pagination-list
+            li
+              a.pagination-link(aria-label='Goto page 1') 1
+            li
+              span.pagination-ellipsis …
+            li
+              a.pagination-link(aria-label='Goto page 45') 45
+            li
+              a.pagination-link.is-current(aria-label='Page 46', aria-current='page') 46
+            li
+              a.pagination-link(aria-label='Goto page 47') 47
+            li
+              span.pagination-ellipsis …
+            li
+              a.pagination-link(aria-label='Goto page 86') 86
