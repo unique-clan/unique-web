@@ -21,44 +21,16 @@ block content
                       i.fa.fa-search
     section.section
       .container
-        .columns
-          .column.is-4
-            .card
-              .card-image
-                img(src=`static/img/mapimage/run_4DoNe.png`)
-              .card-content
-                p.title.has-text-centered run_4DoNe
-          .column.is-4
-            .card
-              .card-image
-                img(src=`static/img/mapimage/run_4DoNe.png`)
-              .card-content
-                p.title.has-text-centered run_4DoNe
-          .column.is-4
-            .card
-              .card-image
-                img(src=`static/img/mapimage/run_4DoNe.png`)
-              .card-content
-                p.title.has-text-centered run_4DoNe
-        .columns
-          .column.is-4
-            .card
-              .card-image
-                img(src=`static/img/mapimage/run_4DoNe.png`)
-              .card-content
-                p.title.has-text-centered run_4DoNe
-          .column.is-4
-            .card
-              .card-image
-                img(src=`static/img/mapimage/run_4DoNe.png`)
-              .card-content
-                p.title.has-text-centered run_4DoNe
-          .column.is-4
-            .card
-              .card-image
-                img(src=`static/img/mapimage/run_4DoNe.png`)
-              .card-content
-                p.title.has-text-centered run_4DoNe
+        each maprow in maps.reduce(function(result, value, index, array) { if (index % 3 === 0) result.push(array.slice(index, index + 3)); return result; }, [])
+          .columns
+            each map in maprow
+              .column.is-4
+                a(href=`/map/${map.Map}`)
+                  .card
+                    .card-image
+                      img(src=`/static/img/mapimage/${map.Map}.png`)
+                    .card-content
+                      p.title.has-text-centered= map.Map
         nav.pagination.is-centered(role='navigation', aria-label='pagination')
           a.pagination-previous Previous
           a.pagination-next Next page

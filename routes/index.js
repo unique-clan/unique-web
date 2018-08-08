@@ -8,6 +8,7 @@ const ServerStatus = require('../app/serverstatus');
 const mongoose = require('mongoose');
 const ApplicationModel = mongoose.model('Application');
 const MapModel = mongoose.model('Map');
+const sql = require('../app/sql');
 
 var serverStatus = new ServerStatus(process.env.SERVERS_LOCATION || 'servers.json');
 serverStatus.startUpdating();
@@ -173,8 +174,25 @@ router.get('/map', function (req, res, next) {
 });
 
 router.get('/maps', function (req, res, next) {
+  res.redirect('/maps/1');
+});
+
+router.get('/maps/:page', async function (req, res, next) {
+  if (!/^\d+$/.test(req.params.page)) {
+    next();
+    return;
+  }
+  const connection = await sql.newMysqlConn();
+  const [mapCount] = await connection.execute('SELECT COUNT(*) as Count FROM race_maps;');
+  const pageCount = Math.ceil(mapCount[0]['Count'] / 30);
+  const page = Math.min(Math.max(1, req.params.page), pageCount);
+  const [maps] = await connection.execute('SELECT Map FROM race_maps ORDER BY Timestamp DESC, Map LIMIT ?, 30;', [(page-1)*30]);
+  console.log(maps);
   res.render('maps', {
-    title: 'Maps | Unique'
+    title: 'Maps | Unique',
+    page: page,
+    pageCount: pageCount,
+    maps: maps
   });
 });
 module.exports = router;
