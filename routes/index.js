@@ -4,6 +4,7 @@ var debug = require('debug')('uniqueweb:router');
 var fs = require('fs');
 var multer = require('multer');
 var upload = multer({ dest: 'uploads/' });
+var thumb = require('node-thumbnail').thumb;
 const ServerStatus = require('../app/serverstatus');
 const mongoose = require('mongoose');
 const ApplicationModel = mongoose.model('Application');
@@ -187,7 +188,10 @@ router.get('/maps/:page', async function (req, res, next) {
   const pageCount = Math.ceil(mapCount[0]['Count'] / 30);
   const page = Math.min(Math.max(1, req.params.page), pageCount);
   const [maps] = await connection.execute('SELECT Map FROM race_maps ORDER BY Timestamp DESC, Map LIMIT ?, 30;', [(page-1)*30]);
-  console.log(maps);
+  /*await thumb({
+    source: 'public/img/mapimage',
+    destination: 'public/img/mapthumb'
+  })*/
   res.render('maps', {
     title: 'Maps | Unique',
     page: page,

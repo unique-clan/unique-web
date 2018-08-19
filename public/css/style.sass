@@ -37,8 +37,14 @@ html,body
 .article-title
   line-height: 2
 
-.navbar
-  box-shadow: 0 2px 0 0 #eeeeee
+.pagination-link.is-current
+  color: #363636
+  background-color: #ffdd57
+  border-color: #e9c94f
+
+.pagination
+  a:not([disabled]):active, a:not([disabled]):focus
+    border-color: #e9c94f !important
 
 .servernot
   overflow-x: auto
@@ -120,6 +126,14 @@ html,body
 
 a.navbar-item:hover
   color: #e89200
+
+.navbar
+  box-shadow: 0 2px 0 0 #eeeeee
+  .button
+    border: none
+  .button:focus:not(:active)
+    box-shadow: none
+
 
 .tabs li.is-active a
   border-bottom-color: #e89200
