@@ -76,6 +76,7 @@ app.use(sassMiddleware({
 app.use('/static', express.static(path.join(__dirname, 'public')));
 app.use('/static/css', express.static(path.join(__dirname, 'node_modules/bulma/css')));
 app.use('/static', express.static(path.join(__dirname, 'node_modules/bulma-extensions/dist')));
+app.use('/static/servers.json', express.static(path.join(__dirname, process.env.SERVERS_LOCATION || 'servers.json')));
 
 app.use(logger('dev'));
 
