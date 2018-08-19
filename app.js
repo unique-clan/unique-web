@@ -11,6 +11,7 @@ const MongoStore = require('connect-mongo')(session);
 var mongoSanitize = require('express-mongo-sanitize');
 var debug = require('debug')('uniqueweb:app');
 var debugDB = require('debug')('uniqueweb:app:dberror');
+var contentDisposition = require('content-disposition')
 
 // Setup the db connection
 const mongoose = require('mongoose');
@@ -76,7 +77,14 @@ app.use(sassMiddleware({
 app.use('/static', express.static(path.join(__dirname, 'public')));
 app.use('/static/css', express.static(path.join(__dirname, 'node_modules/bulma/css')));
 app.use('/static', express.static(path.join(__dirname, 'node_modules/bulma-extensions/dist')));
-app.use('/static/servers.json', express.static(path.join(__dirname, process.env.SERVERS_LOCATION || 'servers.json')));
+app.use('/static/servers.json', express.static(process.env.SERVERS_LOCATION || 'servers.json'));
+if (process.env.MAPS_LOCATION) {
+  app.use('/static/maps', express.static(process.env.MAPS_LOCATION, {setHeaders: function(res, path) {
+    if (path.endsWith('.map')) {
+      res.setHeader('Content-Disposition', contentDisposition(path))
+    }
+  }}));
+}
 
 app.use(logger('dev'));
 

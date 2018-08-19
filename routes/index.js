@@ -5,6 +5,7 @@ var fs = require('fs');
 var multer = require('multer');
 var upload = multer({ dest: 'uploads/' });
 var thumb = require('node-thumbnail').thumb;
+var path = require('path');
 const ServerStatus = require('../app/serverstatus');
 const mongoose = require('mongoose');
 const ApplicationModel = mongoose.model('Application');
@@ -188,10 +189,18 @@ router.get('/maps/:page', async function (req, res, next) {
   const pageCount = Math.ceil(mapCount[0]['Count'] / 30);
   const page = Math.min(Math.max(1, req.params.page), pageCount);
   const [maps] = await connection.execute('SELECT Map FROM race_maps ORDER BY Timestamp DESC, Map LIMIT ?, 30;', [(page-1)*30]);
-  /*await thumb({
-    source: 'public/img/mapimage',
-    destination: 'public/img/mapthumb'
-  })*/
+  if (process.env.MAPS_LOCATION) {
+    for (let i = 0; i < maps.length; i++) {
+      await thumb({
+        source: path.join(process.env.MAPS_LOCATION, maps[i].Map+'.png'),
+        destination: path.join(__dirname, '../public/img/mapthumb'),
+        width: 432,
+        skip: true,
+        suffix: '',
+        quiet: true
+      })
+    }
+  }
   res.render('maps', {
     title: 'Maps | Unique',
     page: page,
