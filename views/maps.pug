@@ -31,21 +31,23 @@ block content
                       img(src=`/static/img/mapimage/${map.Map}.png`)
                     .card-content
                       p.title.has-text-centered= map.Map
-        nav.pagination.is-centered(role='navigation', aria-label='pagination')
-          a.pagination-previous Previous
-          a.pagination-next Next page
+        nav.pagination.is-centered.is-rounded(role='navigation', aria-label='pagination')
+          - var isFirst = page === 1
+          - var isLast = page === pageCount
+          a.pagination-previous(href=isFirst ? false : '/maps/'+(page-1), disabled=isFirst) Previous
+          a.pagination-next(href=isLast ? false : '/maps/'+(page+1), disabled=isLast) Next page
           ul.pagination-list
             li
-              a.pagination-link(aria-label='Goto page 1') 1
+              a.pagination-link(href='/maps/1') 1
             li
               span.pagination-ellipsis …
             li
-              a.pagination-link(aria-label='Goto page 45') 45
+              a.pagination-link(href=isFirst ? false : '/maps/'+(page-1), disabled=isFirst)= isFirst ? '' : page-1
             li
-              a.pagination-link.is-current(aria-label='Page 46', aria-current='page') 46
+              a.pagination-link.is-current(href='/maps/'+page)= page
             li
-              a.pagination-link(aria-label='Goto page 47') 47
+              a.pagination-link(href=isLast ? false : '/maps/'+(page+1), disabled=isLast)= isLast ? '' : page+1
             li
               span.pagination-ellipsis …
             li
-              a.pagination-link(aria-label='Goto page 86') 86
+              a.pagination-link(href='/maps/'+pageCount)= pageCount
