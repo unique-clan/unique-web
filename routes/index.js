@@ -198,7 +198,7 @@ router.get('/maps/:page', async function (req, res, next) {
         skip: true,
         suffix: '',
         quiet: true
-      })
+      });
     }
   }
   res.render('maps', {
