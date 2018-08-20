@@ -188,13 +188,13 @@ router.get('/maps/:page', async function (req, res, next) {
   const [mapCount] = await connection.execute('SELECT COUNT(*) as Count FROM race_maps;');
   const pageCount = Math.ceil(mapCount[0]['Count'] / 30);
   const page = Math.min(Math.max(1, req.params.page), pageCount);
-  const [maps] = await connection.execute('SELECT Map FROM race_maps ORDER BY Timestamp DESC, Map LIMIT ?, 30;', [(page-1)*30]);
+  const [maps] = await connection.execute('SELECT Map, Mapper, Timestamp FROM race_maps ORDER BY Timestamp DESC, Map LIMIT ?, 30;', [(page-1)*30]);
   if (process.env.MAPS_LOCATION) {
     for (let i = 0; i < maps.length; i++) {
       await thumb({
         source: path.join(process.env.MAPS_LOCATION, maps[i].Map+'.png'),
         destination: path.join(__dirname, '../public/img/mapthumb'),
-        width: 432,
+        width: 720,
         skip: true,
         suffix: '',
         quiet: true
