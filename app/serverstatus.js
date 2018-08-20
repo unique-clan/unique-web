@@ -24,7 +24,7 @@ function loadTWFlags () {
 class ServerStatus {
   constructor (jsonPath) {
     this.path = jsonPath;
-    this.list = null;
+    this.list = [];
   }
 
   startUpdating () {
@@ -34,15 +34,20 @@ class ServerStatus {
     // Then every x seconds
     setInterval(() => {
       this.updateStatus();
+      debug('Typeof list: ');
+      debug(typeof this.list);
     }, parseFloat(process.env.SERVER_STATUS_UPDATE || 5) * 1000);
   }
 
   updateStatus () {
     fs.readFile(this.path, 'utf8', async (err, data) => {
       if (err) debug(err);
-
+      debug('Serverstatus.js L43 data: ');
+      debug(data);
       let svlist = JSON.parse(data);
-      
+      debug('Parsed: ');
+      debug(svlist);
+
       for (var i in svlist) {
         let server = svlist[i];
 
@@ -57,6 +62,8 @@ class ServerStatus {
       }
 
       this.list = svlist;
+      debug('List content: ');
+      debug(this.list);
     });
   }
 
@@ -73,7 +80,7 @@ class ServerStatus {
             .filter(p => p.name !== '(connecting)')
             .sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
           gameServer.password = svInfo.password;
-  
+
           for (var ply in gameServer.players) {
             if (gameServer.players[ply].country in twFlags) {
               gameServer.players[ply].flag = twFlags[gameServer.players[ply].country];
