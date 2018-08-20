@@ -4,7 +4,7 @@ var debug = require('debug')('uniqueweb:serverstatus');
 var getServerInfo = require('teeworlds-server-status').getServerInfo;
 var twFlags = null;
 
-function loadTWFlags () {
+function loadTWFlags() {
   twFlags = {};
   var lastLine;
   var lines = fs.readFileSync('twflags.txt', 'utf8').split('\n');
@@ -22,30 +22,29 @@ function loadTWFlags () {
 }
 
 class ServerStatus {
-  constructor (jsonPath) {
+  constructor(jsonPath) {
     this.path = jsonPath;
     this.list = [];
   }
 
-  startUpdating () {
+  startUpdating() {
     loadTWFlags();
     // Call also when starting
     this.updateStatus();
     // Then every x seconds
-    setInterval(() => {
+    setInterval(async () => {
       this.updateStatus();
     }, parseFloat(process.env.SERVER_STATUS_UPDATE || 5) * 1000);
   }
 
-  updateStatus () {
-    fs.readFile(this.path, 'utf8', async (err, data) => {
-      if (err) debug(err);
-      let svlist = JSON.parse(data);
+  async updateStatus() {
+    const data = fs.readFileSync(this.path, 'utf8');
+    let svlist = JSON.parse(data);
 
-      for (let server of svlist) {
-        let res = await ping.probe(server.ip, {timeout: 2});
-        debug('Ping res:');
-        debug(res);
+    let promises = [];
+    for (let server of svlist) {
+      promises.push(new Promise(async (resolve, reject) => {
+        let res = await ping.probe(server.ip, { timeout: 2 });
 
         server.alive = res.alive;
         server.ping = res.avg;
@@ -54,15 +53,18 @@ class ServerStatus {
           await this.getServerstatus(server);
           debug('Call after getServerstatus');
         }
-      }
+        resolve();
+      }));
+    }
 
-      this.list = svlist;
-      debug('List content: ');
-      debug(this.list);
-    });
+    await Promise.all(promises);
+
+    this.list = svlist;
+    debug('List content: ');
+    debug(this.list);
   }
 
-  getServerstatus (server) {
+  getServerstatus(server) {
     let promises = [];
     for (var i in server.servers) {
       let gameServer = server.servers[i];
