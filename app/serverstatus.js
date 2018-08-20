@@ -57,14 +57,16 @@ class ServerStatus {
       }));
     }
 
+    debug('called before all promises');
     await Promise.all(promises);
+    debug('called after all promises');
 
     this.list = svlist;
     debug('List content: ');
     debug(this.list);
   }
 
-  getServerstatus(server) {
+  async getServerstatus(server) {
     let promises = [];
     for (var i in server.servers) {
       let gameServer = server.servers[i];
@@ -89,7 +91,7 @@ class ServerStatus {
         });
       }));
     }
-    return Promise.all(promises);
+    return await Promise.all(promises);
   }
 }
 
