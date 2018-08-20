@@ -8,22 +8,25 @@ block content
         .column.is-half.is-offset-3
           .card
             .card-image
-              img(src=`static/maps/run_4DoNe.png`)
+              img(src=`/static/maps/${encodeURIComponent(map.Map)}.png`)
             .card-content
-                p.title.has-text-centered run_4DoNe
+                p.title.has-text-centered(style=`font-size: ${Math.min(32, Math.max(18, 550/map.Map.length))}px; height: 36px;`)
+                  |!{escape(map.Map).replace(new RegExp('_', 'g'), '_<wbr>')}
                 hr
-                p.subtitle 📝 Mappers: Tezcan
-                p.subtitle 📯 Released on 2012-02-03
-                p.subtitle 📂 Category: Short
-                p.subtitle 🏁 Finished by 5 tees
-                a.span.button.is-link Preview          
-                a.span.button.is-link.tr Download
-        section.section
-        .columns
+                p.subtitle 📝 Mapper: #{map.Mapper}
+                if !isNaN(map.Timestamp)
+                  p.subtitle 📯 Released on #{map.Timestamp.toISOString().split('T')[0]}
+                p.subtitle 📂 Category: #{getCategory(map)}
+                p.subtitle 🏁 Finished by #{map.Finishers} tees
+                a.span.button.is-link.is-warning(href='/static/tw-webgl/?map='+encodeURIComponent(`/static/maps/${map.Map}.map`)) Preview
+                a.span.button.is-link.is-warning.tr(href=`/static/maps/${encodeURIComponent(map.Map)}.map`) Download
+        br
+        br
+        .columns.table-links
           .column
             .box
               section.hero
-                h1.title Top 10
+                h1.title Top Ranks
                 .horizontal-scroll
                   table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
                     thead
@@ -32,50 +35,16 @@ block content
                         th Player
                         th Time
                     tbody
-                      tr
-                        th 1
-                        td Zwiebel
-                        td 00.04.333
-                      tr    
-                        th 2
-                        td Ryono
-                        td 00.04.334
-                      tr    
-                        th 3
-                        td nilo
-                        td 00.04.336
-                      tr
-                        th 4
-                        td Ryono
-                        td 00.04.338
-                      tr
-                        th 5
-                        td Ryono
-                        td 00.04.355
-                      tr    
-                        th 6
-                        td Ryono
-                        td 00.04.334
-                      tr    
-                        th 7
-                        td Ryono
-                        td 00.04.334
-                      tr
-                        th 8
-                        td Ryono
-                        td 00.04.334
-                      tr    
-                        th 9
-                        td Ryono
-                        td 00.04.334
-                      tr
-                        th 10
-                        td Ryono
-                        td 00.04.334
+                      each record in topTen
+                        tr
+                          th= record.rank
+                          td
+                            a(href='/ranks/player/'+encodeURIComponent(record.Name))= record.Name
+                          td= formatTime(record.Time)
           .column
             .box
               section.hero
-                h1.title Last Maprecords
+                h1.title Last Records
                 .horizontal-scroll
                   table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
                     thead
@@ -84,43 +53,9 @@ block content
                         th Player
                         th Time
                     tbody
-                      tr
-                        td 22.02.1234
-                        td Zwiebel
-                        td 00.04.333
-                      tr    
-                        td 32.13.2019
-                        td Ryono
-                        td 00.04.334
-                      tr    
-                        td 22.04.2013
-                        td nilo
-                        td 00.04.336
-                      tr
-                        td 32.13.2022
-                        td Ryono
-                        td 00.04.338
-                      tr
-                        td 32.13.2343
-                        td Ryono
-                        td 00.04.355
-                      tr    
-                        td 32.13.2019
-                        td Ryono
-                        td 00.04.334
-                      tr    
-                        td 32.13.2019
-                        td Ryono
-                        td 00.04.334
-                      tr
-                        td 32.13.2019
-                        td Ryono
-                        td 00.04.334
-                      tr    
-                        td 32.13.2019
-                        td Ryono
-                        td 00.04.334
-                      tr
-                        td 32.13.2019
-                        td Ryono
-                        td 00.04.334
+                      each record in lastRecords
+                        tr
+                          td= record.Timestamp.toISOString().replace(/T/, ' ').replace(/\..+/, '')
+                          td
+                            a(href='/ranks/player/'+encodeURIComponent(record.Name))= record.Name
+                          td= formatTime(record.Time)

@@ -27,11 +27,12 @@ block content
               .column.is-4
                 .card
                   .card-image
-                     a(href=`/map/${map.Map}`)
-                      img(src=`/static/img/mapthumb/${map.Map}.png`)
+                     a(href='/map/'+encodeURIComponent(map.Map))
+                      img(src=`/static/img/mapthumb/${encodeURIComponent(map.Map)}.png`)
                   .card-content
-                    p.title.has-text-centered(style=`font-size: ${Math.min(32, Math.max(18, 300/map.Map.length))}px; height: 36px;`)
-                      |!{escape(map.Map).replace(new RegExp('_', 'g'), '_<wbr>')}
+                    a(href='/map/'+encodeURIComponent(map.Map))
+                      p.title.has-text-centered(style=`font-size: ${Math.min(32, Math.max(18, 300/map.Map.length))}px; height: 36px;`)
+                        |!{escape(map.Map).replace(new RegExp('_', 'g'), '_<wbr>')}
                     p.maps-page-meta(style='margin-top: 30px')
                       if !isNaN(map.Timestamp)
                         span(style='margin-right: 10px;') 📯 #{map.Timestamp.toISOString().split('T')[0]}

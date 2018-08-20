@@ -31,7 +31,7 @@ block content
                 a(href='#long') Long
     section.section
       .container
-        article.tile.is-child.notification.is-white.ranks-main-section
+        article.tile.is-child.notification.is-white.table-links
           p.title Ranks (#{totalMapCount} Maps)
           .columns
             .column
@@ -80,7 +80,8 @@ block content
                       tr
                         td
                           a(href='/ranks/player/'+encodeURIComponent(record.Name))= record.Name
-                        td= record.Map
+                        td
+                          a(href='/map/'+encodeURIComponent(record.Map))= record.Map
                         td= formatTime(record.Time)
           span.rank-anchor#short
           p.title.is-4 Short Ranks (#{numShortMaps} Maps)

@@ -169,12 +169,6 @@ router.get('/profile', function (req, res, next) {
   });
 });
 
-router.get('/map', function (req, res, next) {
-  res.render('map', {
-    title: 'Map | Unique'
-  });
-});
-
 router.get('/maps', function (req, res, next) {
   res.redirect('/maps/1');
 });
@@ -185,10 +179,10 @@ router.get('/maps/:page', async function (req, res, next) {
     return;
   }
   const connection = await sql.newMysqlConn();
-  const [mapCount] = await connection.execute('SELECT COUNT(*) as Count FROM race_maps;');
+  const mapCount = await sql.getCacheOrUpdate('mapOverviewCount', connection, 'SELECT COUNT(*) as Count FROM race_maps;');
   const pageCount = Math.ceil(mapCount[0]['Count'] / 30);
   const page = Math.min(Math.max(1, req.params.page), pageCount);
-  const [maps] = await connection.execute('SELECT Map, Mapper, Timestamp FROM race_maps ORDER BY Timestamp DESC, Map LIMIT ?, 30;', [(page-1)*30]);
+  const maps = await sql.getCacheOrUpdate('mapOverviewPage_' + page, connection, 'SELECT Map, Mapper, Timestamp FROM race_maps ORDER BY Timestamp DESC, LOWER(Map) LIMIT ?, 30;', [(page-1)*30]);
   if (process.env.MAPS_LOCATION) {
     for (let i = 0; i < maps.length; i++) {
       await thumb({
@@ -208,4 +202,36 @@ router.get('/maps/:page', async function (req, res, next) {
     maps: maps
   });
 });
+
+router.get('/map/:map', async function (req, res, next) {
+  const connection = await sql.newMysqlConn();
+  const [map] = await connection.execute('SELECT Map, Server, Mapper, Stars, Timestamp, (SELECT COUNT(DISTINCT Name) FROM race_race WHERE Map = l.Map) AS Finishers FROM race_maps l WHERE Map = ?;', [req.params.map]);
+  if (!map.length) {
+    res.status('404');
+    res.render('error', {message: 'Not Found', error: {status: 404}});
+    return;
+  }
+  const topTen = await sql.getCacheOrUpdate('mapOverviewTopTen_' + req.params.map, connection, 'SELECT @pos := @pos + 1 AS v1, @rank := IF(@prev = Time, @rank, @pos) AS rank, @prev := Time AS v2, Name, Time FROM (SELECT Name, MIN(Time) AS Time FROM race_race WHERE Map=? GROUP BY Name ORDER BY Time) v, (SELECT @pos := 0) i1, (SELECT @rank := -1) i2, (SELECT @prev := -1) i3 LIMIT 10;', [req.params.map]);
+  const lastRecords = await sql.getCacheOrUpdate('mapOverviewLastRecords_' + req.params.map, connection, 'SELECT Name, Timestamp, Time FROM race_lastrecords WHERE Map=? ORDER BY Timestamp DESC LIMIT 10;', [req.params.map]);
+  res.render('map', {
+    title: req.params.map + ' | Unique',
+    map: map[0],
+    topTen: topTen,
+    lastRecords: lastRecords,
+    formatTime: sql.formatTime,
+    getCategory: function (map) {
+      if (map.Server !== 'Long')
+        return map.Server;
+      let difficulty;
+      if (map.Stars === 0)
+        difficulty = 'Easy';
+      else if (map.Stars === 1)
+        difficulty = 'Advanced';
+      else if (map.Stars === 2)
+        difficulty = 'Hard';
+      return map.Server + ' ' + difficulty;
+    }
+  });
+});
+
 module.exports = router;
