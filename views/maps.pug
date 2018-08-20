@@ -30,7 +30,9 @@ block content
                     .card-image
                       img(src=`/static/img/mapthumb/${map.Map}.png`)
                     .card-content
-                      p.title.has-text-centered= map.Map
+                      p.title.has-text-centered(style=`font-size: ${Math.min(32, Math.max(18, 300/map.Map.length))}px; height: 36px;`)
+                        |!{escape(map.Map).replace(new RegExp('_', 'g'), '_<wbr>')}
+                      p.maps-page-meta !{!isNaN(map.Timestamp) ? '📯 ' + map.Timestamp.toISOString().split('T')[0] + '&nbsp;&nbsp;&nbsp;' : ''}📝 #{map.Mapper}
         nav.pagination.is-centered.is-rounded(role='navigation', aria-label='pagination')
           - var isFirst = page === 1
           - var isLast = page === pageCount

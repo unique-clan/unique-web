@@ -12,6 +12,7 @@ var mongoSanitize = require('express-mongo-sanitize');
 var debug = require('debug')('uniqueweb:app');
 var debugDB = require('debug')('uniqueweb:app:dberror');
 var contentDisposition = require('content-disposition')
+var escape = require('escape-html');
 
 // Setup the db connection
 const mongoose = require('mongoose');
@@ -106,6 +107,9 @@ app.use(session({
   })
 }));
 
+// make html escape function available in all views
+app.locals.escape = escape
+
 // Add the app routes
 app.use('/', index);
 app.use('/admin', admin);
@@ -129,5 +133,6 @@ app.use(function (err, req, res, next) {
     res.render('error');
   }
 });
+
 
 module.exports = app;
