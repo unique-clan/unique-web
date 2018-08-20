@@ -31,7 +31,7 @@ block content
           article.tile.is-child.notification.is-white
             p.title Player '#{name}' not found
         else
-          article.tile.is-child.notification.is-white
+          article.tile.is-child.notification.is-white.table-links
             p.title Ranks for #{name} (#{totalMapFinishedCount}/#{totalMapCount} Maps)
             .playerranks-header
               .columns
@@ -73,7 +73,8 @@ block content
                       each x in lastRecords
                         tr
                           td= x.Timestamp.toISOString().replace(/T/, ' ').replace(/\..+/, '')
-                          td= x.Map
+                          td
+                            a(href='/map/'+encodeURIComponent(x.Map))= x.Map
                           td= formatTime(x.Time)
             span.rank-anchor#short
             p.title.is-4 Short Ranks (#{shortMapFinishedCount}/#{numShortMaps} Maps)
@@ -112,7 +113,8 @@ block content
                   tbody
                     each x in shortMapList
                       tr
-                        td= x.Map
+                        td
+                          a(href='/map/'+encodeURIComponent(x.Map))= x.Map
                         td= formatTime(x.playerTime)
                         td(data-order=x.Rank)= x.Rank
                           sup= getOrdinal(x.Rank)
@@ -123,7 +125,8 @@ block content
                 span Unfinished&nbsp;Maps:
                 ul
                   each x in unfinishedShort
-                    li= x.Map
+                    li
+                      a(href='/map/'+encodeURIComponent(x.Map))= x.Map
             span.rank-anchor#middle
             p.title.is-4 Middle Ranks (#{middleMapFinishedCount}/#{numMiddleMaps} Maps)
             .playerranks-header
@@ -161,7 +164,8 @@ block content
                   tbody
                     each x in middleMapList
                       tr
-                        td= x.Map
+                        td
+                          a(href='/map/'+encodeURIComponent(x.Map))= x.Map
                         td= formatTime(x.playerTime)
                         td(data-order=x.Rank)= x.Rank
                           sup= getOrdinal(x.Rank)
@@ -172,7 +176,8 @@ block content
                 span Unfinished&nbsp;Maps:
                 ul
                   each x in unfinishedMiddle
-                    li= x.Map
+                    li
+                      a(href='/map/'+encodeURIComponent(x.Map))= x.Map
             span.rank-anchor#long
             p.title.is-4 Long Ranks (#{longMapFinishedCount}/#{numLongMaps} Maps)
             .playerranks-header
@@ -210,7 +215,8 @@ block content
                   tbody
                     each x in longMapList
                       tr
-                        td= x.Map
+                        td
+                          a(href='/map/'+encodeURIComponent(x.Map))= x.Map
                         td= formatTime(x.playerTime)
                         td(data-order=x.Rank)= x.Rank
                           sup= getOrdinal(x.Rank)
@@ -221,7 +227,8 @@ block content
                 span Unfinished&nbsp;Maps:
                 ul
                   each x in unfinishedLong
-                    li= x.Map
+                    li
+                      a(href='/map/'+encodeURIComponent(x.Map))= x.Map
 
 block scripts
   script(src="/static/js/jquery.dataTables.js")

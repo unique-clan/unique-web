@@ -34,3 +34,16 @@ exports.getCacheOrUpdate = async function (key, connection, query, params = []) 
 exports.newMysqlConn = async function () {
   return await mysql.createConnection(mysqlOptions);
 }
+
+function pad (n, width, z) {
+  z = z || '0';
+  n = n + '';
+  return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+}
+
+exports.formatTime = function (time) {
+  var ms = (time % 1).toFixed(3).substring(2);
+  var minutes = Math.floor(time / 60);
+  var seconds = Math.floor(time - minutes * 60);
+  return `${pad(minutes, 2)}:${pad(seconds, 2)}.${pad(ms, 3)}`;
+}

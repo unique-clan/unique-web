@@ -1,0 +1,32 @@
+<html>
+  <head>
+    <title>Map Preview | Unique</title>
+    <style>
+      body {
+        margin: 0px;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <script src='/static/tw-webgl/jquery-1.10.2.min.js'></script>
+    <script src='/static/tw-webgl/jquery.mousewheel.js'></script>
+    <script src='/static/tw-webgl/gl-matrix.js'></script>
+    <script src='/static/tw-webgl/crc32.min.js'></script>
+    <script src='/static/tw-webgl/zlib.min.js'></script>
+    <script src='/static/tw-webgl/dataviewext.js'></script>
+    <script src='/static/tw-webgl/twdatafile.js'></script>
+    <script src='/static/tw-webgl/twwebgl.js'></script>
+    <canvas id='cnvs'></canvas>
+
+    <script>
+      $(document).ready(function() {
+          var params = tw.getParams();
+          if (params.map) {
+            tw.init({ mapUrl: params.map })
+          }
+        }
+      );
+    </script>
+  </body>
+</html>

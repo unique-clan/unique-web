@@ -20,19 +20,6 @@ function getOrdinal (n) {
   return (s[(v - 20) % 10] || s[v] || s[0]);
 }
 
-function pad (n, width, z) {
-  z = z || '0';
-  n = n + '';
-  return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
-}
-
-function formatTime (time) {
-  var ms = (time % 1).toFixed(3).substring(2);
-  var minutes = Math.floor(time / 60);
-  var seconds = Math.floor(time - minutes * 60);
-  return `${pad(minutes, 2)}:${pad(seconds, 2)}.${pad(ms, 3)}`;
-}
-
 const topRecordsQuery = 'SELECT @pos := @pos + 1 AS v1, @rank := IF(@prev = recordsCount, @rank, @pos) AS rank, @prev := recordsCount AS v2, Name, recordsCount FROM (SELECT Name, COUNT(*) as recordsCount FROM (SELECT Name, t1.Map as Map FROM (SELECT Map, Name, ROUND(Time, 3) AS playerTime FROM race_race) t1 INNER JOIN (SELECT Map, ROUND(MIN(Time), 3) AS bestTime FROM race_race GROUP BY Map) t2 ON t1.Map = t2.Map AND t1.playerTime = t2.bestTime) u GROUP BY Name ORDER BY recordsCount DESC) v, (SELECT @pos := 0) i1, (SELECT @rank := -1) i2, (SELECT @prev := -1) i3 LIMIT 10;';
 const topRecordsCategoryQuery = 'SELECT @pos := @pos + 1 AS v1, @rank := IF(@prev = recordsCount, @rank, @pos) AS rank, @prev := recordsCount AS v2, Name, recordsCount FROM (SELECT Name, COUNT(*) as recordsCount FROM (SELECT Name, t1.Map as Map FROM (SELECT v1.Map, v1.Name, ROUND(v1.Time, 3) AS playerTime FROM race_race v1 INNER JOIN race_maps v2 ON v1.Map = v2.Map WHERE v2.Server=?) t1 INNER JOIN (SELECT Map, ROUND(MIN(Time), 3) AS bestTime FROM race_race GROUP BY Map) t2 ON t1.Map = t2.Map AND t1.playerTime = t2.bestTime) u GROUP BY Name ORDER BY recordsCount DESC) v, (SELECT @pos := 0) i1, (SELECT @rank := -1) i2, (SELECT @prev := -1) i3 LIMIT 10;';
 const topPointsQuery = 'SELECT @pos := @pos + 1 AS v1, @rank := IF(@prev = Points, @rank, @pos) AS rank, @prev := Points AS v2, Name, Points FROM race_points, (SELECT @pos := 0) i1, (SELECT @rank := -1) i2, (SELECT @prev := -1) i3 WHERE Points > 0 ORDER BY Points DESC LIMIT 10;';
@@ -81,7 +68,7 @@ router.get('/', async function (req, res, next) {
     user: req.session.authed ? req.session.user : null,
     topPoints: topPoints,
     lastTopRanks: lastTopRanks,
-    formatTime: formatTime,
+    formatTime: sql.formatTime,
     mapRecords: mapRecords,
     mapRecordsShort: mapRecordsShort,
     mapRecordsMiddle: mapRecordsMiddle,
@@ -149,7 +136,7 @@ router.get('/player/:name', async function (req, res, next) {
     name: player,
     user: req.session.authed ? req.session.user : null,
 
-    formatTime: formatTime,
+    formatTime: sql.formatTime,
     getOrdinal: getOrdinal,
 
     mapRecords: mapRecords.length > 0 ? mapRecords[0] : null,
