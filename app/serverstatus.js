@@ -51,13 +51,11 @@ class ServerStatus {
 
         if (server.alive) {
           await this.getServerstatus(server);
-          debug('Call after getServerstatus');
         }
         resolve();
       }));
     }
 
-    debug('called before all promises');
     await Promise.all(promises);
     debug('called after all promises');
 
