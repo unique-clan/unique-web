@@ -31,7 +31,7 @@
     "node-cache": "^4.2.0",
     "node-sass-middleware": "^0.11.0",
     "node-thumbnail": "^0.14.0",
-    "npm": "^6.2.0",
+    "npm": "^6.4.0",
     "ping": "^0.2.2",
     "pug": "2.0.3",
     "serve-favicon": "~2.5.0",
