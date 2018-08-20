@@ -34,30 +34,25 @@ class ServerStatus {
     // Then every x seconds
     setInterval(() => {
       this.updateStatus();
-      debug('Typeof list: ');
-      debug(typeof this.list);
     }, parseFloat(process.env.SERVER_STATUS_UPDATE || 5) * 1000);
   }
 
   updateStatus () {
     fs.readFile(this.path, 'utf8', async (err, data) => {
       if (err) debug(err);
-      debug('Serverstatus.js L43 data: ');
-      debug(data);
       let svlist = JSON.parse(data);
-      debug('Parsed: ');
-      debug(svlist);
 
-      for (var i in svlist) {
-        let server = svlist[i];
-
+      for (let server of svlist) {
         let res = await ping.probe(server.ip, {timeout: 2});
+        debug('Ping res:');
+        debug(res);
 
         server.alive = res.alive;
         server.ping = res.avg;
 
         if (server.alive) {
           await this.getServerstatus(server);
+          debug('Call after getServerstatus');
         }
       }
 
