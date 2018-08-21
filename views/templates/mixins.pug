@@ -1,10 +1,10 @@
-mixin player_search()
+mixin search_form(item, dest)
   script.
     $(document).ready(function () {
-      $('#search-form').submit((e) => {
+      $('#search-form-!{item}').submit((e) => {
         e.preventDefault()
-        var name = $('#player-name').val()
-        window.location.href = '/ranks/player/' + encodeURIComponent(name)
+        var name = $('#search-field-!{item}').val()
+        window.location.href = '!{dest}' + encodeURIComponent(name)
       })
     })
 

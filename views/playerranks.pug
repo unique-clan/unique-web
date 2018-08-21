@@ -15,8 +15,8 @@ block content
             .column.is-9
               h1.title Unique Race Ranks
             .column
-              form#search-form(action='/ranks/player/' method='GET')
-                input#player-name.input.warning-dark-input(type="text",placeholder="Player search", name="player")
+              form#search-form-player
+                input#search-field-player.input.warning-dark-input(type="text",placeholder="Player search", name="player")
           nav.breadcrumb.rank-nav
             ul
               li
@@ -234,4 +234,4 @@ block scripts
   script(src="/static/js/jquery.dataTables.js")
   script(src="/static/js/dataTables.bulma.js")
   script(src="/static/js/sort.js")
-  +player_search()
+  +search_form('player', '/ranks/player/')

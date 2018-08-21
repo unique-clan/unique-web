@@ -92,6 +92,7 @@ router.get('/player/:name', async function (req, res, next) {
 
   if (!totalMapFinishedCount[0].n) {
     res.render('playerranks', {
+      title: 'Ranks | Unique',
       name: player,
       totalMapFinishedCount: totalMapFinishedCount[0].n
     });
