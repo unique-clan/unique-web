@@ -15,7 +15,7 @@ block content
                 hr
                 p.subtitle 📝 Mapper: #{map.Mapper}
                 if !isNaN(map.Timestamp)
-                  p.subtitle 📯 Released on #{map.Timestamp.toISOString().split('T')[0]}
+                  p.subtitle 📅 Released on #{map.Timestamp.toISOString().split('T')[0]}
                 p.subtitle 📂 Category: #{getCategory(map)}
                 p.subtitle 🏁 Finished by #{map.Finishers} tees
                 a.span.button.is-link.is-warning(href='/static/tw-webgl/?map='+encodeURIComponent(`/static/maps/${map.Map}.map`)) Preview
