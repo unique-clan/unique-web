@@ -1,5 +1,7 @@
 extends layout
 
+include templates/mixins.pug
+
 block content
   main
     br
@@ -13,47 +15,54 @@ block content
             .column.is-9
               h1.title Unique Race Maps
             .column
-              form#search-form
+              form#search-form-map
                 field
                   p.control.has-icons-right
-                    input#player-name.input.warning-dark-input(type="text",placeholder="Map Search", name="map")
+                    input#search-field-map.input.warning-dark-input(type="text",placeholder="Map Search", name="map")
                     span.icon.is-small.is-right
                       i.fa.fa-search
     section.section
       .container
-        each maprow in maps.reduce(function(result, value, index, array) { if (index % 3 === 0) result.push(array.slice(index, index + 3)); return result; }, [])
-          .columns
-            each map in maprow
-              .column.is-4
-                .card
-                  .card-image
-                     a(href='/map/'+encodeURIComponent(map.Map))
-                      img(src=`/static/img/mapthumb/${encodeURIComponent(map.Map)}.png`)
-                  .card-content
-                    a(href='/map/'+encodeURIComponent(map.Map))
-                      p.title.has-text-centered(style=`font-size: ${Math.min(32, Math.max(18, 300/map.Map.length))}px; height: 36px;`)
-                        |!{escape(map.Map).replace(new RegExp('_', 'g'), '_<wbr>')}
-                    p.maps-page-meta(style='margin-top: 30px')
-                      if !isNaN(map.Timestamp)
-                        span(style='margin-right: 10px;') 📯 #{map.Timestamp.toISOString().split('T')[0]}
-                      span 📝 #{map.Mapper}
-        nav.pagination.is-centered.is-rounded(role='navigation', aria-label='pagination')
-          - var isFirst = page === 1
-          - var isLast = page === pageCount
-          a.pagination-previous(href=isFirst ? false : '/maps/'+(page-1), disabled=isFirst) Previous
-          a.pagination-next(href=isLast ? false : '/maps/'+(page+1), disabled=isLast) Next page
-          ul.pagination-list
-            li
-              a.pagination-link(href='/maps/1') 1
-            li
-              span.pagination-ellipsis …
-            li
-              a.pagination-link(href=isFirst ? false : '/maps/'+(page-1), disabled=isFirst)= isFirst ? '' : page-1
-            li
-              a.pagination-link.is-current(href='/maps/'+page)= page
-            li
-              a.pagination-link(href=isLast ? false : '/maps/'+(page+1), disabled=isLast)= isLast ? '' : page+1
-            li
-              span.pagination-ellipsis …
-            li
-              a.pagination-link(href='/maps/'+pageCount)= pageCount
+        if maps === undefined
+          article.tile.is-child.notification.is-white
+            p.title Map '#{mapname}' not found
+        else
+          each maprow in maps.reduce(function(result, value, index, array) { if (index % 3 === 0) result.push(array.slice(index, index + 3)); return result; }, [])
+            .columns
+              each map in maprow
+                .column.is-4
+                  .card
+                    .card-image
+                       a(href='/map/'+encodeURIComponent(map.Map))
+                        img(src=`/static/img/mapthumb/${encodeURIComponent(map.Map)}.png`)
+                    .card-content
+                      a(href='/map/'+encodeURIComponent(map.Map))
+                        p.title.has-text-centered(style=`font-size: ${Math.min(32, Math.max(18, 300/map.Map.length))}px; height: 36px;`)
+                          |!{escape(map.Map).replace(new RegExp('_', 'g'), '_<wbr>')}
+                      p.maps-page-meta(style='margin-top: 30px')
+                        if !isNaN(map.Timestamp)
+                          span(style='margin-right: 10px;') 📯 #{map.Timestamp.toISOString().split('T')[0]}
+                        span 📝 #{map.Mapper}
+          nav.pagination.is-centered.is-rounded(role='navigation', aria-label='pagination')
+            - var isFirst = page === 1
+            - var isLast = page === pageCount
+            a.pagination-previous(href=isFirst ? false : '/maps/'+(page-1), disabled=isFirst) Previous
+            a.pagination-next(href=isLast ? false : '/maps/'+(page+1), disabled=isLast) Next page
+            ul.pagination-list
+              li
+                a.pagination-link(href='/maps/1') 1
+              li
+                span.pagination-ellipsis …
+              li
+                a.pagination-link(href=isFirst ? false : '/maps/'+(page-1), disabled=isFirst)= isFirst ? '' : page-1
+              li
+                a.pagination-link.is-current(href='/maps/'+page)= page
+              li
+                a.pagination-link(href=isLast ? false : '/maps/'+(page+1), disabled=isLast)= isLast ? '' : page+1
+              li
+                span.pagination-ellipsis …
+              li
+                a.pagination-link(href='/maps/'+pageCount)= pageCount
+
+block scripts
+  +search_form('map', '/map/')

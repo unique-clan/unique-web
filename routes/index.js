@@ -207,8 +207,10 @@ router.get('/map/:map', async function (req, res, next) {
   const connection = await sql.newMysqlConn();
   const [map] = await connection.execute('SELECT Map, Server, Mapper, Stars, Timestamp, (SELECT COUNT(DISTINCT Name) FROM race_race WHERE Map = l.Map) AS Finishers FROM race_maps l WHERE Map = ?;', [req.params.map]);
   if (!map.length) {
-    res.status('404');
-    res.render('error', {message: 'Not Found', error: {status: 404}});
+    res.render('maps', {
+      title: 'Maps | Unique',
+      mapname: req.params.map
+    });
     return;
   }
   const topTen = await sql.getCacheOrUpdate('mapOverviewTopTen_' + req.params.map, connection, 'SELECT @pos := @pos + 1 AS v1, @rank := IF(@prev = Time, @rank, @pos) AS rank, @prev := Time AS v2, Name, Time FROM (SELECT Name, MIN(Time) AS Time FROM race_race WHERE Map=? GROUP BY Name ORDER BY Time) v, (SELECT @pos := 0) i1, (SELECT @rank := -1) i2, (SELECT @prev := -1) i3 LIMIT 10;', [req.params.map]);
