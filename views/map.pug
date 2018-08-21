@@ -10,7 +10,7 @@ block content
             .card-image
               img(src=`/static/maps/${encodeURIComponent(map.Map)}.png`)
             .card-content
-                p.title.has-text-centered(style=`font-size: ${Math.min(32, Math.max(18, 550/map.Map.length))}px; height: 36px;`)
+                p.title.has-text-centered(style=`font-size: ${Math.min(32, Math.max(18, 550/map.Map.length))}px;`)
                   |!{escape(map.Map).replace(new RegExp('_', 'g'), '_<wbr>')}
                 hr
                 p.subtitle 📝 Mapper: #{map.Mapper}
