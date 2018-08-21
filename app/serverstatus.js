@@ -28,6 +28,7 @@ class ServerStatus {
   }
 
   startUpdating() {
+    return; // fix file handle leak for now
     loadTWFlags();
     // Call also when starting
     this.updateStatus();
