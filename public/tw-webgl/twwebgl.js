@@ -359,6 +359,28 @@ tw.parseLayerTiles = function(tileData, num) {
 	return tiles;
 }
 
+tw.setCameraPos = function(tileData, width, height) {
+
+	var d = new DataView(tileData);
+	d.resetReader();
+
+
+	for (var y = 0; y < height; y++) {
+		for (var x = 0; x < width; x++) {
+			var index = d.uint8();
+			var flags = d.uint8();
+			if (index >= 192 && index <= 194) { // ENTITY_SPAWN
+				tw.cameraPos = [x*32, y*32];
+				console.log("spawn at "+x+" "+y);
+				return;
+			}
+
+			// skip, reserved
+			d.uint8(); d.uint8();
+		}
+	}
+}
+
 
 tw.parseMapImage = function(layerData) {
 	var obj = {}
@@ -440,6 +462,11 @@ tw.Map = function(mapData) {
 
 			if (layerInfo.type == tw.LAYERTYPE_TILES) {
 				var tileLayerInfo = tw.parseMapLayerTiles(layerItem.data);
+
+				if (tileLayerInfo.flags & 1) { // TILESLAYERFLAG_GAME
+					var tileData = dFile.getData(tileLayerInfo.data);
+					tw.setCameraPos(tileData, tileLayerInfo.width, tileLayerInfo.height);
+				}
 
 				if (tileLayerInfo.image == -1)
 					continue;
