@@ -41,7 +41,6 @@ class ServerStatus {
     const data = fs.readFileSync(this.path, 'utf8');
     let svlist = JSON.parse(data);
 
-    let promises = [];
     for (let server of svlist) {
       try {
         let res = await ping.probe(server.ip, { timeout: 2 });
@@ -52,39 +51,37 @@ class ServerStatus {
         if (server.alive) {
           await this.getServerstatus(server);
         }
-      } catch(e) {
+      } catch (e) {
         debug(e);
       }
     }
-
     this.list = svlist;
   }
 
+  /**
+   * This functions gets a reference and modifies it. (Objects in js are passed by reference)
+   * @param {*} server
+   */
   async getServerstatus(server) {
-    let promises = [];
-    for (var i in server.servers) {
-      let gameServer = server.servers[i];
-      promises.push(async () => {
-        const handler = new ServerHandler(gameServer.ip, parseInt(gameServer.port), true);
-        const info = await handler.requestInfo();
-        gameServer.reachable = true;
-        gameServer.map = info.map;
-        gameServer.maxclients = info.maxClientCount;
-        gameServer.password = info.password;
-        gameServer.players = info.clients
-          .filter(p => p.name !== '(connecting)')
-          .sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
+    for (var gameServer of server.servers) {
+      const handler = new ServerHandler(server.ip, parseInt(gameServer.port), true);
+      const info = await handler.requestInfo();
+      gameServer.reachable = true;
+      gameServer.map = info.map;
+      gameServer.maxclients = info.maxClientCount;
+      gameServer.password = info.password;
+      gameServer.players = info.clients
+        .filter(p => p.name !== '(connecting)')
+        .sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
 
-        for (var ply in gameServer.players) {
-          if (gameServer.players[ply].country in twFlags) {
-            gameServer.players[ply].flag = twFlags[gameServer.players[ply].country];
-          } else {
-            gameServer.players[ply].flag = 'default';
-          }
+      for (var ply in gameServer.players) {
+        if (gameServer.players[ply].country in twFlags) {
+          gameServer.players[ply].flag = twFlags[gameServer.players[ply].country];
+        } else {
+          gameServer.players[ply].flag = 'default';
         }
-      });
+      }
     }
-    return await Promise.all(promises);
   }
 }
 
