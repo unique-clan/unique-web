@@ -35,7 +35,7 @@
     "ping": "^0.2.2",
     "pug": "2.0.3",
     "serve-favicon": "~2.5.0",
-    "teeworlds-server-status": "^1.0.2"
+    "teeworlds-server-status": "^2.1.1"
   },
   "devDependencies": {
     "eslint-config-standard": "^11.0.0",

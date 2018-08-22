@@ -1,7 +1,7 @@
 var fs = require('fs');
 var ping = require('ping').promise;
 var debug = require('debug')('uniqueweb:serverstatus');
-var getServerInfo = require('teeworlds-server-status').getServerInfo;
+const ServerHandler = require('teeworlds-server-status').ServerHandler;
 var twFlags = null;
 
 function loadTWFlags() {
@@ -28,7 +28,6 @@ class ServerStatus {
   }
 
   startUpdating() {
-    return; // fix file handle leak for now
     loadTWFlags();
     // Call also when starting
     this.updateStatus();
@@ -69,26 +68,25 @@ class ServerStatus {
     let promises = [];
     for (var i in server.servers) {
       let gameServer = server.servers[i];
-      promises.push(new Promise(function (resolve, reject) {
-        getServerInfo(server.ip, parseInt(gameServer.port), (svInfo) => {
-          gameServer.reachable = true;
-          gameServer.map = svInfo.map;
-          gameServer.maxclients = svInfo.maxClientCount;
-          gameServer.players = svInfo.clients
-            .filter(p => p.name !== '(connecting)')
-            .sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
-          gameServer.password = svInfo.password;
+      promises.push(async () => {
+        const handler = new ServerHandler(gameServer.ip, parseInt(gameServer.port), true);
+        const info = await handler.requestInfo();
+        gameServer.reachable = true;
+        gameServer.map = info.map;
+        gameServer.maxclients = info.maxClientCount;
+        gameServer.password = info.password;
+        gameServer.players = info.clients
+          .filter(p => p.name !== '(connecting)')
+          .sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
 
-          for (var ply in gameServer.players) {
-            if (gameServer.players[ply].country in twFlags) {
-              gameServer.players[ply].flag = twFlags[gameServer.players[ply].country];
-            } else {
-              gameServer.players[ply].flag = 'default';
-            }
+        for (var ply in gameServer.players) {
+          if (gameServer.players[ply].country in twFlags) {
+            gameServer.players[ply].flag = twFlags[gameServer.players[ply].country];
+          } else {
+            gameServer.players[ply].flag = 'default';
           }
-          resolve();
-        });
-      }));
+        }
+      });
     }
     return await Promise.all(promises);
   }
