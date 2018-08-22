@@ -57,11 +57,8 @@ class ServerStatus {
     }
 
     await Promise.all(promises);
-    debug('called after all promises');
 
     this.list = svlist;
-    debug('List content: ');
-    debug(this.list);
   }
 
   async getServerstatus(server) {
