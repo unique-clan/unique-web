@@ -43,7 +43,7 @@ class ServerStatus {
 
     let promises = [];
     for (let server of svlist) {
-      promises.push(new Promise(async (resolve, reject) => {
+      promises.push(async () => {
         let res = await ping.probe(server.ip, { timeout: 2 });
 
         server.alive = res.alive;
@@ -52,8 +52,7 @@ class ServerStatus {
         if (server.alive) {
           await this.getServerstatus(server);
         }
-        resolve();
-      }));
+      });
     }
 
     await Promise.all(promises);
