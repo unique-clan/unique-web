@@ -212,6 +212,7 @@ router.get('/map/:map', async function (req, res, next) {
       title: 'Maps | Unique',
       mapname: req.params.map
     });
+    connection.end();
     return;
   }
   const topTen = await sql.getCacheOrUpdate('mapOverviewTopTen_' + req.params.map, connection, 'SELECT @pos := @pos + 1 AS v1, @rank := IF(@prev = Time, @rank, @pos) AS rank, @prev := Time AS v2, Name, Time FROM (SELECT Name, MIN(Time) AS Time FROM race_race WHERE Map=? GROUP BY Name ORDER BY Time) v, (SELECT @pos := 0) i1, (SELECT @rank := -1) i2, (SELECT @prev := -1) i3 LIMIT 10;', [req.params.map]);
