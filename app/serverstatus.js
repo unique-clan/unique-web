@@ -28,6 +28,7 @@ class ServerStatus {
   }
 
   startUpdating() {
+    return; // some other bug takes down website...
     loadTWFlags();
     // Call also when starting
     this.updateStatus();
