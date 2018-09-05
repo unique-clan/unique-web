@@ -183,6 +183,7 @@ router.get('/maps/:page', async function (req, res, next) {
   const pageCount = Math.ceil(mapCount[0]['Count'] / 30);
   const page = Math.min(Math.max(1, req.params.page), pageCount);
   const maps = await sql.getCacheOrUpdate('mapOverviewPage_' + page, connection, 'SELECT Map, Mapper, Timestamp FROM race_maps ORDER BY Timestamp DESC, LOWER(Map) LIMIT ?, 30;', [(page-1)*30]);
+  connection.end();
   if (process.env.MAPS_LOCATION) {
     for (let i = 0; i < maps.length; i++) {
       await thumb({
@@ -211,10 +212,12 @@ router.get('/map/:map', async function (req, res, next) {
       title: 'Maps | Unique',
       mapname: req.params.map
     });
+    connection.end();
     return;
   }
   const topTen = await sql.getCacheOrUpdate('mapOverviewTopTen_' + req.params.map, connection, 'SELECT @pos := @pos + 1 AS v1, @rank := IF(@prev = Time, @rank, @pos) AS rank, @prev := Time AS v2, Name, Time FROM (SELECT Name, MIN(Time) AS Time FROM race_race WHERE Map=? GROUP BY Name ORDER BY Time) v, (SELECT @pos := 0) i1, (SELECT @rank := -1) i2, (SELECT @prev := -1) i3 LIMIT 10;', [req.params.map]);
   const lastRecords = await sql.getCacheOrUpdate('mapOverviewLastRecords_' + req.params.map, connection, 'SELECT Name, Timestamp, Time FROM race_lastrecords WHERE Map=? ORDER BY Timestamp DESC LIMIT 10;', [req.params.map]);
+  connection.end();
   res.render('map', {
     title: req.params.map + ' | Unique',
     map: map[0],
