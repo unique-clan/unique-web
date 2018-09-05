@@ -29,6 +29,7 @@ class ServerStatus {
   }
 
   async startUpdating() {
+    return; // Still not working?
     loadTWFlags();
     while(true) {
       await this.updateStatus(); // TODO: set a timeout on server status module
