@@ -29,27 +29,23 @@ class ServerStatus {
   }
 
   async startUpdating() {
-    return; // Still not working?
     loadTWFlags();
     while(true) {
       await this.updateStatus(); // TODO: set a timeout on server status module
-      debug("test")
       this.list = serverList;
       await this.sleep((process.env.SERVER_STATUS_UPDATE || 5) * 1000);
     }
   }
 
   async updateStatus() {
-    debug("callled")
     for(var server of serverList) {
       var result = {};
       var res = await ping.probe(server.ip, { timeout: 2 });
       server.alive = res.alive;
       server.ping = res.avg;
 
-      if (server.alive || true) {
+      if (server.alive) {
         await this.getServerstatus(server);
-        debug("done")
       }
     }
   }
@@ -83,7 +79,6 @@ class ServerStatus {
           gameServer.players[ply].flag = 'default';
         }
       }
-      debug("ok")
       await this.sleep(10);
     }
   }
