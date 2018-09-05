@@ -12,7 +12,7 @@ const ApplicationModel = mongoose.model('Application');
 const MapModel = mongoose.model('Map');
 const sql = require('../app/sql');
 
-var serverStatus = new ServerStatus(process.env.SERVERS_LOCATION || 'servers.json');
+var serverStatus = new ServerStatus();
 serverStatus.startUpdating();
 
 /* GET home page. */

@@ -108,7 +108,7 @@ app.use(session({
 }));
 
 // make html escape function available in all views
-app.locals.escape = escape
+app.locals.escape = escape;
 
 // Add the app routes
 app.use('/', index);

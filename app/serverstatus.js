@@ -4,6 +4,8 @@ var debug = require('debug')('uniqueweb:serverstatus');
 const ServerHandler = require('teeworlds-server-status').ServerHandler;
 var twFlags = null;
 
+var serverList = JSON.parse(fs.readFileSync(process.env.SERVERS_LOCATION || 'servers.json', 'utf8'));
+
 function loadTWFlags() {
   twFlags = {};
   var lastLine;
@@ -22,40 +24,39 @@ function loadTWFlags() {
 }
 
 class ServerStatus {
-  constructor(jsonPath) {
-    this.path = jsonPath;
+  constructor() {
     this.list = [];
   }
 
-  startUpdating() {
+  async startUpdating() {
     loadTWFlags();
-    // Call also when starting
-    this.updateStatus();
-    // Then every x seconds
-    setInterval(async () => {
-      this.updateStatus();
-    }, parseFloat(process.env.SERVER_STATUS_UPDATE || 5) * 1000);
+    while(true) {
+      await this.updateStatus(); // TODO: set a timeout on server status module
+      debug("test")
+      this.list = serverList;
+      await this.sleep((process.env.SERVER_STATUS_UPDATE || 5) * 1000);
+    }
   }
 
   async updateStatus() {
-    const data = fs.readFileSync(this.path, 'utf8');
-    let svlist = JSON.parse(data);
+    debug("callled")
+    for(var server of serverList) {
+      var result = {};
+      var res = await ping.probe(server.ip, { timeout: 2 });
+      server.alive = res.alive;
+      server.ping = res.avg;
 
-    for (let server of svlist) {
-      try {
-        let res = await ping.probe(server.ip, { timeout: 2 });
-
-        server.alive = res.alive;
-        server.ping = res.avg;
-
-        if (server.alive) {
-          await this.getServerstatus(server);
-        }
-      } catch (e) {
-        debug(e);
+      if (server.alive || true) {
+        await this.getServerstatus(server);
+        debug("done")
       }
     }
-    this.list = svlist;
+  }
+
+  sleep(ms) {
+    return new Promise(resolve => {
+      setTimeout(resolve, ms);
+    });
   }
 
   /**
@@ -81,6 +82,8 @@ class ServerStatus {
           gameServer.players[ply].flag = 'default';
         }
       }
+      debug("ok")
+      await this.sleep(10);
     }
   }
 }
