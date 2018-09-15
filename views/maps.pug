@@ -43,26 +43,7 @@ block content
                         if !isNaN(map.Timestamp)
                           span(style='margin-right: 10px;') 📅 #{map.Timestamp.toISOString().split('T')[0]}
                         span 📝 #{map.Mapper}
-          nav.pagination.is-centered.is-rounded(role='navigation', aria-label='pagination')
-            - var isFirst = page === 1
-            - var isLast = page === pageCount
-            a.pagination-previous(href=isFirst ? false : '/maps/'+(page-1), disabled=isFirst) Previous
-            a.pagination-next(href=isLast ? false : '/maps/'+(page+1), disabled=isLast) Next page
-            ul.pagination-list
-              li
-                a.pagination-link(href='/maps/1') 1
-              li
-                span.pagination-ellipsis …
-              li
-                a.pagination-link(href=isFirst ? false : '/maps/'+(page-1), disabled=isFirst)= isFirst ? '' : page-1
-              li
-                a.pagination-link.is-current(href='/maps/'+page)= page
-              li
-                a.pagination-link(href=isLast ? false : '/maps/'+(page+1), disabled=isLast)= isLast ? '' : page+1
-              li
-                span.pagination-ellipsis …
-              li
-                a.pagination-link(href='/maps/'+pageCount)= pageCount
+          +pagination(page, pageCount)
 
 block scripts
   +search_form('map', '/map/')
