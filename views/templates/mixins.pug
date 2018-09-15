@@ -1,13 +1,3 @@
-mixin search_form(item, dest)
-  script.
-    $(document).ready(function () {
-      $('#search-form-!{item}').submit((e) => {
-        e.preventDefault()
-        var name = $('#search-field-!{item}').val()
-        window.location.href = '!{dest}' + encodeURIComponent(name)
-      })
-    })
-
 mixin member(name, types, flag='DE', leader=false)
   .column.is-half-tablet.is-half-desktop.is-one-third-fullhd
     .box(class=size_class)
@@ -280,24 +270,25 @@ mixin pagination(page, pageCount)
     - var noPrev = page === 1
     - var noNext = page === pageCount
     - var noAfterNext = page >= pageCount - 1
-    a.pagination-previous(href=noPrev ? false : '?page='+(page-1), disabled=noPrev) Previous
-    a.pagination-next(href=noNext ? false : '?page='+(page+1), disabled=noNext) Next page
+    - var pageUrl = search ? '?search='+encodeURIComponent(search)+'&page=' : '?page='
+    a.pagination-previous(href=noPrev ? false : pageUrl+(page-1), disabled=noPrev) Previous
+    a.pagination-next(href=noNext ? false : pageUrl+(page+1), disabled=noNext) Next page
     ul.pagination-list
       li
-        a.pagination-link(href='?page=1') 1
+        a.pagination-link(href=pageUrl+'1') 1
       li
         span.pagination-ellipsis …
       li
-        a.pagination-link.is-hidden-mobile(href=noBeforePrev ? false : '?page='+(page-2), disabled=noBeforePrev)= noBeforePrev ? '' : page-2
+        a.pagination-link.is-hidden-mobile(href=noBeforePrev ? false : pageUrl+(page-2), disabled=noBeforePrev)= noBeforePrev ? '' : page-2
       li
-        a.pagination-link(href=noPrev ? false : '?page='+(page-1), disabled=noPrev)= noPrev ? '' : page-1
+        a.pagination-link(href=noPrev ? false : pageUrl+(page-1), disabled=noPrev)= noPrev ? '' : page-1
       li
-        a.pagination-link.is-current(href='?page='+page)= page
+        a.pagination-link.is-current(href=pageUrl+page)= page
       li
-        a.pagination-link(href=noNext ? false : '?page='+(page+1), disabled=noNext)= noNext ? '' : page+1
+        a.pagination-link(href=noNext ? false : pageUrl+(page+1), disabled=noNext)= noNext ? '' : page+1
       li
-        a.pagination-link.is-hidden-mobile(href=noAfterNext ? false : '?page='+(page+2), disabled=noAfterNext)= noAfterNext ? '' : page+2
+        a.pagination-link.is-hidden-mobile(href=noAfterNext ? false : pageUrl+(page+2), disabled=noAfterNext)= noAfterNext ? '' : page+2
       li
         span.pagination-ellipsis …
       li
-        a.pagination-link(href='?page='+pageCount)= pageCount
+        a.pagination-link(href=pageUrl+pageCount)= pageCount

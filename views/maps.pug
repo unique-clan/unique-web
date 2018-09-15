@@ -15,17 +15,17 @@ block content
             .column.is-9
               h1.title Unique Race Maps
             .column
-              form#search-form-map
+              form
                 field
                   p.control.has-icons-right
-                    input#search-field-map.input.warning-dark-input(type="text",placeholder="Map Search", name="map")
+                    input.input.warning-dark-input(type="text", placeholder="Map Search", name="search", value=search, autocomplete="off")
                     span.icon.is-small.is-right
                       i.fa.fa-search
     section.section
       .container
-        if maps === undefined
-          article.tile.is-child.notification.is-white
-            p.title Map '#{mapname}' not found
+        if !maps.length
+          article.tile.is-child.notification
+            p.has-text-centered.background-text No maps like "#{search}" found.
         else
           each maprow in maps.reduce(function(result, value, index, array) { if (index % 3 === 0) result.push(array.slice(index, index + 3)); return result; }, [])
             .columns
@@ -44,6 +44,3 @@ block content
                           span(style='margin-right: 10px;') 📅 #{map.Timestamp.toISOString().split('T')[0]}
                         span 📝 #{map.Mapper}
           +pagination(page, pageCount)
-
-block scripts
-  +search_form('map', '/map/')

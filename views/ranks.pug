@@ -15,10 +15,10 @@ block content
             .column.is-9
               h1.title Unique Race Ranks
             .column
-              form#search-form-player(action='/ranks/player/' method='GET')
+              form(action='/ranks/search')
                 field
                   p.control.has-icons-right
-                    input#search-field-player.input.warning-dark-input(type="text",placeholder="Player search", name="player")
+                    input.input.warning-dark-input(type="text", placeholder="Player search", name="search")
                     span.icon.is-small.is-right
                       i.fa.fa-search
           nav.breadcrumb.rank-nav
@@ -229,6 +229,3 @@ block content
                     tr
                       td Long Hard
                       td 0.05
-
-block scripts
-  +search_form('player', '/ranks/player/')
