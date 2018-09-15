@@ -1,0 +1,84 @@
+extends layout
+
+include templates/mixins.pug
+
+block content
+  main
+    br
+    br
+    br
+    br
+    section.hero.is-dark
+      .hero-body
+        .container
+          .columns
+            .column.is-9
+              h1.title Unique Race Players
+              h2.subtitle
+                if search
+                  | Searching for "#{search}"
+                else
+                  | Showing all players
+            .column
+              form(action='/ranks/search')
+                field
+                  p.control.has-icons-right
+                    input.input.warning-dark-input(type="text", placeholder="Player search", name="search", value=search, autocomplete="off")
+                    span.icon.is-small.is-right
+                      i.fa.fa-search
+    section.section
+      .container
+        if !players.length
+          article.tile.is-child.notification
+            p.has-text-centered.background-text No players like "#{search}" found.
+        else
+          article.tile.is-child.notification.is-white.table-links
+            //- double table desktop view
+            .columns.is-hidden-mobile
+              .column
+                .horizontal-scroll
+                  table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
+                    thead
+                      tr
+                        th Player
+                        th Records
+                        th Points
+                    tbody
+                      each player in players.slice(0, Math.ceil(players.length / 2))
+                        tr
+                          td
+                            a(href='/ranks/player/'+encodeURIComponent(player.Name))= player.Name
+                          td= player.recordsCount || 0
+                          td= player.Points || 0
+              .column
+                .horizontal-scroll
+                  table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
+                    thead
+                      tr
+                        th Player
+                        th Records
+                        th Points
+                    tbody
+                      each player in players.slice(Math.ceil(players.length / 2), players.length)
+                        tr
+                          td
+                            a(href='/ranks/player/'+encodeURIComponent(player.Name))= player.Name
+                          td= player.recordsCount || 0
+                          td= player.Points || 0
+            //- single table mobile view
+            .horizontal-scroll.is-hidden-tablet
+              table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
+                thead
+                  tr
+                    th Player
+                    th Records
+                    th Points
+                tbody
+                  each player in players
+                    tr
+                      td
+                        a(href='/ranks/player/'+encodeURIComponent(player.Name))= player.Name
+                      td= player.recordsCount || 0
+                      td= player.Points || 0
+          br
+          +pagination(page, pageCount)
