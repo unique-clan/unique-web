@@ -169,19 +169,11 @@ router.get('/profile', function (req, res, next) {
   });
 });
 
-router.get('/maps', function (req, res, next) {
-  res.redirect('/maps/1');
-});
-
-router.get('/maps/:page', async function (req, res, next) {
-  if (!/^\d+$/.test(req.params.page)) {
-    next();
-    return;
-  }
+router.get('/maps', async function (req, res, next) {
   const connection = await sql.newMysqlConn();
   const mapCount = await sql.getCacheOrUpdate('mapOverviewCount', connection, 'SELECT COUNT(*) as Count FROM race_maps;');
   const pageCount = Math.ceil(mapCount[0]['Count'] / 30);
-  const page = Math.min(Math.max(1, req.params.page), pageCount);
+  const page = Math.min(Math.max(1, req.query.page), pageCount) || 1;
   const maps = await sql.getCacheOrUpdate('mapOverviewPage_' + page, connection, 'SELECT Map, Mapper, Timestamp FROM race_maps ORDER BY Timestamp DESC, LOWER(Map) LIMIT ?, 30;', [(page-1)*30]);
   connection.end();
   if (process.env.MAPS_LOCATION) {

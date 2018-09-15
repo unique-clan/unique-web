@@ -273,3 +273,31 @@ mixin country_select(name)
     option(value='YE') Yemen
     option(value='ZM') Zambia
     option(value='ZW') Zimbabwe
+
+mixin pagination(page, pageCount)
+  nav.pagination.is-centered.is-rounded(role='navigation', aria-label='pagination')
+    - var noBeforePrev = page <= 2
+    - var noPrev = page === 1
+    - var noNext = page === pageCount
+    - var noAfterNext = page >= pageCount - 1
+    a.pagination-previous(href=noPrev ? false : '?page='+(page-1), disabled=noPrev) Previous
+    a.pagination-next(href=noNext ? false : '?page='+(page+1), disabled=noNext) Next page
+    ul.pagination-list
+      li
+        a.pagination-link(href='?page=1') 1
+      li
+        span.pagination-ellipsis …
+      li
+        a.pagination-link.is-hidden-mobile(href=noBeforePrev ? false : '?page='+(page-2), disabled=noBeforePrev)= noBeforePrev ? '' : page-2
+      li
+        a.pagination-link(href=noPrev ? false : '?page='+(page-1), disabled=noPrev)= noPrev ? '' : page-1
+      li
+        a.pagination-link.is-current(href='?page='+page)= page
+      li
+        a.pagination-link(href=noNext ? false : '?page='+(page+1), disabled=noNext)= noNext ? '' : page+1
+      li
+        a.pagination-link.is-hidden-mobile(href=noAfterNext ? false : '?page='+(page+2), disabled=noAfterNext)= noAfterNext ? '' : page+2
+      li
+        span.pagination-ellipsis …
+      li
+        a.pagination-link(href='?page='+pageCount)= pageCount
