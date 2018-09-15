@@ -186,14 +186,16 @@ router.get('/maps/:page', async function (req, res, next) {
   connection.end();
   if (process.env.MAPS_LOCATION) {
     for (let i = 0; i < maps.length; i++) {
-      await thumb({
-        source: path.join(process.env.MAPS_LOCATION, maps[i].Map+'.png'),
-        destination: path.join(__dirname, '../public/img/mapthumb'),
-        width: 720,
-        skip: true,
-        suffix: '',
-        quiet: true
-      });
+      try {
+        await thumb({
+          source: path.join(process.env.MAPS_LOCATION, maps[i].Map+'.png'),
+          destination: path.join(__dirname, '../public/img/mapthumb'),
+          width: 720,
+          skip: true,
+          suffix: '',
+          quiet: true
+        });
+      } catch(e) { }
     }
   }
   res.render('maps', {
