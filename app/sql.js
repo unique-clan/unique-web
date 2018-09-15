@@ -47,3 +47,7 @@ exports.formatTime = function (time) {
   var seconds = Math.floor(time - minutes * 60);
   return `${pad(minutes, 2)}:${pad(seconds, 2)}.${pad(ms, 3)}`;
 }
+
+exports.escapeLike = function (pattern) {
+  return pattern.replace(/%/g, "\\%").replace(/_/g, "\\_");
+}
