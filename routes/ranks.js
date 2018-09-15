@@ -91,11 +91,8 @@ router.get('/player/:name', async function (req, res, next) {
   const totalMapFinishedCount = await sql.getCacheOrUpdate('totalMapFinishedCount_' + player, connection, mapFinishedCountQuery, [player]);
 
   if (!totalMapFinishedCount[0].n) {
-    res.render('playerranks', {
-      title: 'Ranks | Unique',
-      name: player,
-      totalMapFinishedCount: totalMapFinishedCount[0].n
-    });
+    res.status(404).render('error', {message: 'Not Found', error: {status: 404}});
+    connection.end()
     return;
   }
 
@@ -169,6 +166,34 @@ router.get('/player/:name', async function (req, res, next) {
     unfinishedShort: unfinishedShort,
     unfinishedMiddle: unfinishedMiddle,
     unfinishedLong: unfinishedLong
+  });
+});
+
+router.get('/search', async function (req, res, next) {
+  const connection = await sql.newMysqlConn();
+  let search = null
+  let pattern = '%'
+  if (typeof req.query.search === 'string' && req.query.search.trim()) {
+    search = req.query.search.trim()
+    pattern = '%' + sql.escapeLike(req.query.search).replace(/ /g, '%') + '%'
+    const [player] = await connection.execute('SELECT IFNULL((SELECT DISTINCT Name FROM race_race WHERE Name=?), (SELECT DISTINCT Name FROM race_race WHERE Name COLLATE utf8mb4_general_ci LIKE ? HAVING COUNT(DISTINCT Name) = 1)) AS Name;', [search, pattern]);
+    if (player[0].Name) {
+      res.redirect('/ranks/player/'+encodeURIComponent(player[0].Name))
+      connection.end()
+      return
+    }
+  }
+  const [playerCount] = await connection.execute('SELECT COUNT(DISTINCT Name) as Count FROM race_race WHERE Name COLLATE utf8mb4_general_ci LIKE ?;', [pattern]);
+  const pageCount = Math.ceil(playerCount[0]['Count'] / 60);
+  const page = Math.min(Math.max(1, req.query.page), pageCount) || 1;
+  const [players] = await connection.execute('SELECT DISTINCT t1.Name, t2.recordsCount, t3.Points FROM race_race t1 LEFT JOIN (SELECT Name, COUNT(*) as recordsCount FROM race_ranks WHERE Rank = 1 GROUP BY Name) t2 ON t1.Name = t2.Name LEFT JOIN race_points t3 ON t1.Name = t3.Name WHERE t1.Name COLLATE utf8mb4_general_ci LIKE ? ORDER BY t2.recordsCount DESC, t3.Points DESC, t1.Name COLLATE utf8mb4_general_ci LIMIT ?, 60;', [pattern, (page-1)*60]);
+  connection.end()
+  res.render('playersearch', {
+    title: 'Players | Unique',
+    page: page,
+    pageCount: pageCount,
+    players: players,
+    search: search
   });
 });
 

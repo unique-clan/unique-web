@@ -186,7 +186,7 @@ router.get('/maps', async function (req, res, next) {
   const [mapCount] = await connection.execute('SELECT COUNT(*) as Count FROM race_maps WHERE Map COLLATE utf8mb4_general_ci LIKE ?;', [pattern]);
   const pageCount = Math.ceil(mapCount[0]['Count'] / 30);
   const page = Math.min(Math.max(1, req.query.page), pageCount) || 1;
-  const [maps] = await connection.execute('SELECT Map, Mapper, Timestamp FROM race_maps WHERE Map COLLATE utf8mb4_general_ci LIKE ? ORDER BY Timestamp DESC, LOWER(Map) LIMIT ?, 30;', [pattern, (page-1)*30]);
+  const [maps] = await connection.execute('SELECT Map, Mapper, Timestamp FROM race_maps WHERE Map COLLATE utf8mb4_general_ci LIKE ? ORDER BY Timestamp DESC, Map COLLATE utf8mb4_general_ci LIMIT ?, 30;', [pattern, (page-1)*30]);
   connection.end()
   if (process.env.MAPS_LOCATION) {
     for (let i = 0; i < maps.length; i++) {
