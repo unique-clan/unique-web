@@ -80,5 +80,6 @@ block content
                         a(href='/ranks/player/'+encodeURIComponent(player.Name))= player.Name
                       td= player.recordsCount || 0
                       td= player.Points || 0
-          br
-          +pagination(page, pageCount)
+          if pageCount > 1
+            br
+            +pagination(page, pageCount)
