@@ -43,4 +43,5 @@ block content
                         if !isNaN(map.Timestamp)
                           span(style='margin-right: 10px;') 📅 #{map.Timestamp.toISOString().split('T')[0]}
                         span 📝 #{map.Mapper}
-          +pagination(page, pageCount)
+          if pageCount > 1
+            +pagination(page, pageCount)
