@@ -1,85 +1,80 @@
 var fs = require('fs');
 var ping = require('ping').promise;
 var debug = require('debug')('uniqueweb:serverstatus');
-const ServerHandler = require('teeworlds-server-status').ServerHandler;
-var twFlags = null;
+var util = require('util')
+var ServerHandler = require('teeworlds-server-status').ServerHandler;
 
-var serverList = JSON.parse(fs.readFileSync(process.env.SERVERS_LOCATION || 'servers.json', 'utf8'));
-
-function loadTWFlags() {
-  twFlags = {};
-  var lastLine;
-  var lines = fs.readFileSync('twflags.txt', 'utf8').split('\n');
-  for (var i in lines) {
-    var line = lines[i];
-    var numMatch = line.match(/^== (\d+)/);
-    if (numMatch) {
-      var nameMatch = lastLine.match(/[A-Z]+/);
-      if (nameMatch) {
-        twFlags[numMatch[1]] = nameMatch[0];
-      }
-    }
-    lastLine = line;
-  }
-}
+const sleep = util.promisify(setTimeout)
+const readFile = util.promisify(fs.readFile)
 
 class ServerStatus {
-  constructor() {
-    this.list = [];
+
+  constructor (jsonPath) {
+    this.path = jsonPath;
+    this.list = null;
+    this.twFlags = {}
   }
 
-  async startUpdating() {
-    loadTWFlags();
-    while(true) {
-      await this.updateStatus(); // TODO: set a timeout on server status module
-      this.list = serverList;
-      await this.sleep((process.env.SERVER_STATUS_UPDATE || 5) * 1000);
-    }
-  }
-
-  async updateStatus() {
-    for(var server of serverList) {
-      var result = {};
-      var res = await ping.probe(server.ip, { timeout: 2 });
-      server.alive = res.alive;
-      server.ping = res.avg;
-
-      if (server.alive) {
-        await this.getServerstatus(server);
-      }
-    }
-  }
-
-  sleep(ms) {
-    return new Promise(resolve => {
-      setTimeout(resolve, ms);
-    });
-  }
-
-  /**
-   * This functions gets a reference and modifies it. (Objects in js are passed by reference)
-   * @param {*} server
-   */
-  async getServerstatus(server) {
-    for (var gameServer of server.servers) {
-      const handler = new ServerHandler(server.ip, parseInt(gameServer.port), true);
-      const info = await handler.requestInfo();
-      gameServer.reachable = true;
-      gameServer.map = info.map;
-      gameServer.maxclients = info.maxClientCount;
-      gameServer.password = info.password;
-      gameServer.players = info.clients
-        .filter(p => p.name !== '(connecting)')
-        .sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
-
-      for (var ply in gameServer.players) {
-        if (gameServer.players[ply].country in twFlags) {
-          gameServer.players[ply].flag = twFlags[gameServer.players[ply].country];
-        } else {
-          gameServer.players[ply].flag = 'default';
+  loadTWFlags () {
+    var lastLine;
+    var lines = fs.readFileSync('twflags.txt', 'utf8').split('\n');
+    for (var i in lines) {
+      var line = lines[i];
+      var numMatch = line.match(/^== (\d+)/);
+      if (numMatch) {
+        var nameMatch = lastLine.match(/[A-Z]+/);
+        if (nameMatch) {
+          this.twFlags[numMatch[1]] = nameMatch[0];
         }
       }
-      await this.sleep(10);
+      lastLine = line;
+    }
+  }
+
+  async updateStatus () {
+    this.loadTWFlags();
+    while (true) {
+      let svlist = JSON.parse(await readFile(this.path, 'utf8'));
+      let tasks = Object.values(svlist).map(loc => this.updateLocation(loc));
+      await Promise.all(tasks);
+      this.list = svlist;
+      await sleep(parseFloat(process.env.SERVER_STATUS_UPDATE || 5) * 1000);
+    }
+  }
+
+  async updateLocation (location) {
+    let res = await ping.probe(location.ip, {timeout: 1});
+
+    location.alive = res.alive;
+    location.ping = res.avg;
+
+    if (location.alive) {
+      let tasks = Object.values(location.servers).map(srv => this.updateGameserver(srv, location.ip));
+      await Promise.all(tasks);
+    }
+  }
+
+  async updateGameserver (server, ip) {
+    try {
+      let svInfo = await new ServerHandler(ip, server.port, false, 1000).requestInfo();
+
+      server.reachable = true;
+      server.map = svInfo.map;
+      server.maxclients = svInfo.maxClientCount;
+      server.players = svInfo.clients
+        .filter(p => p.name !== '(connecting)')
+        .sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
+      server.password = svInfo.password;
+
+      for (var player of server.players) {
+        if (player.country in this.twFlags)
+          player.flag = this.twFlags[player.country];
+        else
+          player.flag = 'default';
+      }
+    }
+    catch (err) {
+      server.reachable = false;
     }
   }
 }
