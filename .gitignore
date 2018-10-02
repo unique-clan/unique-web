@@ -48,3 +48,6 @@ npm-debug.log
 !/admintmp/applications/.gitkeep
 /admintmp/map-submissions/*
 !/admintmp/map-submissions/.gitkeep
+
+# map screenshot thumbnails
+/public/img/mapthumb/

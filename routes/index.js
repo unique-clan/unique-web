@@ -12,8 +12,8 @@ const ApplicationModel = mongoose.model('Application');
 const MapModel = mongoose.model('Map');
 const sql = require('../app/sql');
 
-var serverStatus = new ServerStatus();
-serverStatus.startUpdating();
+var serverStatus = new ServerStatus(process.env.SERVERS_LOCATION || 'servers.json');
+serverStatus.updateStatus();
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
