@@ -17,8 +17,8 @@ const isAuthed = (req, res, next) => {
 };
 
 router.get('/', isAuthed, async function (req, res, next) {
-  let apps = await ApplicationModel.find({}).sort({createdAt: -1}).exec();
-  let maps = await MapModel.find({}).sort({createdAt: -1}).exec();
+  let apps = await ApplicationModel.find({}).sort({ createdAt: -1 }).exec();
+  let maps = await MapModel.find({}).sort({ createdAt: -1 }).exec();
   return res.render('admin', {
     title: 'Admin | Unique Clan',
     apps: apps,
@@ -28,9 +28,9 @@ router.get('/', isAuthed, async function (req, res, next) {
 
 router.get('/delete/:name', isAuthed, async function (req, res, next) {
   try {
-    await ApplicationModel.deleteMany({twName: req.params.name});
+    await ApplicationModel.deleteMany({ twName: req.params.name });
     res.redirect('/admin');
-  } catch(e) {
+  } catch (e) {
     next(e);
   }
 });
@@ -38,17 +38,17 @@ router.get('/delete/:name', isAuthed, async function (req, res, next) {
 
 router.get('/map/delete/:name', isAuthed, async function (req, res, next) {
   try {
-    await MapModel.deleteMany({fileName: req.params.name});
+    await MapModel.deleteMany({ fileName: req.params.name });
     res.redirect('/admin');
-  } catch(e) {
+  } catch (e) {
     next(e);
   }
 });
 
 router.get('/map/download/:name', isAuthed, async function (req, res, next) {
   try {
-    let maps = await MapModel.find({fileName: req.params.name}).sort({uploadDate: -1}).exec();
-    if(maps.length < 1) {
+    let maps = await MapModel.find({ fileName: req.params.name }).sort({ uploadDate: -1 }).exec();
+    if (maps.length < 1) {
       return next();
     }
     let map = maps[0];
@@ -58,7 +58,7 @@ router.get('/map/download/:name', isAuthed, async function (req, res, next) {
       'Content-Length': map.mapFile.length
     });
     res.end(map.mapFile, map.encoding);
-  } catch(e) {
+  } catch (e) {
     next(e);
   }
 });

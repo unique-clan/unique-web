@@ -29,13 +29,13 @@ exports.getCacheOrUpdate = async function (key, connection, query, params = []) 
   } else {
     return val;
   }
-}
+};
 
 exports.newMysqlConn = async function () {
   return await mysql.createConnection(mysqlOptions);
-}
+};
 
-function pad (n, width, z) {
+function pad(n, width, z) {
   z = z || '0';
   n = n + '';
   return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
@@ -46,8 +46,8 @@ exports.formatTime = function (time) {
   var minutes = Math.floor(time / 60);
   var seconds = Math.floor(time - minutes * 60);
   return `${pad(minutes, 2)}:${pad(seconds, 2)}.${pad(ms, 3)}`;
-}
+};
 
 exports.escapeLike = function (pattern) {
-  return pattern.replace(/%/g, "\\%").replace(/_/g, "\\_");
-}
+  return pattern.replace(/%/g, '\\%').replace(/_/g, '\\_');
+};

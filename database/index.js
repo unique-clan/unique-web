@@ -6,7 +6,7 @@ var map = require('./models/map');
 // Plugins
 var lastmod = require('./plugins/lastmod');
 
-module.exports = exports = function load () {
+module.exports = exports = function load() {
   user.plugin(lastmod);
   mongoose.model('User', user);
   mongoose.model('Application', application);
