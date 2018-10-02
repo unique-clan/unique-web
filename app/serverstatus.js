@@ -1,18 +1,18 @@
 var fs = require('fs');
 var ping = require('ping').promise;
 var debug = require('debug')('uniqueweb:serverstatus');
-var util = require('util')
+var util = require('util');
 var ServerHandler = require('teeworlds-server-status').ServerHandler;
 
-const sleep = util.promisify(setTimeout)
-const readFile = util.promisify(fs.readFile)
+const sleep = util.promisify(setTimeout);
+const readFile = util.promisify(fs.readFile);
 
 class ServerStatus {
 
   constructor (jsonPath) {
     this.path = jsonPath;
     this.list = null;
-    this.twFlags = {}
+    this.twFlags = {};
   }
 
   loadTWFlags () {
