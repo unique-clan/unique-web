@@ -54,18 +54,18 @@ router.get('/apply', function (req, res, next) {
 
 router.post('/apply', async function (req, res, next) {
   try {
-    if(req.body.gameModes && typeof req.body.gameModes === 'string') {
+    if (req.body.gameModes && typeof req.body.gameModes === 'string') {
       req.body.gameModes = req.body.gameModes.split(',');
     }
     let App = new ApplicationModel(req.body);
     await App.save();
     res.status(201).json({ msg: 'Application sent.' });
-  } catch(e) {
-    if(e.code === 11000) {
+  } catch (e) {
+    if (e.code === 11000) {
       return res.status(422).json({
         errors: {
           twName: {
-            message:'Application with this name already found.'
+            message: 'Application with this name already found.'
           }
         }
       });
@@ -89,14 +89,14 @@ router.post('/mapupload', upload.single('mapFile'), async function (req, res, ne
     req.body.mappers = req.body.mappers.split(',').filter(g => g.length);
   }
 
-  if(req.body.mappers.length < 1) {
+  if (req.body.mappers.length < 1) {
     errors.mappers = {
       message: 'Mappers is required.'
     };
     error = true;
   }
 
-  if(typeof req.file === 'undefined' || !req.file || !req.file.originalname) {
+  if (typeof req.file === 'undefined' || !req.file || !req.file.originalname) {
     errMessages.push('Missing file');
     error = true;
   }
@@ -112,7 +112,7 @@ router.post('/mapupload', upload.single('mapFile'), async function (req, res, ne
   }
 
   // Max 8mb file size
-  if(req.file && req.file.size > 8 * 1024 * 1024) {
+  if (req.file && req.file.size > 8 * 1024 * 1024) {
     errMessages.push('Maximum file size is 8mb');
     error = true;
   }
@@ -120,19 +120,19 @@ router.post('/mapupload', upload.single('mapFile'), async function (req, res, ne
   let mapFile = null;
 
   try {
-    if(req.file)
+    if (req.file)
       mapFile = fs.readFileSync(req.file.path);
-  } catch(e) {
+  } catch (e) {
     errMessages.push('Error uploading the file, please retry.');
     error = true;
   }
 
-  if(!mapFile && req.file) {
+  if (!mapFile && req.file) {
     errMessages.push('Error uploading the file, please retry.');
     error = true;
   }
 
-  if(error) {
+  if (error) {
     if (req.file) {
       fs.unlinkSync(req.file.path);
     }
@@ -148,13 +148,13 @@ router.post('/mapupload', upload.single('mapFile'), async function (req, res, ne
       size: req.file.size,
       mimetype: req.file.mimetype
     });
-  } catch(e) {
+  } catch (e) {
     fs.unlinkSync(req.file.path);
     return next(e);
   }
 
   fs.unlinkSync(req.file.path);
-  return res.status(201).json({msg:'Map submission sent.'});
+  return res.status(201).json({ msg: 'Map submission sent.' });
 });
 
 router.get('/tournaments', function (req, res, next) {
@@ -171,35 +171,37 @@ router.get('/profile', function (req, res, next) {
 
 router.get('/maps', async function (req, res, next) {
   const connection = await sql.newMysqlConn();
-  let search = null
-  let pattern = '%'
+  let search = null;
+  let pattern = '%';
   if (typeof req.query.search === 'string' && req.query.search.trim()) {
-    search = req.query.search.trim()
-    pattern = '%' + sql.escapeLike(req.query.search).replace(/ /g, '%') + '%'
+    search = req.query.search.trim();
+    pattern = '%' + sql.escapeLike(req.query.search).replace(/ /g, '%') + '%';
     const [map] = await connection.execute('SELECT IFNULL((SELECT Map FROM race_maps WHERE Map=?), (SELECT Map FROM race_maps WHERE Map COLLATE utf8mb4_general_ci LIKE ? HAVING COUNT(*) = 1)) AS Map;', [search, pattern]);
     if (map[0].Map) {
-      res.redirect('/map/'+encodeURIComponent(map[0].Map))
-      connection.end()
-      return
+      res.redirect('/map/' + encodeURIComponent(map[0].Map));
+      connection.end();
+      return;
     }
   }
   const [mapCount] = await connection.execute('SELECT COUNT(*) as Count FROM race_maps WHERE Map COLLATE utf8mb4_general_ci LIKE ?;', [pattern]);
   const pageCount = Math.ceil(mapCount[0]['Count'] / 30);
   const page = Math.min(Math.max(1, req.query.page), pageCount) || 1;
-  const [maps] = await connection.execute('SELECT Map, Mapper, Timestamp FROM race_maps WHERE Map COLLATE utf8mb4_general_ci LIKE ? ORDER BY Timestamp DESC, Map COLLATE utf8mb4_general_ci LIMIT ?, 30;', [pattern, (page-1)*30]);
-  connection.end()
+  const [maps] = await connection.execute('SELECT Map, Mapper, Timestamp FROM race_maps WHERE Map COLLATE utf8mb4_general_ci LIKE ? ORDER BY Timestamp DESC, Map COLLATE utf8mb4_general_ci LIMIT ?, 30;', [pattern, (page - 1) * 30]);
+  connection.end();
   if (process.env.MAPS_LOCATION) {
     for (let i = 0; i < maps.length; i++) {
       try {
         await thumb({
-          source: path.join(process.env.MAPS_LOCATION, maps[i].Map+'.png'),
+          source: path.join(process.env.MAPS_LOCATION, maps[i].Map + '.png'),
           destination: path.join(__dirname, '../public/img/mapthumb'),
           width: 720,
           skip: true,
           suffix: '',
           quiet: true
         });
-      } catch(e) { }
+      } catch (e) {
+        debug(e);
+      }
     }
   }
   res.render('maps', {
@@ -215,7 +217,7 @@ router.get('/map/:map', async function (req, res, next) {
   const connection = await sql.newMysqlConn();
   const [map] = await connection.execute('SELECT Map, Server, Mapper, Stars, Timestamp, (SELECT COUNT(DISTINCT Name) FROM race_race WHERE Map = l.Map) AS Finishers FROM race_maps l WHERE Map = ?;', [req.params.map]);
   if (!map.length) {
-    res.status(404).render('error', {message: 'Not Found', error: {status: 404}});
+    res.status(404).render('error', { message: 'Not Found', error: { status: 404 } });
     connection.end();
     return;
   }

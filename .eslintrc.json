@@ -1,7 +1,16 @@
 {
-    "extends": ["eslint:recommended", "plugin:node/recommended"],
+    "extends": [
+        "eslint:recommended",
+        "plugin:node/recommended",
+        "plugin:import/errors",
+        "plugin:import/warnings",
+        "plugin:promise/recommended"
+    ],
     "plugins": [
-        "eslint-plugin-node"
+        "node",
+        "import",
+        "promise",
+        "standard"
     ],
     "globals": {
         "$": true,
@@ -14,7 +23,10 @@
         "no-extra-semi": "error",
         "no-mixed-spaces-and-tabs": "error",
         "indent": ["error", 2],
-        "quotes": ["error", "single"]
+        "quotes": ["error", "single"],
+        "no-console": "off",
+        "no-process-exit": "off",
+        "no-constant-condition": "off"
     },
     "env": {
         "es6": true,

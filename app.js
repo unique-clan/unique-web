@@ -11,7 +11,7 @@ const MongoStore = require('connect-mongo')(session);
 var mongoSanitize = require('express-mongo-sanitize');
 var debug = require('debug')('uniqueweb:app');
 var debugDB = require('debug')('uniqueweb:app:dberror');
-var contentDisposition = require('content-disposition')
+var contentDisposition = require('content-disposition');
 var escape = require('escape-html');
 
 // Setup the db connection
@@ -24,7 +24,7 @@ mongoose.Promise = global.Promise;
 
 var db = mongoose.connection;
 db.on('error', debugDB);
-db.once('open', function callback () {
+db.once('open', function callback() {
   debug('Connection to database succesfull.');
 });
 
@@ -43,7 +43,7 @@ if (process.env.DATABASE_HOST && process.env.DATABASE_PORT) {
 
 connectionString += '/' + (process.env.DATABASE_NAME || 'uniqueweb');
 
-mongoose.connect(connectionString, {useNewUrlParser: true});
+mongoose.connect(connectionString, { useNewUrlParser: true });
 
 // Load App routes
 var index = require('./routes/index');
@@ -80,11 +80,13 @@ app.use('/static/css', express.static(path.join(__dirname, 'node_modules/bulma/c
 app.use('/static', express.static(path.join(__dirname, 'node_modules/bulma-extensions/dist')));
 app.use('/static/servers.json', express.static(process.env.SERVERS_LOCATION || 'servers.json'));
 if (process.env.MAPS_LOCATION) {
-  app.use('/static/maps', express.static(process.env.MAPS_LOCATION, {setHeaders: function(res, path) {
-    if (path.endsWith('.map')) {
-      res.setHeader('Content-Disposition', contentDisposition(path))
+  app.use('/static/maps', express.static(process.env.MAPS_LOCATION, {
+    setHeaders: function (res, path) {
+      if (path.endsWith('.map')) {
+        res.setHeader('Content-Disposition', contentDisposition(path));
+      }
     }
-  }}));
+  }));
 }
 
 app.use(logger('dev'));
