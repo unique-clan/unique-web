@@ -42,6 +42,7 @@ npm-debug.log
 *.swp
 /run.sh
 /update.sh
+/update.lock
 
 # temporary data storage
 /admintmp/applications/*
