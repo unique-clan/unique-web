@@ -29,6 +29,8 @@ block content
                 a(href='#middle') Middle
               li
                 a(href='#long') Long
+              li
+                a(href='#fastcap') Fastcap
     section.section
       .container
         article.tile.is-child.notification.is-white.table-links
@@ -183,6 +185,41 @@ block content
                       th Points
                   tbody
                     each player, index in topPointsLong
+                      tr
+                        th= player.rank
+                        td
+                          a(href='/ranks/player/'+encodeURIComponent(player.Name))= player.Name
+                        td= player.Points
+          span.rank-anchor#fastcap
+          p.title.is-4 Fastcap Ranks (#{numFastcapMaps} Maps)
+          .columns
+            .column
+              p.subtitle Map Records
+              .horizontal-scroll
+                table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
+                  thead
+                    tr
+                      th Rank
+                      th Player
+                      th Records
+                  tbody
+                    each record, index in mapRecordsFastcap
+                      tr
+                        th= record.rank
+                        td
+                          a(href='/ranks/player/'+encodeURIComponent(record.Name))= record.Name
+                        td= record.recordsCount
+            .column
+              p.subtitle Points
+              .horizontal-scroll
+                table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
+                  thead
+                    tr
+                      th Rank
+                      th Player
+                      th Points
+                  tbody
+                    each player, index in topPointsFastcap
                       tr
                         th= player.rank
                         td

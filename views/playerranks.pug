@@ -29,6 +29,8 @@ block content
                 a(href='#middle') Middle
               li
                 a(href='#long') Long
+              li
+                a(href='#fastcap') Fastcap
     section.section
       .container
         article.tile.is-child.notification.is-white.table-links
@@ -227,6 +229,57 @@ block content
               span Unfinished&nbsp;Maps:
               ul
                 each x in unfinishedLong
+                  li
+                    a(href='/map/'+encodeURIComponent(x.Map))= x.Map
+          span.rank-anchor#fastcap
+          p.title.is-4 Fastcap Ranks (#{fastcapMapFinishedCount}/#{numFastcapMaps} Maps)
+          .playerranks-header
+            .columns
+              .column
+                p.subtitle Map Records
+                if fastcapMapRecords
+                  b= fastcapMapRecords.rank
+                  sup= getOrdinal(fastcapMapRecords.rank)
+                  |  with 
+                  b= fastcapMapRecords.recordsCount
+                  |  records
+                else
+                  | &mdash;
+              .column
+                p.subtitle Points
+                if fastcapPoints
+                  b= fastcapPoints.rank
+                  sup= getOrdinal(fastcapPoints.rank)
+                  |  with 
+                  b= fastcapPoints.Points
+                  |  points
+                else
+                  | &mdash;
+          p.subtitle Map List
+          if fastcapMapList.length
+            .horizontal-scroll
+              table.table.is-narrow.is-striped.is-hoverable.is-fullwidth.is-bordered#fastcap-table
+                thead
+                  tr
+                    th Map
+                    th Time
+                    th Rank
+                    th Map Points
+                tbody
+                  each x in fastcapMapList
+                    tr
+                      td
+                        a(href='/map/'+encodeURIComponent(x.Map))= x.Map
+                      td= formatTime(x.playerTime)
+                      td(data-order=x.Rank)= x.Rank
+                        sup= getOrdinal(x.Rank)
+                      td= x.mapPoints
+          .unfinished-maps
+            if unfinishedFastcap.length
+              br
+              span Unfinished&nbsp;Maps:
+              ul
+                each x in unfinishedFastcap
                   li
                     a(href='/map/'+encodeURIComponent(x.Map))= x.Map
 

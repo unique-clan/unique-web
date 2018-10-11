@@ -49,17 +49,20 @@ router.get('/', async function (req, res, next) {
   const topPointsShort = await sql.getCacheOrUpdate('topPointsShort', connection, topPointsCategoryQuery, ['Short']);
   const topPointsMiddle = await sql.getCacheOrUpdate('topPointsMiddle', connection, topPointsCategoryQuery, ['Middle']);
   const topPointsLong = await sql.getCacheOrUpdate('topPointsLong', connection, topPointsCategoryQuery, ['Long']);
+  const topPointsFastcap = await sql.getCacheOrUpdate('topPointsFastcap', connection, topPointsCategoryQuery, ['Fastcap']);
 
   const lastTopRanks = await sql.getCacheOrUpdate('lastTopRanks', connection, lastRecordsQuery);
 
   const mapRecordsShort = await sql.getCacheOrUpdate('mapRecordsShort', connection, topRecordsCategoryQuery, ['Short']);
   const mapRecordsMiddle = await sql.getCacheOrUpdate('mapRecordsMiddle', connection, topRecordsCategoryQuery, ['Middle']);
   const mapRecordsLong = await sql.getCacheOrUpdate('mapRecordsLong', connection, topRecordsCategoryQuery, ['Long']);
+  const mapRecordsFastcap = await sql.getCacheOrUpdate('mapRecordsFastcap', connection, topRecordsCategoryQuery, ['Fastcap']);
 
   const totalMapCount = await sql.getCacheOrUpdate('totalMapCount', connection, mapCountQuery);
   const shortMapCount = await sql.getCacheOrUpdate('shortMapCount', connection, mapCountCategoryQuery, ['Short']);
   const middleMapCount = await sql.getCacheOrUpdate('middleMapCount', connection, mapCountCategoryQuery, ['Middle']);
   const longMapCount = await sql.getCacheOrUpdate('longMapCount', connection, mapCountCategoryQuery, ['Long']);
+  const fastcapMapCount = await sql.getCacheOrUpdate('fastcapMapCount', connection, mapCountCategoryQuery, ['Fastcap']);
 
   connection.end();
 
@@ -69,17 +72,23 @@ router.get('/', async function (req, res, next) {
     topPoints: topPoints,
     lastTopRanks: lastTopRanks,
     formatTime: sql.formatTime,
+
     mapRecords: mapRecords,
     mapRecordsShort: mapRecordsShort,
     mapRecordsMiddle: mapRecordsMiddle,
     mapRecordsLong: mapRecordsLong,
+    mapRecordsFastcap: mapRecordsFastcap,
+
     topPointsShort: topPointsShort,
     topPointsMiddle: topPointsMiddle,
     topPointsLong: topPointsLong,
+    topPointsFastcap: topPointsFastcap,
+
     totalMapCount: totalMapCount.length > 0 ? totalMapCount[0].n : 'Unknown',
     numShortMaps: shortMapCount.length > 0 ? shortMapCount[0].n : 'Unknown',
     numMiddleMaps: middleMapCount.length > 0 ? middleMapCount[0].n : 'Unknown',
-    numLongMaps: longMapCount.length > 0 ? longMapCount[0].n : 'Unknown'
+    numLongMaps: longMapCount.length > 0 ? longMapCount[0].n : 'Unknown',
+    numFastcapMaps: fastcapMapCount.length > 0 ? fastcapMapCount[0].n : 'Unknown'
   });
 });
 
@@ -106,26 +115,32 @@ router.get('/player/:name', async function (req, res, next) {
   const shortMapCount = await sql.getCacheOrUpdate('shortMapCount', connection, mapCountCategoryQuery, ['Short']);
   const middleMapCount = await sql.getCacheOrUpdate('middleMapCount', connection, mapCountCategoryQuery, ['Middle']);
   const longMapCount = await sql.getCacheOrUpdate('longMapCount', connection, mapCountCategoryQuery, ['Long']);
+  const fastcapMapCount = await sql.getCacheOrUpdate('fastcapMapCount', connection, mapCountCategoryQuery, ['Fastcap']);
 
   const shortMapFinishedCount = await sql.getCacheOrUpdate('shortMapFinishedCount_' + player, connection, mapFinishedCountCategoryQuery, [player, 'Short']);
   const middleMapFinishedCount = await sql.getCacheOrUpdate('middleMapFinishedCount_' + player, connection, mapFinishedCountCategoryQuery, [player, 'Middle']);
   const longMapFinishedCount = await sql.getCacheOrUpdate('longMapFinishedCount_' + player, connection, mapFinishedCountCategoryQuery, [player, 'Long']);
+  const fastcapMapFinishedCount = await sql.getCacheOrUpdate('fastcapMapFinishedCount_' + player, connection, mapFinishedCountCategoryQuery, [player, 'Fastcap']);
 
   const shortMapRecordsCount = await sql.getCacheOrUpdate('shortMapRecordsCount_' + player, connection, recordsCategoryPlayerQuery, ['Short', player]);
   const middleMapRecordsCount = await sql.getCacheOrUpdate('middleMapRecordsCount_' + player, connection, recordsCategoryPlayerQuery, ['Middle', player]);
   const longMapRecordsCount = await sql.getCacheOrUpdate('longMapRecordsCount_' + player, connection, recordsCategoryPlayerQuery, ['Long', player]);
+  const fastcapMapRecordsCount = await sql.getCacheOrUpdate('fastcapMapRecordsCount_' + player, connection, recordsCategoryPlayerQuery, ['Fastcap', player]);
 
   const shortPoints = await sql.getCacheOrUpdate('shortPoints_' + player, connection, pointsPlayerCategoryQuery, ['Short', player]);
   const middlePoints = await sql.getCacheOrUpdate('middlePoints_' + player, connection, pointsPlayerCategoryQuery, ['Middle', player]);
   const longPoints = await sql.getCacheOrUpdate('longPoints_' + player, connection, pointsPlayerCategoryQuery, ['Long', player]);
+  const fastcapPoints = await sql.getCacheOrUpdate('fastcapPoints_' + player, connection, pointsPlayerCategoryQuery, ['Fastcap', player]);
 
   const shortMapList = await sql.getCacheOrUpdate('shortMapList_' + player, connection, mapListQuery, [player, 'Short', player]);
   const middleMapList = await sql.getCacheOrUpdate('middleMapList_' + player, connection, mapListQuery, [player, 'Middle', player]);
   const longMapList = await sql.getCacheOrUpdate('longMapList_' + player, connection, mapListQuery, [player, 'Long', player]);
+  const fastcapMapList = await sql.getCacheOrUpdate('fastcapMapList_' + player, connection, mapListQuery, [player, 'Fastcap', player]);
 
   const unfinishedShort = await sql.getCacheOrUpdate('unfinishedShort_' + player, connection, unfinishedMapsQuery, ['Short', player]);
   const unfinishedMiddle = await sql.getCacheOrUpdate('unfinishedMiddle_' + player, connection, unfinishedMapsQuery, ['Middle', player]);
   const unfinishedLong = await sql.getCacheOrUpdate('unfinishedLong_' + player, connection, unfinishedMapsQuery, ['Long', player]);
+  const unfinishedFastcap = await sql.getCacheOrUpdate('unfinishedFastcap_' + player, connection, unfinishedMapsQuery, ['Fastcap', player]);
 
   connection.end();
 
@@ -145,27 +160,33 @@ router.get('/player/:name', async function (req, res, next) {
     numShortMaps: shortMapCount.length > 0 ? shortMapCount[0].n : 'Unknown',
     numMiddleMaps: middleMapCount.length > 0 ? middleMapCount[0].n : 'Unknown',
     numLongMaps: longMapCount.length > 0 ? longMapCount[0].n : 'Unknown',
+    numFastcapMaps: fastcapMapCount.length > 0 ? fastcapMapCount[0].n : 'Unknown',
 
     totalMapFinishedCount: totalMapFinishedCount[0].n,
     shortMapFinishedCount: shortMapFinishedCount[0].n,
     middleMapFinishedCount: middleMapFinishedCount[0].n,
     longMapFinishedCount: longMapFinishedCount[0].n,
+    fastcapMapFinishedCount: fastcapMapFinishedCount[0].n,
 
     shortMapRecords: shortMapRecordsCount.length > 0 ? shortMapRecordsCount[0] : null,
     middleMapRecords: middleMapRecordsCount.length > 0 ? middleMapRecordsCount[0] : null,
     longMapRecords: longMapRecordsCount.length > 0 ? longMapRecordsCount[0] : null,
+    fastcapMapRecords: fastcapMapRecordsCount.length > 0 ? fastcapMapRecordsCount[0] : null,
 
     shortMapList: shortMapList,
     middleMapList: middleMapList,
     longMapList: longMapList,
+    fastcapMapList: fastcapMapList,
 
     shortPoints: shortPoints.length > 0 ? shortPoints[0] : null,
     middlePoints: middlePoints.length > 0 ? middlePoints[0] : null,
     longPoints: longPoints.length > 0 ? longPoints[0] : null,
+    fastcapPoints: fastcapPoints.length > 0 ? fastcapPoints[0] : null,
 
     unfinishedShort: unfinishedShort,
     unfinishedMiddle: unfinishedMiddle,
-    unfinishedLong: unfinishedLong
+    unfinishedLong: unfinishedLong,
+    unfinishedFastcap: unfinishedFastcap
   });
 });
 
