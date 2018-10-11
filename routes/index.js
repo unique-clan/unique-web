@@ -186,7 +186,7 @@ router.get('/maps', async function (req, res, next) {
   const [mapCount] = await connection.execute('SELECT COUNT(*) as Count FROM race_maps WHERE Map COLLATE utf8mb4_general_ci LIKE ? AND (Server != "Fastcap" OR Stars != 1);', [pattern]);
   const pageCount = Math.ceil(mapCount[0]['Count'] / 30);
   const page = Math.min(Math.max(1, req.query.page), pageCount) || 1;
-  const [maps] = await connection.execute('SELECT Map, Mapper, Timestamp FROM race_maps WHERE Map COLLATE utf8mb4_general_ci LIKE ? AND (Server != "Fastcap" OR Stars != 1) ORDER BY Timestamp DESC, Map COLLATE utf8mb4_general_ci LIMIT ?, 30;', [pattern, (page - 1) * 30]);
+  const [maps] = await connection.execute('SELECT Map, Server, Mapper, Stars, Timestamp FROM race_maps WHERE Map COLLATE utf8mb4_general_ci LIKE ? AND (Server != "Fastcap" OR Stars != 1) ORDER BY Timestamp DESC, Map COLLATE utf8mb4_general_ci LIMIT ?, 30;', [pattern, (page - 1) * 30]);
   connection.end();
   if (process.env.MAPS_LOCATION) {
     for (let i = 0; i < maps.length; i++) {
@@ -209,7 +209,8 @@ router.get('/maps', async function (req, res, next) {
     page: page,
     pageCount: pageCount,
     maps: maps,
-    search: search
+    search: search,
+    getCategory: sql.getCategory
   });
 });
 
@@ -221,27 +222,25 @@ router.get('/map/:map', async function (req, res, next) {
     connection.end();
     return;
   }
-  const topTen = await sql.getCacheOrUpdate('mapOverviewTopTen_' + req.params.map, connection, 'SELECT @pos := @pos + 1 AS v1, @rank := IF(@prev = Time, @rank, @pos) AS rank, @prev := Time AS v2, Name, Time FROM (SELECT Name, MIN(Time) AS Time FROM race_race WHERE Map=? GROUP BY Name ORDER BY Time) v, (SELECT @pos := 0) i1, (SELECT @rank := -1) i2, (SELECT @prev := -1) i3 LIMIT 10;', [req.params.map]);
-  const lastRecords = await sql.getCacheOrUpdate('mapOverviewLastRecords_' + req.params.map, connection, 'SELECT Name, Timestamp, Time FROM race_lastrecords WHERE Map=? ORDER BY Timestamp DESC LIMIT 10;', [req.params.map]);
+
+  const getTables = async mapname => ({
+    topTen: await sql.getCacheOrUpdate('mapOverviewTopTen_' + req.params.map, connection, 'SELECT @pos := @pos + 1 AS v1, @rank := IF(@prev = Time, @rank, @pos) AS rank, @prev := Time AS v2, Name, Time FROM (SELECT Name, MIN(Time) AS Time FROM race_race WHERE Map=? GROUP BY Name ORDER BY Time) v, (SELECT @pos := 0) i1, (SELECT @rank := -1) i2, (SELECT @prev := -1) i3 LIMIT 10;', [mapname]),
+    lastRecords: await sql.getCacheOrUpdate('mapOverviewLastRecords_' + req.params.map, connection, 'SELECT Name, Timestamp, Time FROM race_lastrecords WHERE Map=? ORDER BY Timestamp DESC LIMIT 10;', [mapname])
+  });
+
+  let tables = await getTables(map[0].Map);
+  let tablesNoWpns = null;
+  if (map[0].Server === 'Fastcap')
+    tablesNoWpns = await getTables(map[0].Map+'_no_wpns');
+
   connection.end();
   res.render('map', {
     title: req.params.map + ' | Unique',
     map: map[0],
-    topTen: topTen,
-    lastRecords: lastRecords,
+    tables: tables,
+    tablesNoWpns: tablesNoWpns,
     formatTime: sql.formatTime,
-    getCategory: function (map) {
-      if (map.Server !== 'Long')
-        return map.Server;
-      let difficulty;
-      if (map.Stars === 0)
-        difficulty = 'Easy';
-      else if (map.Stars === 1)
-        difficulty = 'Advanced';
-      else if (map.Stars === 2)
-        difficulty = 'Hard';
-      return map.Server + ' ' + difficulty;
-    }
+    getCategory: sql.getCategory
   });
 });
 

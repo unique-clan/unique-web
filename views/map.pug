@@ -1,5 +1,44 @@
 extends layout
 
+mixin renderTables(tables)
+  .columns.table-links
+    .column
+      .box
+        section.hero
+          h1.title Top Ranks
+          .horizontal-scroll
+            table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
+              thead
+                tr
+                  th Rank
+                  th Player
+                  th Time
+              tbody
+                each record in tables.topTen
+                  tr
+                    th= record.rank
+                    td
+                      a(href='/ranks/player/'+encodeURIComponent(record.Name))= record.Name
+                    td= formatTime(record.Time)
+    .column
+      .box
+        section.hero
+          h1.title Last Records
+          .horizontal-scroll
+            table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
+              thead
+                tr
+                  th Date
+                  th Player
+                  th Time
+              tbody
+                each record in tables.lastRecords
+                  tr
+                    td= record.Timestamp.toISOString().replace(/T/, ' ').replace(/\..+/, '')
+                    td
+                      a(href='/ranks/player/'+encodeURIComponent(record.Name))= record.Name
+                    td= formatTime(record.Time)
+
 block content
   main
     br
@@ -13,49 +52,17 @@ block content
                 p.title.has-text-centered(style=`font-size: ${Math.min(32, Math.max(18, 550/map.Map.length))}px;`)
                   |!{escape(map.Map).replace(new RegExp('_', 'g'), '_<wbr>')}
                 hr
-                p.subtitle 📝 Mapper: #{map.Mapper}
+                if map.Mapper !== null
+                  p.subtitle 📝 Mapper: #{map.Mapper}
+                p.subtitle 📂 Category: #{getCategory(map)}
                 if !isNaN(map.Timestamp)
                   p.subtitle 📅 Released on #{map.Timestamp.toISOString().split('T')[0]}
-                p.subtitle 📂 Category: #{getCategory(map)}
                 p.subtitle 🏁 Finished by #{map.Finishers} tees
                 a.span.button.is-link.is-warning(href='/static/tw-webgl/?map='+encodeURIComponent(`/static/maps/${map.Map}.map`)) Preview
                 a.span.button.is-link.is-warning.tr(href=`/static/maps/${encodeURIComponent(map.Map)}.map`) Download
         br
         br
-        .columns.table-links
-          .column
-            .box
-              section.hero
-                h1.title Top Ranks
-                .horizontal-scroll
-                  table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
-                    thead
-                      tr
-                        th Rank
-                        th Player
-                        th Time
-                    tbody
-                      each record in topTen
-                        tr
-                          th= record.rank
-                          td
-                            a(href='/ranks/player/'+encodeURIComponent(record.Name))= record.Name
-                          td= formatTime(record.Time)
-          .column
-            .box
-              section.hero
-                h1.title Last Records
-                .horizontal-scroll
-                  table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
-                    thead
-                      tr
-                        th Date
-                        th Player
-                        th Time
-                    tbody
-                      each record in lastRecords
-                        tr
-                          td= record.Timestamp.toISOString().replace(/T/, ' ').replace(/\..+/, '')
-                          td
-                            a(href='/ranks/player/'+encodeURIComponent(record.Name))= record.Name
-                          td= formatTime(record.Time)
+        +renderTables(tables)
+        if tablesNoWpns !== null
+          br
+          +renderTables(tablesNoWpns)
