@@ -51,3 +51,16 @@ exports.formatTime = function (time) {
 exports.escapeLike = function (pattern) {
   return pattern.replace(/%/g, '\\%').replace(/_/g, '\\_');
 };
+
+exports.getCategory = function (map) {
+  if (map.Server !== 'Long')
+    return map.Server;
+  let difficulty;
+  if (map.Stars === 0)
+    difficulty = 'Easy';
+  else if (map.Stars === 1)
+    difficulty = 'Advanced';
+  else if (map.Stars === 2)
+    difficulty = 'Hard';
+  return map.Server + ' ' + difficulty;
+};

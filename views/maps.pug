@@ -41,7 +41,8 @@ block content
                           |!{escape(map.Map).replace(new RegExp('_', 'g'), '_<wbr>')}
                       p.maps-page-meta(style='margin-top: 30px')
                         if !isNaN(map.Timestamp)
-                          span(style='margin-right: 10px;') 📅 #{map.Timestamp.toISOString().split('T')[0]}
-                        span 📝 #{map.Mapper}
+                          span(style='margin: 0 5px;') 📅 #{map.Timestamp.toISOString().split('T')[0]}
+                        if map.Mapper !== null
+                          span(style='margin: 0 5px;') 📝 #{map.Mapper}
           if pageCount > 1
             +pagination(page, pageCount)
