@@ -224,8 +224,8 @@ router.get('/map/:map', async function (req, res, next) {
   }
 
   const getTables = async mapname => ({
-    topTen: await sql.getCacheOrUpdate('mapOverviewTopTen_' + req.params.map, connection, 'SELECT @pos := @pos + 1 AS v1, @rank := IF(@prev = Time, @rank, @pos) AS rank, @prev := Time AS v2, Name, Time FROM (SELECT Name, MIN(Time) AS Time FROM race_race WHERE Map=? GROUP BY Name ORDER BY Time) v, (SELECT @pos := 0) i1, (SELECT @rank := -1) i2, (SELECT @prev := -1) i3 LIMIT 10;', [mapname]),
-    lastRecords: await sql.getCacheOrUpdate('mapOverviewLastRecords_' + req.params.map, connection, 'SELECT Name, Timestamp, Time FROM race_lastrecords WHERE Map=? ORDER BY Timestamp DESC LIMIT 10;', [mapname])
+    topTen: await sql.getCacheOrUpdate('mapOverviewTopTen_' + mapname, connection, 'SELECT @pos := @pos + 1 AS v1, @rank := IF(@prev = Time, @rank, @pos) AS rank, @prev := Time AS v2, Name, Time FROM (SELECT Name, MIN(Time) AS Time FROM race_race WHERE Map=? GROUP BY Name ORDER BY Time) v, (SELECT @pos := 0) i1, (SELECT @rank := -1) i2, (SELECT @prev := -1) i3 LIMIT 10;', [mapname]),
+    lastRecords: await sql.getCacheOrUpdate('mapOverviewLastRecords_' + mapname, connection, 'SELECT Name, Timestamp, Time FROM race_lastrecords WHERE Map=? ORDER BY Timestamp DESC LIMIT 10;', [mapname])
   });
 
   let tables = await getTables(map[0].Map);
