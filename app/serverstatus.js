@@ -47,6 +47,9 @@ class ServerStatus {
 
     location.alive = res.alive;
     location.ping = res.avg;
+    for (var server of location.servers) {
+      server.ip = location.ip;
+    }
 
     if (location.alive) {
       let tasks = Object.values(location.servers).map(srv => this.updateGameserver(srv, location.ip));
