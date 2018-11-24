@@ -10,4 +10,5 @@ $(document).ready(function () {
   $('#short-table').DataTable()
   $('#middle-table').DataTable()
   $('#long-table').DataTable()
+  $('#fastcap-table').DataTable()
 })
