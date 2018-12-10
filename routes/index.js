@@ -169,6 +169,11 @@ router.get('/profile', function (req, res, next) {
   });
 });
 
+router.get('/mapper', function (req, res, next) {
+  res.render('mapper', {
+    title: 'Mapper | Unique'
+  });
+});
 router.get('/maps', async function (req, res, next) {
   const connection = await sql.newMysqlConn();
   let search = null;
