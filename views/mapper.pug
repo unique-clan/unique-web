@@ -9,73 +9,47 @@ block content
     section.hero.is-dark
       .hero-body
         .container
-          h1.title
-            | Mapper: MAPPERNAME
-          h2.subtitle
-            | Maps: 10 | Short: 4 | Middle: 2 | Long: 4
+          .columns
+            .column.is-9
+              h1.title Unique Race Maps
+            .column
+              form(action='/maps')
+                field
+                  p.control.has-icons-right
+                    input.input.warning-dark-input(type="text", placeholder="Map Search", name="search", value=search, autocomplete="off")
+                    span.icon.is-small.is-right
+                      i.fa.fa-search
+          nav.breadcrumb.rank-nav
+            ul
+              li
+                a(href='#short') Short
+              li
+                a(href='#middle') Middle
+              li
+                a(href='#long') Long
+              li
+                a(href='#fastcap') Fastcap
     section.section
       .container
-        p.title Short Maps
-        .columns
-          .column.is-4
-            .card
-              .card-image
-                img(src=`static/img/mapimage/run_4DoNe.png`)
-              .card-content
-                p.title.has-text-centered run_4DoNe
-          .column.is-4
-            .card
-              .card-image
-                img(src=`static/img/mapimage/run_4DoNe.png`)
-              .card-content
-                p.title.has-text-centered run_4DoNe
-          .column.is-4
-            .card
-              .card-image
-                img(src=`static/img/mapimage/run_4DoNe.png`)
-              .card-content
-                p.title.has-text-centered run_4DoNe
-    section.section
-      .container
-        p.title Middle Maps
-        .columns
-          .column.is-4
-            .card
-              .card-image
-                img(src=`static/img/mapimage/run_4DoNe.png`)
-              .card-content
-                p.title.has-text-centered run_4DoNe
-          .column.is-4
-            .card
-              .card-image
-                img(src=`static/img/mapimage/run_4DoNe.png`)
-              .card-content
-                p.title.has-text-centered run_4DoNe
-          .column.is-4
-            .card
-              .card-image
-                img(src=`static/img/mapimage/run_4DoNe.png`)
-              .card-content
-                p.title.has-text-centered run_4DoNe
-    section.section
-      .container
-        p.title Long Maps
-        .columns
-          .column.is-4
-            .card
-              .card-image
-                img(src=`static/img/mapimage/run_4DoNe.png`)
-              .card-content
-                p.title.has-text-centered run_4DoNe
-          .column.is-4
-            .card
-              .card-image
-                img(src=`static/img/mapimage/run_4DoNe.png`)
-              .card-content
-                p.title.has-text-centered run_4DoNe
-          .column.is-4
-            .card
-              .card-image
-                img(src=`static/img/mapimage/run_4DoNe.png`)
-              .card-content
-                p.title.has-text-centered run_4DoNe
+        p.title Maps by #{mapper} (#{mapCount})
+        each maps, name in categories
+          if maps.length
+            span.rank-anchor(id=name.toLowerCase())
+            p.title.is-4 #{name} Maps (#{maps.length})
+              each maprow in maps.reduce(function(result, value, index, array) { if (index % 3 === 0) result.push(array.slice(index, index + 3)); return result; }, [])
+                .columns
+                  each map in maprow
+                    .column.is-4
+                      .card
+                        .card-image
+                           a(href='/map/'+encodeURIComponent(map.Map))
+                            img(src=`/static/img/mapthumb/${encodeURIComponent(map.Map)}.png`)
+                        .card-content
+                          a(href='/map/'+encodeURIComponent(map.Map))
+                            p.title.has-text-centered(style=`font-size: ${Math.min(32, Math.max(18, 300/map.Map.length))}px; height: 36px;`)
+                              |!{escape(map.Map).replace(new RegExp('_', 'g'), '_<wbr>')}
+                          p.maps-page-meta(style='margin-top: 30px')
+                            if !isNaN(map.Timestamp)
+                              span(style='margin: 0 5px;') 📅 #{map.Timestamp.toISOString().split('T')[0]}
+                            if map.Mapper !== null
+                              span(style='margin: 0 5px;') 📝 #{map.Mapper}

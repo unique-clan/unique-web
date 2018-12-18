@@ -180,12 +180,12 @@ a.navbar-item:hover
     li:last-child:after
       content: ""
 
-.table-links table,
-.table-links ul
-  a
-    color: rgb(54, 54, 54);
-    text-decoration: none !important
-  a:hover
+.table-links table a,
+.table-links ul a,
+a.unobstrusive
+  color: rgb(54, 54, 54);
+  text-decoration: none !important
+  &:hover
     text-decoration: underline !important
 
 .horizontal-scroll

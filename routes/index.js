@@ -169,11 +169,6 @@ router.get('/profile', function (req, res, next) {
   });
 });
 
-router.get('/mapper', function (req, res, next) {
-  res.render('mapper', {
-    title: 'Mapper | Unique'
-  });
-});
 router.get('/maps', async function (req, res, next) {
   const connection = await sql.newMysqlConn();
   let search = null;
@@ -245,6 +240,46 @@ router.get('/map/:map', async function (req, res, next) {
     tables: tables,
     tablesNoWpns: tablesNoWpns,
     formatTime: sql.formatTime,
+    getCategory: sql.getCategory
+  });
+});
+
+router.get('/mapper/:mapper', async function (req, res, next) {
+  const connection = await sql.newMysqlConn();
+  const [maps] = await connection.execute('SELECT Map, Server, Mapper, Stars, Timestamp FROM race_maps WHERE Mapper = ? AND (Server != "Fastcap" OR Stars != 1) ORDER BY Timestamp DESC, Map COLLATE utf8mb4_general_ci;', [req.params.mapper]);
+  connection.end();
+  if (!maps.length) {
+    res.status(404).render('error', { message: 'Not Found', error: { status: 404 } });
+    return;
+  }
+
+  if (process.env.MAPS_LOCATION) {
+    for (let i = 0; i < maps.length; i++) {
+      try {
+        await thumb({
+          source: path.join(process.env.MAPS_LOCATION, maps[i].Map + '.png'),
+          destination: path.join(__dirname, '../public/img/mapthumb'),
+          width: 720,
+          skip: true,
+          suffix: '',
+          quiet: true
+        });
+      } catch (e) {
+        debug(e);
+      }
+    }
+  }
+
+  res.render('mapper', {
+    title: `Maps by ${req.params.mapper} | Unique`,
+    mapper: req.params.mapper,
+    mapCount: maps.length,
+    categories: {
+      Short: maps.filter(m => m.Server === 'Short'),
+      Middle: maps.filter(m => m.Server === 'Middle'),
+      Long: maps.filter(m => m.Server === 'Long'),
+      Fastcap: maps.filter(m => m.Server === 'Fastcap')
+    },
     getCategory: sql.getCategory
   });
 });
