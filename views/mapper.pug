@@ -51,5 +51,4 @@ block content
                           p.maps-page-meta(style='margin-top: 30px')
                             if !isNaN(map.Timestamp)
                               span(style='margin: 0 5px;') 📅 #{map.Timestamp.toISOString().split('T')[0]}
-                            if map.Mapper !== null
-                              span(style='margin: 0 5px;') 📝 #{map.Mapper}
+                            span(style='margin: 0 5px;') 📂 #{getCategory(map)}
