@@ -14,6 +14,9 @@ block content
           .columns
             .column.is-9
               h1.title Unique Race Maps
+              if search
+                h2.subtitle
+                  | Searching for "#{search}"
             .column
               form
                 field
@@ -43,6 +46,7 @@ block content
                         if !isNaN(map.Timestamp)
                           span(style='margin: 0 5px;') 📅 #{map.Timestamp.toISOString().split('T')[0]}
                         if map.Mapper !== null
-                          span(style='margin: 0 5px;') 📝 #{map.Mapper}
+                          span(style='margin: 0 5px;') 📝 
+                            a.unobstrusive(href='/mapper/'+encodeURIComponent(map.Mapper)) #{map.Mapper}
           if pageCount > 1
             +pagination(page, pageCount)

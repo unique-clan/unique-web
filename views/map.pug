@@ -53,7 +53,8 @@ block content
                   |!{escape(map.Map).replace(new RegExp('_', 'g'), '_<wbr>')}
                 hr
                 if map.Mapper !== null
-                  p.subtitle 📝 Mapper: #{map.Mapper}
+                  p.subtitle 📝 Mapper: 
+                    a.unobstrusive(href='/mapper/'+encodeURIComponent(map.Mapper)) #{map.Mapper}
                 p.subtitle 📂 Category: #{getCategory(map)}
                 if !isNaN(map.Timestamp)
                   p.subtitle 📅 Released on #{map.Timestamp.toISOString().split('T')[0]}
