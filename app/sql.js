@@ -64,3 +64,7 @@ exports.getCategory = function (map) {
     difficulty = 'Hard';
   return map.Server + ' ' + difficulty;
 };
+
+exports.getMappers = function (map) {
+  return map.Mapper.split(/, | & /);
+}

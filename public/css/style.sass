@@ -203,3 +203,11 @@ a.unobstrusive
   white-space: nowrap
   overflow: hidden
   text-overflow: ellipsis
+
+.mapmappers span
+  &:before
+    content: ', '
+  &:last-child:before
+    content: ' & '
+  &:first-child:before
+    content: none;

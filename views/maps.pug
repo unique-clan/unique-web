@@ -46,7 +46,9 @@ block content
                         if !isNaN(map.Timestamp)
                           span(style='margin: 0 5px;') 📅 #{map.Timestamp.toISOString().split('T')[0]}
                         if map.Mapper !== null
-                          span(style='margin: 0 5px;') 📝 
-                            a.unobstrusive(href='/mapper/'+encodeURIComponent(map.Mapper)) #{map.Mapper}
+                          span.mapmappers(style='margin: 0 5px;') 📝 
+                            each mapper in getMappers(map)
+                              span
+                                a.unobstrusive(href='/mapper/'+encodeURIComponent(mapper)) #{mapper}
           if pageCount > 1
             +pagination(page, pageCount)
