@@ -210,7 +210,8 @@ router.get('/maps', async function (req, res, next) {
     pageCount: pageCount,
     maps: maps,
     search: search,
-    getCategory: sql.getCategory
+    getCategory: sql.getCategory,
+    getMappers: sql.getMappers
   });
 });
 
@@ -240,14 +241,17 @@ router.get('/map/:map', async function (req, res, next) {
     tables: tables,
     tablesNoWpns: tablesNoWpns,
     formatTime: sql.formatTime,
-    getCategory: sql.getCategory
+    getCategory: sql.getCategory,
+    getMappers: sql.getMappers
   });
 });
 
 router.get('/mapper/:mapper', async function (req, res, next) {
   const connection = await sql.newMysqlConn();
-  const [maps] = await connection.execute('SELECT Map, Server, Mapper, Stars, Timestamp FROM race_maps WHERE Mapper = ? AND (Server != "Fastcap" OR Stars != 1) ORDER BY Timestamp DESC, Map COLLATE utf8mb4_general_ci;', [req.params.mapper]);
+  const pattern = '%' + sql.escapeLike(req.params.mapper) + '%';
+  let [maps] = await connection.execute('SELECT Map, Server, Mapper, Stars, Timestamp FROM race_maps WHERE Mapper COLLATE utf8mb4_general_ci LIKE ? AND (Server != "Fastcap" OR Stars != 1) ORDER BY Timestamp DESC, Map COLLATE utf8mb4_general_ci;', [pattern]);
   connection.end();
+  maps = maps.filter(map => sql.getMappers(map).includes(req.params.mapper));
   if (!maps.length) {
     res.status(404).render('error', { message: 'Not Found', error: { status: 404 } });
     return;
@@ -280,7 +284,8 @@ router.get('/mapper/:mapper', async function (req, res, next) {
       Long: maps.filter(m => m.Server === 'Long'),
       Fastcap: maps.filter(m => m.Server === 'Fastcap')
     },
-    getCategory: sql.getCategory
+    getCategory: sql.getCategory,
+    getMappers: sql.getMappers
   });
 });
 
