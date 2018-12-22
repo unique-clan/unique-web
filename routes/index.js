@@ -173,9 +173,11 @@ router.get('/maps', async function (req, res, next) {
   const connection = await sql.newMysqlConn();
   let search = null;
   let pattern = '%';
+  let mapperPattern = '%';
   if (typeof req.query.search === 'string' && req.query.search.trim()) {
     search = req.query.search.trim();
     pattern = '%' + sql.escapeLike(req.query.search).replace(/ /g, '%') + '%';
+    mapperPattern = '%' + sql.escapeLike(req.query.search) + '%';
     const [map] = await connection.execute('SELECT IFNULL((SELECT Map FROM race_maps WHERE Map=? AND (Server != "Fastcap" OR Stars != 1)), (SELECT Map FROM race_maps WHERE Map COLLATE utf8mb4_general_ci LIKE ? AND (Server != "Fastcap" OR Stars != 1) HAVING COUNT(*) = 1)) AS Map;', [search, pattern]);
     if (map[0].Map) {
       res.redirect('/map/' + encodeURIComponent(map[0].Map));
@@ -183,10 +185,10 @@ router.get('/maps', async function (req, res, next) {
       return;
     }
   }
-  const [mapCount] = await connection.execute('SELECT COUNT(*) as Count FROM race_maps WHERE Map COLLATE utf8mb4_general_ci LIKE ? AND (Server != "Fastcap" OR Stars != 1);', [pattern]);
+  const [mapCount] = await connection.execute('SELECT COUNT(*) as Count FROM race_maps WHERE (Map COLLATE utf8mb4_general_ci LIKE ? OR Mapper COLLATE utf8mb4_general_ci LIKE ?) AND (Server != "Fastcap" OR Stars != 1);', [pattern, mapperPattern]);
   const pageCount = Math.ceil(mapCount[0]['Count'] / 30);
   const page = Math.min(Math.max(1, req.query.page), pageCount) || 1;
-  const [maps] = await connection.execute('SELECT Map, Server, Mapper, Stars, Timestamp FROM race_maps WHERE Map COLLATE utf8mb4_general_ci LIKE ? AND (Server != "Fastcap" OR Stars != 1) ORDER BY Timestamp DESC, Map COLLATE utf8mb4_general_ci LIMIT ?, 30;', [pattern, (page - 1) * 30]);
+  const [maps] = await connection.execute('SELECT Map, Server, Mapper, Stars, Timestamp FROM race_maps WHERE (Map COLLATE utf8mb4_general_ci LIKE ? OR Mapper COLLATE utf8mb4_general_ci LIKE ?) AND (Server != "Fastcap" OR Stars != 1) ORDER BY Timestamp DESC, Map COLLATE utf8mb4_general_ci LIMIT ?, 30;', [pattern, mapperPattern, (page - 1) * 30]);
   connection.end();
   if (process.env.MAPS_LOCATION) {
     for (let i = 0; i < maps.length; i++) {
@@ -249,7 +251,7 @@ router.get('/map/:map', async function (req, res, next) {
 router.get('/mapper/:mapper', async function (req, res, next) {
   const connection = await sql.newMysqlConn();
   const pattern = '%' + sql.escapeLike(req.params.mapper) + '%';
-  let [maps] = await connection.execute('SELECT Map, Server, Mapper, Stars, Timestamp FROM race_maps WHERE Mapper COLLATE utf8mb4_general_ci LIKE ? AND (Server != "Fastcap" OR Stars != 1) ORDER BY Timestamp DESC, Map COLLATE utf8mb4_general_ci;', [pattern]);
+  let [maps] = await connection.execute('SELECT Map, Server, Mapper, Stars, Timestamp FROM race_maps WHERE Mapper LIKE ? AND (Server != "Fastcap" OR Stars != 1) ORDER BY Timestamp DESC, Map COLLATE utf8mb4_general_ci;', [pattern]);
   connection.end();
   maps = maps.filter(map => sql.getMappers(map).includes(req.params.mapper));
   if (!maps.length) {
