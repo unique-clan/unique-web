@@ -1,4 +1,4 @@
-mixin member(name, types, flag='DE', leader=false)
+mixin member(name, types, flag='DE', position=false)
   .column.is-half-tablet.is-half-desktop.is-one-third-fullhd
     .box(class=size_class)
       article.media
@@ -6,11 +6,13 @@ mixin member(name, types, flag='DE', leader=false)
           img(src=`/static/img/twflags/${flag}.png`, alt=flag, style='margin-top: 10px', width=96)
         .media-content
           .content
-            h1.is-size-5-mobile= name
-            if leader
-              h3.is-size-6-mobile= types
+            if position
+              h1.is-size-4-mobile(style="margin-bottom:10px;")= name
+              h4.is-size-6-mobile= position
+              h3.is-size-5-mobile(style="margin-bottom:0px;")= types
             else
-              h4.is-size-6-mobile= types
+              h1.is-size-4-mobile= name
+              h4.is-size-5-mobile(style="margin-bottom:10px;")= types
 
 mixin country_select(name)
   select.warning-input(name=name)
