@@ -4,47 +4,54 @@ block content
   main
     section.section
       .container
-        .content.has-text-centered
-          img(src=`/static/img/st.png` alt="welcome to our clanpage!")
-        hr.has-background-white-bis
+        center
+          img(src=`/static/img/st.png` alt="welcome to our clanpage!" style="max-height: 220px;")
         .columns
           .column
-            .card.article.unique-card
+            .card.unique-card
               .card-content
-                .media
-                  .media-center
-                    <!-- img.author-image(src=`/static/img/tee.png` alt="Placeholder image") -->
-                  .media-content.has-text-centered.no-overflow
-                    p.title.article-title Clanskin
-                    p.subtitle.is-6.article-subtitle
-                      | Now for everyone!
-                .content.article-body.has-text-centered
+                h1.title.is-2.has-text-centered Our Community
+                .content
                   p
-                    img(src=`/static/img/unique-clanskin.png` alt="unique-clanskin")
+                    | Since 2014, we are a community all around the platformer
+                    | game <a href="https://www.teeworlds.com/">Teeworlds</a>. Everyone can play on <a href="/serverstatus">our servers</a> located
+                    | in Germany and Canada running a variety of Teeworlds
+                    | gametypes. Most notably our feature-rich Race modification
+                    | as well as custom mods like <a href="https://github.com/timazuki/TeeSmash">TeeSmash</a> for which we even held
+                    | a <a href="/tournaments">tournament</a>.
+                  center
+                    img(src=`/static/img/unique.png` alt="unique" style="padding-top: 10px")
+                  p
+                    | If you wish to become an <a href="/member">official member</a> and wear our clantag
+                    | in-game you can <a href="/apply">apply here</a>. We are proud of our steady
+                    | memberbase and the nice and mature atmosphere in our
+                    | community.
+                  p
+                    | The source code for this website and all the game
+                    | servers we host is on <a href="https://github.com/unique-clan">GitHub</a>.
+              footer.card-footer
+                p.card-footer-item
+                  a(href="http://discord.gg/Yhehrub")
+                    img(src="/static/img/discord-logo.png")
+                p.card-footer-item
+                  a(href="https://github.com/unique-clan")
+                    img(src="/static/img/github-logo.png")
+                p.card-footer-item
+                  a(href="/static/img/unique-clanskin.png" download)
+                    img(src="/static/img/clanskin-download.png")
           .column
-            .card.article.unique-card
+            .card.unique-card
               .card-content
-                .media
-                  .media-center
-                    <!-- img.author-image(src=`/static/img/discord-icon.png` alt="discord") -->
-                  .media-content.has-text-centered.no-overflow
-                    p.title.article-title Discord
-                    p.subtitle.is-6.article-subtitle
-                      | Contact us!
-                .content.article-body.has-text-centered
+                h1.title.is-2.has-text-centered Unique Race
+                .content
                   p
-                    a(href="http://discord.gg/Yhehrub")
-                      img(src=`/static/img/discord.png` alt="discord")
-          .column
-            .card.article.unique-card
-              .card-content
-                .media
-                  .media-center
-                    <!-- img.author-image(src=`/img/info-icon.png` alt="info") -->
-                  .media-content.no-overflow
-                    p.title.article-title.has-text-centered About
-                    p.subtitle.is-6.article-subtitle
-                      | Unique was founded 26.12.2014 by Tezcan. It is a venerable allround clan with nice players you can play with. We host servers in Germany and Canada with a variety of gametypes, where you can score ranks and enjoy your time!
-                .content.article-body.has-text-centered
-                  p
-                    img(src=`/static/img/unique.png` alt="unique")
+                    | Unique Race is our Race modification based on the <a href="https://github.com/ddnet/ddnet">DDNet</a>
+                    | source. The goal is to reach the finish line as fast as
+                    | possible on different <a href="/maps">maps</a>. On our servers you can:
+                  ul
+                    li Enjoy regular releases of maps
+                    li Score records with an accuracy of a thousanth of a second
+                    li Compete for better times in a <a href="/ranks">global ranking</a>
+                    li Collect <a href="/ranks#points-calculation">time based points</a>
+                  .video-container
+                    iframe.video(src="https://www.youtube.com/embed/sOnqjkJTMaA" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen)
