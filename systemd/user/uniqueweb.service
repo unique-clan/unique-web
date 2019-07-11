@@ -1,0 +1,6 @@
+[Service]
+ExecStart=/var/www/unique/run.sh
+Restart=always
+
+[Install]
+WantedBy=default.target
