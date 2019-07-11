@@ -41,7 +41,6 @@ npm-debug.log
 .vscode/
 *.swp
 /run.sh
-/update.sh
 /update.lock
 
 # temporary data storage
