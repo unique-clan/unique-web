@@ -27,7 +27,7 @@
     "express-recaptcha": "^4.1.1",
     "express-session": "^1.16.2",
     "helmet": "^3.18.0",
-    "mongoose": "^5.6.4",
+    "mongoose": "^5.7.5",
     "morgan": "^1.9.1",
     "multer": "^1.4.1",
     "mysql2": "^1.6.5",
