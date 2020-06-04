@@ -1,32 +1,13 @@
 {
-    "extends": [
-        "eslint:recommended",
-        "plugin:node/recommended",
-        "plugin:import/errors",
-        "plugin:import/warnings",
-        "plugin:promise/recommended"
-    ],
-    "plugins": [
-        "node",
-        "import",
-        "promise",
-        "standard"
-    ],
+    "extends": ["prettier"],
+    "plugins": ["prettier"],
     "globals": {
         "$": true,
         "BulmaFormHandler": true,
         "grecaptcha": true
     },
     "rules": {
-        "no-unused-vars": "off",
-        "semi": "error",
-        "no-extra-semi": "error",
-        "no-mixed-spaces-and-tabs": "error",
-        "indent": ["error", 2],
-        "quotes": ["error", "single"],
-        "no-console": "off",
-        "no-process-exit": "off",
-        "no-constant-condition": "off"
+        "prettier/prettier": ["error"]
     },
     "env": {
         "es6": true,
