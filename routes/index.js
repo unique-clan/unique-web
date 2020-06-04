@@ -236,11 +236,16 @@ router.get("/map/:map", async function (req, res, next) {
     const [
         map,
     ] = await connection.execute(
-        'SELECT Map, Server, Mapper, Stars, Timestamp, (SELECT COUNT(DISTINCT Name) FROM race_race WHERE Map = l.Map) AS Finishers FROM race_maps l WHERE Map = ? AND (Server != "Fastcap" OR Stars != 1);',
+        "SELECT Map, Server, Mapper, Stars, Timestamp, (SELECT COUNT(DISTINCT Name) FROM race_race WHERE Map = l.Map) AS Finishers FROM race_maps l WHERE Map = ?;",
         [req.params.map],
     );
     if (!map.length) {
         res.status(404).render("error", { message: "Not Found", error: { status: 404 } });
+        connection.end();
+        return;
+    }
+    if (map[0].Server === "Fastcap" && map[0].Stars === 1) {
+        res.redirect("/map/" + encodeURIComponent(map[0].Map.slice(0, -8)));
         connection.end();
         return;
     }
