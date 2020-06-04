@@ -1,5 +1,5 @@
 # Unique Clan Website
-Copyright (c) 2018 Ryozuki, Tezcan, timakro
+Copyright (c) 2020 [edg-l](https://github.com/edg-l), [Tezcan](https://github.com/tezcan52), [timakro](https://github.com/timakro)
 
 # Dependencies
 - [Sass](https://sass-lang.com/install)

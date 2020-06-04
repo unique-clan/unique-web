@@ -2,7 +2,7 @@
 
 cd /var/www/unique
 
-#git checkout package-lock.json
+git checkout package-lock.json
 git pull
 npm install
 #git checkout package-lock.json
