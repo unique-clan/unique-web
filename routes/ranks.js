@@ -21,9 +21,9 @@ function getOrdinal(n) {
 }
 
 const topRecordsQuery =
-    "SELECT @pos := @pos + 1 AS v1, @rank := IF(@prev = recordsCount, @rank, @pos) AS rank, @prev := recordsCount AS v2, Name, recordsCount FROM (SELECT Name, COUNT(*) as recordsCount FROM (SELECT Name, t1.Map as Map FROM (SELECT Map, Name, ROUND(Time, 3) AS playerTime FROM race_race) t1 INNER JOIN (SELECT Map, ROUND(MIN(Time), 3) AS bestTime FROM race_race GROUP BY Map) t2 ON t1.Map = t2.Map AND t1.playerTime = t2.bestTime) u GROUP BY Name ORDER BY recordsCount DESC) v, (SELECT @pos := 0) i1, (SELECT @rank := -1) i2, (SELECT @prev := -1) i3 LIMIT 10;";
+    "SELECT @pos := @pos + 1 AS v1, @rank := IF(@prev = recordsCount, @rank, @pos) AS rank, @prev := recordsCount AS v2, Name, recordsCount FROM (SELECT Name, COUNT(*) as recordsCount FROM race_ranks WHERE Rank=1 GROUP BY Name ORDER BY recordsCount DESC) v, (SELECT @pos := 0) i1, (SELECT @rank := -1) i2, (SELECT @prev := -1) i3 LIMIT 10;";
 const topRecordsCategoryQuery =
-    "SELECT @pos := @pos + 1 AS v1, @rank := IF(@prev = recordsCount, @rank, @pos) AS rank, @prev := recordsCount AS v2, Name, recordsCount FROM (SELECT Name, COUNT(*) as recordsCount FROM (SELECT Name, t1.Map as Map FROM (SELECT v1.Map, v1.Name, ROUND(v1.Time, 3) AS playerTime FROM race_race v1 INNER JOIN race_maps v2 ON v1.Map = v2.Map WHERE v2.Server=?) t1 INNER JOIN (SELECT Map, ROUND(MIN(Time), 3) AS bestTime FROM race_race GROUP BY Map) t2 ON t1.Map = t2.Map AND t1.playerTime = t2.bestTime) u GROUP BY Name ORDER BY recordsCount DESC) v, (SELECT @pos := 0) i1, (SELECT @rank := -1) i2, (SELECT @prev := -1) i3 LIMIT 10;";
+    "SELECT @pos := @pos + 1 AS v1, @rank := IF(@prev = recordsCount, @rank, @pos) AS rank, @prev := recordsCount AS v2, Name, recordsCount FROM (SELECT Name, COUNT(*) as recordsCount FROM race_ranks WHERE Rank=1 AND Server=? GROUP BY Name ORDER BY recordsCount DESC) v, (SELECT @pos := 0) i1, (SELECT @rank := -1) i2, (SELECT @prev := -1) i3 LIMIT 10;";
 const topPointsQuery =
     "SELECT @pos := @pos + 1 AS v1, @rank := IF(@prev = Points, @rank, @pos) AS rank, @prev := Points AS v2, Name, Points FROM race_points, (SELECT @pos := 0) i1, (SELECT @rank := -1) i2, (SELECT @prev := -1) i3 WHERE Points > 0 ORDER BY Points DESC LIMIT 10;";
 const topPointsCategoryQuery =
@@ -33,9 +33,9 @@ const mapCountQuery = "SELECT COUNT(*) as n from race_maps";
 const mapCountCategoryQuery = "SELECT COUNT(*) as n from race_maps where Server=?";
 
 const recordsPlayerQuery =
-    "SELECT rank, recordsCount FROM (SELECT @pos := @pos + 1 AS v1, @rank := IF(@prev = recordsCount, @rank, @pos) AS rank, @prev := recordsCount AS v2, Name, recordsCount FROM (SELECT Name, COUNT(*) as recordsCount FROM (SELECT Name, t1.Map as Map FROM (SELECT Map, Name, ROUND(Time, 3) AS playerTime FROM race_race) t1 INNER JOIN (SELECT Map, ROUND(MIN(Time), 3) AS bestTime FROM race_race GROUP BY Map) t2 ON t1.Map = t2.Map AND t1.playerTime = t2.bestTime) u GROUP BY Name ORDER BY recordsCount DESC) v, (SELECT @pos := 0) i1, (SELECT @rank := -1) i2, (SELECT @prev := -1) i3) w WHERE Name=?;";
+    "SELECT rank, recordsCount FROM (SELECT @pos := @pos + 1 AS v1, @rank := IF(@prev = recordsCount, @rank, @pos) AS rank, @prev := recordsCount AS v2, Name, recordsCount FROM (SELECT Name, COUNT(*) as recordsCount FROM race_ranks WHERE Rank=1 GROUP BY Name ORDER BY recordsCount DESC) v, (SELECT @pos := 0) i1, (SELECT @rank := -1) i2, (SELECT @prev := -1) i3) w WHERE Name=?;";
 const recordsCategoryPlayerQuery =
-    "SELECT rank, recordsCount FROM (SELECT @pos := @pos + 1 AS v1, @rank := IF(@prev = recordsCount, @rank, @pos) AS rank, @prev := recordsCount AS v2, Name, recordsCount FROM (SELECT Name, COUNT(*) as recordsCount FROM (SELECT Name, t1.Map as Map FROM (SELECT v1.Map, v1.Name, ROUND(v1.Time, 3) AS playerTime FROM race_race v1 INNER JOIN race_maps v2 ON v1.Map = v2.Map WHERE v2.Server=?) t1 INNER JOIN (SELECT Map, ROUND(MIN(Time), 3) AS bestTime FROM race_race GROUP BY Map) t2 ON t1.Map = t2.Map AND t1.playerTime = t2.bestTime) u GROUP BY Name ORDER BY recordsCount DESC) v, (SELECT @pos := 0) i1, (SELECT @rank := -1) i2, (SELECT @prev := -1) i3) w WHERE Name=?;";
+    "SELECT rank, recordsCount FROM (SELECT @pos := @pos + 1 AS v1, @rank := IF(@prev = recordsCount, @rank, @pos) AS rank, @prev := recordsCount AS v2, Name, recordsCount FROM (SELECT Name, COUNT(*) as recordsCount FROM race_ranks WHERE Rank=1 AND Server=? GROUP BY Name ORDER BY recordsCount DESC) v, (SELECT @pos := 0) i1, (SELECT @rank := -1) i2, (SELECT @prev := -1) i3) w WHERE Name=?;";
 const pointsPlayerQuery =
     "SELECT rank, Points FROM (SELECT @pos := @pos + 1 AS v1, @rank := IF(@prev = Points, @rank, @pos) AS rank, @prev := Points AS v2, Name, Points FROM race_points, (SELECT @pos := 0) i1, (SELECT @rank := -1) i2, (SELECT @prev := -1) i3 WHERE Points > 0 ORDER BY Points DESC) t WHERE Name=?;";
 const pointsPlayerCategoryQuery =
@@ -47,7 +47,7 @@ const mapFinishedCountQuery = "SELECT COUNT(DISTINCT Map) as n FROM race_race WH
 const mapFinishedCountCategoryQuery =
     "SELECT COUNT(DISTINCT t1.Map) as n FROM race_race t1 INNER JOIN race_maps t2 ON t1.Map = t2.Map WHERE t1.Name=? AND t2.Server=?;";
 const mapListQuery =
-    'SELECT t1.Map as Map, playerTime, Rank, FLOOR(100*EXP(-S*(playerTime/bestTime-1))) as mapPoints FROM (SELECT Map, ROUND(MIN(Time), 3) AS playerTime FROM race_race WHERE Name=? GROUP BY Map) t1 INNER JOIN (SELECT Map, ROUND(MIN(Time), 3) AS bestTime FROM race_race GROUP BY Map) t2 ON t1.Map = t2.Map INNER JOIN (SELECT Map, CASE WHEN Server="Short" THEN 5.0 WHEN Server="Middle" THEN 3.5 WHEN Server="Long" THEN CASE WHEN Stars=0 THEN 2.0 WHEN Stars=1 THEN 1.0 WHEN Stars=2 THEN 0.05 END WHEN Server="Fastcap" THEN 5.0 END AS S FROM race_maps WHERE Server=?) t3 ON t1.Map = t3.Map INNER JOIN (SELECT Map, Rank FROM race_ranks WHERE Name=?) t4 ON t1.Map = t4.Map ORDER BY LOWER(t1.Map);';
+    'SELECT Server, t1.Map as Map, playerTime, Rank, FLOOR(100*EXP(-S*(playerTime/bestTime-1))) as mapPoints FROM (SELECT Map, ROUND(MIN(Time), 3) AS playerTime FROM race_race WHERE Name=? GROUP BY Map) t1 INNER JOIN (SELECT Map, ROUND(MIN(Time), 3) AS bestTime FROM race_race GROUP BY Map) t2 ON t1.Map = t2.Map INNER JOIN (SELECT Map, Server, CASE WHEN Server="Short" THEN 5.0 WHEN Server="Middle" THEN 3.5 WHEN Server="Long" THEN CASE WHEN Stars=0 THEN 2.0 WHEN Stars=1 THEN 1.0 WHEN Stars=2 THEN 0.05 END WHEN Server="Fastcap" THEN 5.0 END AS S FROM race_maps) t3 ON t1.Map = t3.Map INNER JOIN (SELECT Map, Rank FROM race_ranks WHERE Name=?) t4 ON t1.Map = t4.Map ORDER BY LOWER(t1.Map);';
 const unfinishedMapsQuery =
     "SELECT t1.Map FROM (SELECT Map FROM race_maps WHERE Server=?) t1 LEFT JOIN (SELECT Map FROM race_race WHERE Name=?) t2 ON t1.Map = t2.Map WHERE t2.Map IS NULL;";
 
@@ -217,24 +217,8 @@ router.get("/player/:name", async function (req, res, next) {
         player,
     ]);
 
-    const shortMapList = await sql.getCacheOrUpdate("shortMapList_" + player, connection, mapListQuery, [
+    const mapList = await sql.getCacheOrUpdate("mapList_" + player, connection, mapListQuery, [
         player,
-        "Short",
-        player,
-    ]);
-    const middleMapList = await sql.getCacheOrUpdate("middleMapList_" + player, connection, mapListQuery, [
-        player,
-        "Middle",
-        player,
-    ]);
-    const longMapList = await sql.getCacheOrUpdate("longMapList_" + player, connection, mapListQuery, [
-        player,
-        "Long",
-        player,
-    ]);
-    const fastcapMapList = await sql.getCacheOrUpdate("fastcapMapList_" + player, connection, mapListQuery, [
-        player,
-        "Fastcap",
         player,
     ]);
 
@@ -288,10 +272,10 @@ router.get("/player/:name", async function (req, res, next) {
         longMapRecords: longMapRecordsCount.length > 0 ? longMapRecordsCount[0] : null,
         fastcapMapRecords: fastcapMapRecordsCount.length > 0 ? fastcapMapRecordsCount[0] : null,
 
-        shortMapList: shortMapList,
-        middleMapList: middleMapList,
-        longMapList: longMapList,
-        fastcapMapList: fastcapMapList,
+        shortMapList: mapList.filter(row => row.Server === "Short"),
+        middleMapList: mapList.filter(row => row.Server === "Middle"),
+        longMapList: mapList.filter(row => row.Server === "Long"),
+        fastcapMapList: mapList.filter(row => row.Server === "Fastcap"),
 
         shortPoints: shortPoints.length > 0 ? shortPoints[0] : null,
         middlePoints: middlePoints.length > 0 ? middlePoints[0] : null,
