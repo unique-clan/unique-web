@@ -80,7 +80,6 @@ html,body
       position: absolute
       top: 21px
       right: 28px
-      font-size: 14
       border-radius: 0.75em
     .serveron
       width: 1.5em
@@ -178,22 +177,22 @@ a.navbar-item:focus
       margin-bottom: 0
 
 .unfinished-maps
+  margin-top: 20px
   margin-bottom: 40px
-  span
-    text-decoration: underline
-    margin-right: 5px
-  ul
-    display: inline
-    list-style: none
-    li
-      display: inline
-      margin-right: 5px
-    li:before
-      content: " "
-    li:after
-      content: ","
-    li:last-child:after
-      content: ""
+  p
+    display: -webkit-box;
+    -webkit-line-clamp: 3
+    -webkit-box-orient: vertical
+    overflow: hidden
+    &.truncated + label
+      display: inline-block
+  label
+    display: none
+    font-weight: bold
+    font-size: 12px
+    cursor: pointer
+  input:checked + p
+    -webkit-line-clamp: unset
 
 .table-links table a,
 .table-links ul a,

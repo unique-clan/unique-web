@@ -123,12 +123,14 @@ block content
                       td= x.mapPoints
           .unfinished-maps
             if unfinishedShort.length
-              br
-              span Unfinished&nbsp;Maps:
-              ul
-                each x in unfinishedShort
-                  li
-                    a(href='/map/'+encodeURIComponent(x.Map))= x.Map
+              input(type='checkbox' id='showmoreShort' style='display:none;' autocomplete='off')
+              p
+                b Unfinished&nbsp;Maps:&ensp;
+                each x, i in unfinishedShort
+                  a.unobstrusive(href='/map/'+encodeURIComponent(x.Map))= x.Map
+                  if i != unfinishedShort.length-1
+                    | ,&ensp;
+              label(for='showmoreShort') SHOW ALL
           span.rank-anchor#middle
           p.title.is-4 Middle Ranks (#{middleMapFinishedCount}/#{numMiddleMaps} Maps)
           .playerranks-header
@@ -174,12 +176,14 @@ block content
                       td= x.mapPoints
           .unfinished-maps
             if unfinishedMiddle.length
-              br
-              span Unfinished&nbsp;Maps:
-              ul
-                each x in unfinishedMiddle
-                  li
-                    a(href='/map/'+encodeURIComponent(x.Map))= x.Map
+              input(type='checkbox' id='showmoreMiddle' style='display:none;' autocomplete='off')
+              p
+                b Unfinished&nbsp;Maps:&ensp;
+                each x, i in unfinishedMiddle
+                  a.unobstrusive(href='/map/'+encodeURIComponent(x.Map))= x.Map
+                  if i != unfinishedMiddle.length-1
+                    | ,&ensp;
+              label(for='showmoreMiddle') SHOW ALL
           span.rank-anchor#long
           p.title.is-4 Long Ranks (#{longMapFinishedCount}/#{numLongMaps} Maps)
           .playerranks-header
@@ -225,12 +229,14 @@ block content
                       td= x.mapPoints
           .unfinished-maps
             if unfinishedLong.length
-              br
-              span Unfinished&nbsp;Maps:
-              ul
-                each x in unfinishedLong
-                  li
-                    a(href='/map/'+encodeURIComponent(x.Map))= x.Map
+              input(type='checkbox' id='showmoreLong' style='display:none;' autocomplete='off')
+              p
+                b Unfinished&nbsp;Maps:&ensp;
+                each x, i in unfinishedLong
+                  a.unobstrusive(href='/map/'+encodeURIComponent(x.Map))= x.Map
+                  if i != unfinishedLong.length-1
+                    | ,&ensp;
+              label(for='showmoreLong') SHOW ALL
           span.rank-anchor#fastcap
           p.title.is-4 Fastcap Ranks (#{fastcapMapFinishedCount}/#{numFastcapMaps} Maps)
           .playerranks-header
@@ -276,14 +282,17 @@ block content
                       td= x.mapPoints
           .unfinished-maps
             if unfinishedFastcap.length
-              br
-              span Unfinished&nbsp;Maps:
-              ul
-                each x in unfinishedFastcap
-                  li
-                    a(href='/map/'+encodeURIComponent(x.Map))= x.Map
+              input(type='checkbox' id='showmoreFastcap' style='display:none;' autocomplete='off')
+              p
+                b Unfinished&nbsp;Maps:&ensp;
+                each x, i in unfinishedFastcap
+                  a.unobstrusive(href='/map/'+encodeURIComponent(x.Map))= x.Map
+                  if i != unfinishedFastcap.length-1
+                    | ,&ensp;
+              label(for='showmoreFastcap') SHOW ALL
 
 block scripts
   script(src="/static/js/jquery.dataTables.js")
   script(src="/static/js/dataTables.bulma.js")
   script(src="/static/js/sort.js")
+  script(src="/static/js/showmore.js")
