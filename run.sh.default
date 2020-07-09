@@ -1,6 +1,6 @@
 #!/bin/sh
 
-cd /var/www/unique
+cd /home/uniqueweb/unique-web
 
 export NODE_ENV="production"
 export DEBUG="uniqueweb:*"
@@ -26,4 +26,4 @@ export MYSQL_DATABASE="records"
 #export ADMIN_DASHBOARD_PW=""
 export MAPS_LOCATION="/srv/tw/race/maps"
 
-npm start
+npm start >run.log 2>&1

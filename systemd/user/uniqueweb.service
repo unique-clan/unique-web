@@ -1,5 +1,5 @@
 [Service]
-ExecStart=/var/www/unique/run.sh
+ExecStart=/home/uniqueweb/unique-web/run.sh
 Restart=always
 
 [Install]
