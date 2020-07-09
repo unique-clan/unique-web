@@ -24,10 +24,10 @@ Copyright (c) 2020 [edg-l](https://github.com/edg-l), [Tezcan](https://github.co
 - `npm start` Will listen on `localhost:3000` by default
 
 # Production how-to
-- Clone repository to `/var/www` and chown to www-data
+- Clone repository to `/home/uniqueweb`
 - Copy `run.sh.default` to `run.sh` and set passwords.
-- Install systemd user unit and enable for user www-data.
-- Don't forget to `loginctl enable-linger www-data`
+- Install systemd user unit and enable for user uniqueweb.
+- Don't forget to `loginctl enable-linger uniqueweb`
 
 # Javascript style
 We follow [StandardJS](https://standardjs.com/)

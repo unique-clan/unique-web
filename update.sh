@@ -1,11 +1,21 @@
 #!/bin/sh
 
-cd /var/www/unique
+cd /home/uniqueweb/unique-web
 
-git checkout package-lock.json
+# exit if up to date
+git remote update >/dev/null 2>&1
+[ "$(git rev-parse @)" = "$(git rev-parse @{upstream})" ] && exit
+
+(
+lockfile -r 0 update.lock || exit
+
 git pull
-npm install
-#git checkout package-lock.json
 
-# User id 33 is www-data
-XDG_RUNTIME_DIR=/run/user/33 systemctl --user restart uniqueweb
+rm -rf node_modules/
+rm -f package-lock.json
+npm install
+
+XDG_RUNTIME_DIR=/run/user/$(id -u) systemctl --user restart uniqueweb
+
+rm -f update.lock
+) >update.log 2>&1
