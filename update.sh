@@ -11,9 +11,10 @@ lockfile -r 0 update.lock || exit
 
 git pull
 
-rm -rf node_modules/
-rm -f package-lock.json
-npm install
+#rm -rf node_modules/
+#rm -f package-lock.json
+#npm install
+npm ci
 
 XDG_RUNTIME_DIR=/run/user/$(id -u) systemctl --user restart uniqueweb
 
