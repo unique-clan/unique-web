@@ -49,3 +49,6 @@ npm-debug.log
 
 # map screenshot thumbnails
 /public/img/mapthumb/
+
+# map uploads
+/uploads/
