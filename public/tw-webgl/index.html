@@ -19,14 +19,6 @@
     <script src='/static/tw-webgl/twwebgl.js'></script>
     <canvas id='cnvs'></canvas>
 
-    <script>
-      $(document).ready(function() {
-          var params = tw.getParams();
-          if (params.map) {
-            tw.init({ mapUrl: params.map })
-          }
-        }
-      );
-    </script>
+    <script src="/static/js/maprendererinit.js"></script>
   </body>
 </html>
