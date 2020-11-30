@@ -53,7 +53,9 @@ var ranks = require("./routes/ranks");
 var app = express();
 
 // Production security
-app.use(helmet());
+app.use(helmet({
+    contentSecurityPolicy: false,
+}));
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
