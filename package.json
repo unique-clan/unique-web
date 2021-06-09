@@ -36,7 +36,7 @@
     "node-thumbnail": "^0.15.0",
     "npm": "^6.14.9",
     "ping": "^0.3.0",
-    "pug": "3.0.0",
+    "pug": "3.0.1",
     "serve-favicon": "~2.5.0",
     "teeworlds-server-status": "^2.2.2"
   },
