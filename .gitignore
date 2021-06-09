@@ -52,3 +52,6 @@ npm-debug.log
 
 # map uploads
 /uploads/
+
+# Unique server binary
+/public/DDNet-Server.exe
