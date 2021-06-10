@@ -10,13 +10,15 @@ block content
             .box
               section.hero
                 h1.title Race Map Submissions
-                br
-                h2.subtitle
-                  | You may submit your race maps for the Unique Race servers here.
-                h2.subtitle
-                  | Before you upload your map,
-                  | make sure that your map is made with a 0.6 teeworlds client. 
-                  | Maps which do not fulfill our standards will be deleted without notifiying you!
+                .content
+                  p
+                    | You may submit your race maps for the Unique Race servers here.
+                  p
+                    | Before you upload your map,
+                    | ensure that your map is made with a 0.6 teeworlds client. 
+                    | Maps which do not fulfill our standards will be deleted without notifiying you!
+                  p
+                    | By submitting your map, you accept that we will receive the rights for the map and that we can change it if necessary.
           .column
             .box
               section.hero
@@ -45,15 +47,208 @@ block content
           .column
             .box
               section.hero
-                h1.title Unique Race - Mapping Guide
+                h1.title Unique Race - Mapping Guide  
+                  img(src=`/static/img/weapons/100px-Grenade.png` alt="Grenade" align="right")
                 br
-                h2.subtitle 
-                  i Coming soon ...
+                h2.subtitle
+                  i „mapping is easy, but mapping well is hard!“
+                  |  — Every mapper in any game that supports map creation.
+                .content 
+                  p
+                    | With that being said, let's point out what this Mapping Guide consists of!
+                    br
+                    | First of all, this will not be a tutorial on how to create maps, there are many other resources you can find for that, 
+                    | nevertheless we have compiled a list of useful links that might help you. 
+                    br
+                    | This is a guide that focuses mainly on mapping for Unique Race,
+                    | on what is allowed and not allowed and a guideline to help you get your map released on our race servers.
+                    br
+                    | Also, a download for your own Unique Race server with a list of server commands to make mapping for Unique Race easier for you.
         .columns
-          .column.is-one-third.is-offset-one-third
+          .column.is-one-third
             .box 
-              center
-                img(src=`/static/img/zahnrad.png` alt="underwork" style="max-height: 200px")
-                
+              section.hero
+                center
+                  h1.title Mapping - Useful Links
+                    img(src=`/static/img/think-left.png` alt="Tee thinking-left" align="right" style="max-height: 32px")
+                  br
+                .content              
+                  a(href='https://forum.ddnet.tw/viewtopic.php?t=2419') Mapping ABC by Index
+                  br
+                  a(href='https://forum.ddnet.tw/viewtopic.php?t=49') The Great Testing Guide by Lady Saavik
+                  br
+                  a(href='https://forum.ddnet.tw/viewtopic.php?f=16&t=4020') Advanced Design Tutorial by Oblique
+                  br
+                  a(href='https://forum.ddnet.tw/viewtopic.php?f=16&t=1440') The Great Entities Guide by Lady Saavik
+                  br
+                  a(href='https://teeskins.de/') Database for Assets by NeXus
+                  br 
+                  a(href='https://heinrich5991.de/teeworlds/maps/web/') Map Database by heinrich5991
+                  br
+                  a(href='https://forum.ddnet.tw/viewtopic.php?f=16&t=2428') Automapper Tutorial by timakro
+                  br
+                  a(href='https://forum.ddnet.tw/viewtopic.php?f=16&t=2415') Useful Graphic Tools Topic written by Index
+          .column.is-one-third
+            .box 
+              section.hero
+                center
+                  h1.title What is permitted for Unique Race mapping?
+                  br
+                .content
+                  p
+                    | Since we have a modification of the DDNet source for our server,
+                    | we have many more mapping possibilities compared to the original race modification.
+                    | This is the reason why we have to distinguish on what actually is allowed and not allowed.
+          .column.is-one-third
+            .box 
+              section.hero
+                center
+                  h1.title Weapons prohibited 
+                  br
+                .content
+                  img(src=`/static/img/weapons/100px-Shotgun.png` alt="Shotgun")
+                  img(src=`/static/img/weapons/100px-Laser.png` alt="Laser")
+                  img(src=`/static/img/weapons/100px-Ninja.png` alt="Ninja")
+                  br
+                  br
+                  p
+                    | Ninja was allowed in the original race modification,
+                    br 
+                    | but since there were little to no Maps with Ninja,
+                    br
+                    | we decided to exclude them for future use for our race modification.
+        .columns
+          .column.is-half
+            .box 
+              section.hero
+                center
+                  h1.title Entities prohibited
+                  br
+                .content
+                  img(src=`/static/img/entities/001.png` alt="Jump Count Setter" style="max-height: 64px") 
+                  img(src=`/static/img/entities/006.png` alt="Old Hooktrough" style="max-height: 64px") 
+                  img(src=`/static/img/entities/007.png` alt="Freeze" style="max-height: 64px")
+                  img(src=`/static/img/entities/008.png` alt="Unfreeze" style="max-height: 64px")
+                  img(src=`/static/img/entities/009.png` alt="Deep" style="max-height: 64px")
+                  img(src=`/static/img/entities/010.png` alt="Undeep" style="max-height: 64px")
+                  img(src=`/static/img/entities/011.png` alt="Wall Jump" style="max-height: 64px") 
+                  img(src=`/static/img/entities/012.png` alt="Endless Hook" style="max-height: 64px")
+                  img(src=`/static/img/entities/013.png` alt="Disable Endless Hook" style="max-height: 64px")
+                  img(src=`/static/img/entities/014.png` alt="Allow Hammer" style="max-height: 64px")
+                  img(src=`/static/img/entities/015.png` alt="No Hammer" style="max-height: 64px")
+                  img(src=`/static/img/entities/016.png` alt="Solo" style="max-height: 64px")
+                  img(src=`/static/img/entities/017.png` alt="Unsolo" style="max-height: 64px")
+                  img(src=`/static/img/entities/018.png` alt="Double Jump Refresher" style="max-height: 64px")
+                  img(src=`/static/img/entities/049.png` alt="Slow Speeder" style="max-height: 64px")
+                  img(src=`/static/img/entities/050.png` alt="Fast Speeder" style="max-height: 64px")
+                  img(src=`/static/img/entities/053.png` alt="Old nohit Laser/Shotgun" style="max-height: 64px")
+                  img(src=`/static/img/entities/054.png` alt="Old Tee Collison Off" style="max-height: 64px")
+                  img(src=`/static/img/entities/055.png` alt="Old Endless Hook" style="max-height: 64px")
+                  img(src=`/static/img/entities/056.png` alt="Old Hit others Off" style="max-height: 64px")
+                  img(src=`/static/img/entities/057.png` alt="Old Hook pass through Tees" style="max-height: 64px")
+                  img(src=`/static/img/entities/058.png` alt="Unlock" style="max-height: 64px")
+                  img(src=`/static/img/entities/059.png` alt="Tee Collison Off" style="max-height: 64px")
+                  img(src=`/static/img/entities/060.png` alt="Infinite Double Jump Off" style="max-height: 64px")
+                  img(src=`/static/img/entities/061.png` alt="Jetpack off" style="max-height: 64px")
+                  img(src=`/static/img/entities/062.png` alt="Hooktrough Tee off" style="max-height: 64px")
+                  img(src=`/static/img/entities/063.png` alt="Teleport Pistol On" style="max-height: 64px")
+                  img(src=`/static/img/entities/064.png` alt="Teleport Pistol Off" style="max-height: 64px")
+                  img(src=`/static/img/entities/065.png` alt="Tee Collision On" style="max-height: 64px")
+                  img(src=`/static/img/entities/066.png` alt="Infinite Double Jump On" style="max-height: 64px")
+                  img(src=`/static/img/entities/067.png` alt="Jetpack On" style="max-height: 64px")
+                  img(src=`/static/img/entities/068.png` alt="Hooktrough Tees On" style="max-height: 64px")
+                  img(src=`/static/img/entities/071.png` alt="Teleport Laser On" style="max-height: 64px")
+                  img(src=`/static/img/entities/072.png` alt="Teleport Laser Off" style="max-height: 64px")
+                  img(src=`/static/img/entities/085.png` alt="Counterclockwise, Fast Rotating Freezing Laser" style="max-height: 64px")
+                  img(src=`/static/img/entities/086.png` alt="Counterclockwise, Normal Rotating Freezing Laser" style="max-height: 64px")
+                  img(src=`/static/img/entities/087.png` alt="Counterclockwise, Slow Rotating Freezing Laser" style="max-height: 64px")
+                  img(src=`/static/img/entities/088.png` alt="Static Freezing Laser" style="max-height: 64px")
+                  img(src=`/static/img/entities/089.png` alt="Clockwise, Slow Rotating Freezing Laser" style="max-height: 64px")
+                  img(src=`/static/img/entities/090.png` alt="Clockwise, Normal Rotating Freezing Laser" style="max-height: 64px")
+                  img(src=`/static/img/entities/091.png` alt="Clockwise, Fast Rotating Freezing Laser" style="max-height: 64px")
+                  img(src=`/static/img/entities/101.png` alt="Explosion Turret" style="max-height: 64px")
+                  img(src=`/static/img/entities/102.png` alt="Freeze Turret" style="max-height: 64px")
+                  img(src=`/static/img/entities/103.png` alt="Freeze Explosion Turret" style="max-height: 64px")
+                  img(src=`/static/img/entities/104.png` alt="Unfreeze Turret" style="max-height: 64px")
+                  img(src=`/static/img/entities/105.png` alt="Exploding Bullet" style="max-height: 64px")
+                  img(src=`/static/img/entities/106.png` alt="Bullet" style="max-height: 64px")
+                p
+                  | All other entities can be used to map for Unique Race.
+          .column
+            .box 
+              section.hero
+                center
+                  h1.title Unique Race - Server
+                  br
+                h2.subtitle 
+                  b SERVER COMMANDS
+                .content
+                  table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
+                    thead
+                      tr
+                        th Setting
+                        th Description
+                        th Values
+                    tbody
+                      tr 
+                        td sv_fastcap 
+                        td Wheter the server is on fastcap mode or not 
+                        td 0/1
+                      tr
+                        td sv_kill_grenades
+                        td Whether shot grenades still live after the kill
+                        td 0/1
+                      tr 
+                        td sv_health_and_ammo
+                        td Whether players take damage and have to collect shields and hearts in order to regain health
+                        td 0/1
+                  p 
+                    | Fastcap has all values set to 1, you can also create race maps using 
+                    b sv_kill grenades 
+                    | and 
+                    b sv_health_and_ammo
+                    | !
+                h2.subtitle
+                  br
+                  a(href="/static/UniqueRaceServer.exe" download)
+                    img(src="/static/img/UniqueRaceServerImage.png")
+                .content
+                  p
+                    | Replace or add it to your current clientfolder.
+        .columns
+          .column
+            .box 
+              section.hero
+                center
+                  h1.title Mapping for Unique Race
+                  br
+                .content 
+                  p
+                    | Most of 
+                    a(href='https://forum.ddnet.tw/viewtopic.php?f=9&t=722') DDNet's Mapper Rules 
+                    | are applicable here aswell. We strongly recommend reading through all of the rules. 
+                    | Your map must meet all requirements to be accepted on our servers!
+                h2.subtitle
+                  b GAMEPLAY
+                .content 
+                  ul
+                    li Don't copy parts from other maps, also map in a style where parts of the map don't repeat themselves!
+                    li No secret paths, alternative paths and shortcuts are allowed as long as they are clearly recognizable.
+                    li Make sure that your map is balanced. This is especially important for the long category, which differentiates between easy, advanced and hard.
+                    li Design the map in a way it is fun to play more than once! (e.g. no weird and narrow parts where you feel like you need more luck than skill to go through)
+                    li Map for a category! Every category is divided in time, short is between 0 - 20 seconds, middle is between 20 - 60 seconds and 
+                      | long is everything above this time frame. Each category has a tolerance between +- 2 seconds!
+                h2.subtitle
+                  b DESIGN 
+                .content 
+                  ul
+                    li Try to mark all entities clearly and distinguishable. (e.g. start, finish, checkpoints, teleport)
+                    li All non-gameplay irrelevant design details should be marked with 'detail'. (e.g. doodads, sun, moon)
+                    li Delete all unused images, layers, groups, envelopes and make sure the images are in the correct field (embedded / external).
+                    li Ensure that the layers are not too large. The layers should only be as large as they are actually needed.
+                    li The design should be appealing and easy to play with. It should not hurt the eye after playing for a long time.
+                    li The background should not be transparent and large enough for all resolutions. Click 'Proof' in the editor to check 
+                      | if the background is covered over the white border in order to work with all resolutions.
+             
 block scripts
   script(src="/static/js/mapupload.js")
