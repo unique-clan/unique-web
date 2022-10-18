@@ -3,6 +3,18 @@ extends layout
 block content
   main
     br
+    br
+    br
+    br
+    section.hero.is-warning
+      .hero-body 
+        .container 
+          h1.title
+            a(href="https://uniqueclan.net/race")
+              img(src=`/static/img/discord-icon-logo.png` alt="Discord" align="right" style="max-height: 64px")
+            | Map Submissions
+          h2.subtitle
+            | At the moment the Map submission form is deactivated. Join our Discord server if u want your map released on our servers!           
     section.section
       .container
         .columns
@@ -22,6 +34,7 @@ block content
           .column
             .box
               section.hero
+              fieldset(disabled)
                 form.form#form-mapupload
                   .file.is-warning.has-name.is-fullwidth
                     label.file-label
@@ -159,6 +172,8 @@ block content
                   img(src=`/static/img/entities/068.png` alt="Hooktrough Tees On" style="max-height: 64px")
                   img(src=`/static/img/entities/071.png` alt="Teleport Laser On" style="max-height: 64px")
                   img(src=`/static/img/entities/072.png` alt="Teleport Laser Off" style="max-height: 64px")
+                  img(src=`/static/img/entities/072-1.png` alt="Live Freeze" style="max-height: 64px")
+                  img(src=`/static/img/entities/072-2.png` alt="Live Unfreeze" style="max-height: 64px")
                   img(src=`/static/img/entities/085.png` alt="Counterclockwise, Fast Rotating Freezing Laser" style="max-height: 64px")
                   img(src=`/static/img/entities/086.png` alt="Counterclockwise, Normal Rotating Freezing Laser" style="max-height: 64px")
                   img(src=`/static/img/entities/087.png` alt="Counterclockwise, Slow Rotating Freezing Laser" style="max-height: 64px")
@@ -166,12 +181,28 @@ block content
                   img(src=`/static/img/entities/089.png` alt="Clockwise, Slow Rotating Freezing Laser" style="max-height: 64px")
                   img(src=`/static/img/entities/090.png` alt="Clockwise, Normal Rotating Freezing Laser" style="max-height: 64px")
                   img(src=`/static/img/entities/091.png` alt="Clockwise, Fast Rotating Freezing Laser" style="max-height: 64px")
+                  img(src=`/static/img/entities/095.png` alt="Slow Laser Lengthener" style="max-height: 64px")
+                  img(src=`/static/img/entities/096.png` alt="Normal Laser Lengthener" style="max-height: 64px")
+                  img(src=`/static/img/entities/097.png` alt="Fast Laser Lengthener" style="max-height: 64px")
+                  img(src=`/static/img/entities/098.png` alt="Slow Laser Length Changer" style="max-height: 64px")
+                  img(src=`/static/img/entities/099.png` alt="Normal Laser Length Changer" style="max-height: 64px")
+                  img(src=`/static/img/entities/100.png` alt="Fast Laser Length Changer" style="max-height: 64px")
                   img(src=`/static/img/entities/101.png` alt="Explosion Turret" style="max-height: 64px")
                   img(src=`/static/img/entities/102.png` alt="Freeze Turret" style="max-height: 64px")
                   img(src=`/static/img/entities/103.png` alt="Freeze Explosion Turret" style="max-height: 64px")
                   img(src=`/static/img/entities/104.png` alt="Unfreeze Turret" style="max-height: 64px")
                   img(src=`/static/img/entities/105.png` alt="Exploding Bullet" style="max-height: 64px")
                   img(src=`/static/img/entities/106.png` alt="Bullet" style="max-height: 64px")
+                  img(src=`/static/img/entities/106-1.png` alt="Shotgun Shield" style="max-height: 64px")
+                  img(src=`/static/img/entities/106-2.png` alt="Grenade Shield" style="max-height: 64px")
+                  img(src=`/static/img/entities/106-3.png` alt="Ninja Shield" style="max-height: 64px")
+                  img(src=`/static/img/entities/106-4.png` alt="Laser Shield" style="max-height: 64px")
+                  img(src=`/static/img/entities/107.png` alt="Slow Dragger" style="max-height: 64px")
+                  img(src=`/static/img/entities/108.png` alt="Normal Dragger" style="max-height: 64px")
+                  img(src=`/static/img/entities/109.png` alt="Fast Dragger" style="max-height: 64px")
+                  img(src=`/static/img/entities/110.png` alt="Slow Hookthrough Dragger" style="max-height: 64px")
+                  img(src=`/static/img/entities/111.png` alt="Normal Hookthrough Dragger" style="max-height: 64px")
+                  img(src=`/static/img/entities/112.png` alt="Fast Hookthrough Dragger" style="max-height: 64px")
                 p
                   | All other entities can be used to map for Unique Race.
           .column
@@ -203,18 +234,23 @@ block content
                         td Whether players take damage and have to collect shields and hearts in order to regain health
                         td 0/1
                   p 
-                    | Fastcap has all values set to 1, you can also create race maps using 
+                    | Fastcap has all values set to 1, and you don't need to add them to your map settings after you are done creating your fastcap map. 
+                    | It's a setting you should use for testing and creating a new map. 
+                    | After that, you can remove the map setting if you want the map released on our servers, 
+                    | since we have it on by default as a server setting for our fastcap maps!
+                    br
+                    br
+                    | If u wanna upload maps using 
                     b sv_kill grenades 
                     | and 
-                    b sv_health_and_ammo
-                    | !
+                    b sv_health_and_ammo 
+                    | leave them in the map settings!
                 h2.subtitle
                   br
                   a(href="/static/UniqueRaceServer.exe" download)
                     img(src="/static/img/UniqueRaceServerImage.png")
-                .content
-                  p
-                    | Replace or add it to your current clientfolder.
+                p
+                  | Replace or add it to your current clientfolder.
         .columns
           .column
             .box 
