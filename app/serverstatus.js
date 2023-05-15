@@ -49,7 +49,7 @@ class ServerStatus {
         let tasks = Object.values(location.servers).map((srv) => this.updateGameserver(srv, location.ip));
         await Promise.all(tasks);
         
-        location.alive = location.servers.some(srv => srv.reachable));
+        location.alive = location.servers.some(srv => srv.reachable);
     }
 
     async updateGameserver(server, ip) {
