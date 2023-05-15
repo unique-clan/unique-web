@@ -42,18 +42,14 @@ class ServerStatus {
     }
 
     async updateLocation(location) {
-        let res = await ping.probe(location.ip, { timeout: 1 });
-
-        location.alive = res.alive;
-        location.ping = res.avg;
         for (var server of location.servers) {
             server.ip = location.ip;
         }
 
-        if (location.alive) {
-            let tasks = Object.values(location.servers).map((srv) => this.updateGameserver(srv, location.ip));
-            await Promise.all(tasks);
-        }
+        let tasks = Object.values(location.servers).map((srv) => this.updateGameserver(srv, location.ip));
+        await Promise.all(tasks);
+        
+        location.alive = location.servers.some(srv => srv.reachable));
     }
 
     async updateGameserver(server, ip) {
