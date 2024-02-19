@@ -7,15 +7,41 @@ block content
         .content.has-text-centered
           img(src=`/static/img/tournament.png` alt="tournament")
           hr
-          .columns
-            .column.nocontent
-              .box.is-half.has-text-centered
+          .columns.is-centered
+            .column.is-half
+              .box.has-text-centered 
                 p.title COMING SOON
-                p.subtitle.author-date Still to be announced
+                  a(href="https://uniqueclan.net/race")
+                    img(src=`/static/img/discord-icon-logo.png` alt="Discord" align="right" style="max-height: 32px")
+                p.subtitle Join our Discord for the next announcement!
+          .columns
             .column
-              .box.is-half.has-text-centered
+              .box.has-text-centered
+                p.title Catch the Netherman Tournament
+                p.subtitle.author-date 2024-02-04 | hosted by Derp | Prize Pool: 50€ 
+                hr
+                img(src=`/static/img/tournamentmaps/CatchtheNetherman-1-run_venice.png`)
+                center 
+                  p.subtitle 
+                    strong run_venice by Assa 
+                center 
+                br
+                p
+                  img(src=`/static/img/medals/gold.png`)
+                  strong Push 35€
+                p(align="left")
+                  img(src=`/static/img/medals/silver.png`)
+                  strong Fudgyking 15€
+                p(align="right")
+                  img(src=`/static/img/medals/bronze.png`)
+                  strong Saix 5€
+                br
+                p.subtitle Tournament Details:
+                p For every record stolen from nether you win 5€. In addition, Assa provided 20€ for the map run_venice.
+            .column
+              .box.has-text-centered
                 p.title TeeSmash Tournament
-                p.subtitle.author-date hosted by Ryozuki on 2016-07-17
+                p.subtitle.author-date 2016-07-17 | hosted by Ryozuki | Prize Pool: -
                 hr
                 img(src=`/static/img/tournamentmaps/TeeSmash-1-ts1.png`)
                 center
@@ -35,3 +61,4 @@ block content
                 br
                 p.subtitle Participants:
                 p ChillerDragon, Ryozuki, Tezcan, RedFight, timakro, Kladdy, gdin, FireRed, RayB., Beast, fikmesån, tèíñi94®0cK
+  
