@@ -33,7 +33,7 @@ router.get("/serverstatus", function (req, res, next) {
 });
 
 router.get("/serverstatus/:location", function (req, res, next) {
-    let serverName = String(req.params.location).toUpperCase();
+    let serverName = String(req.params.location);
     let serverNames = serverStatus.list.map((x) => x.name);
     if (!serverNames.includes(serverName)) {
         return next();
