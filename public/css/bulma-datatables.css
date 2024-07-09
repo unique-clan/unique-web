@@ -1,0 +1,31 @@
+table thead > tr > th.sorting_asc, table thead > tr > th.sorting_desc, table thead > tr > th.sorting {
+  padding-right: 30px;
+}
+table thead > tr > td.sorting_asc, table thead > tr > td.sorting_desc, table thead > tr > td.sorting {
+  padding-right: 30px;
+}
+table thead .sorting, table thead .sorting_asc, table thead .sorting_desc, table thead .sorting_asc_disabled, table thead .sorting_desc_disabled {
+  cursor: pointer;
+  position: relative;
+}
+table thead .sorting:after, table thead .sorting_asc:after, table thead .sorting_desc:after, table thead .sorting_asc_disabled:after, table thead .sorting_desc_disabled:after {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  display: block;
+  font-family: "FontAwesome";
+  opacity: 0.5;
+}
+table thead .sorting:after {
+  opacity: 0.2;
+  content: "\f0dc";
+}
+table thead .sorting_asc:after {
+  content: "\f0de";
+}
+table thead .sorting_desc:after {
+  content: "\f0dd";
+}
+table thead .sorting_asc_disabled:after, table thead .sorting_desc_disabled:after {
+  color: #eee;
+}

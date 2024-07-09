@@ -5,7 +5,6 @@ var logger = require("morgan");
 var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
 var helmet = require("helmet");
-var sassMiddleware = require("node-sass-middleware");
 var session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
 var mongoSanitize = require("express-mongo-sanitize");
@@ -71,16 +70,6 @@ app.use(
 );
 app.use(cookieParser());
 
-app.use(
-    sassMiddleware({
-        src: path.join(__dirname, "public"),
-        dest: path.join(__dirname, "public"),
-        indentedSyntax: true, // true = .sass and false = .scss
-        sourceMap: true,
-        outputStyle: "compressed",
-        prefix: "/static",
-    }),
-);
 app.use("/static", express.static(path.join(__dirname, "public")));
 app.use("/static/css", express.static(path.join(__dirname, "node_modules/bulma/css")));
 app.use("/static", express.static(path.join(__dirname, "node_modules/bulma-extensions/dist")));
