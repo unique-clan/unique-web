@@ -1,7 +1,8 @@
+# Environment variables
+.env
 
-public/css/**/*.css
-public/css/**/*.css.map
-!public/css/old/*.css
+# Auto-generated map screenshot thumbnails
+/public/img/mapthumb/
 
 # nodejs thingies
 
@@ -35,23 +36,3 @@ node_modules
 
 # Debug log from npm
 npm-debug.log
-
-.vscode/
-*.swp
-/run.sh
-/update.lock
-
-# temporary data storage
-/admintmp/applications/*
-!/admintmp/applications/.gitkeep
-/admintmp/map-submissions/*
-!/admintmp/map-submissions/.gitkeep
-
-# map screenshot thumbnails
-/public/img/mapthumb/
-
-# map uploads
-/uploads/
-
-# Unique server binary
-/public/UniqueRaceServer.exe
