@@ -6,47 +6,47 @@ var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
 var helmet = require("helmet");
 var session = require("express-session");
-const MongoStore = require("connect-mongo")(session);
-var mongoSanitize = require("express-mongo-sanitize");
+// const MongoStore = require("connect-mongo")(session);
+// var mongoSanitize = require("express-mongo-sanitize");
 var debug = require("debug")("uniqueweb:app");
 var debugDB = require("debug")("uniqueweb:app:dberror");
 var contentDisposition = require("content-disposition");
 var escape = require("escape-html");
 
 // Setup the db connection
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
 
-// Load models
-require("./database/index")();
+// // Load models
+// require("./database/index")();
 
-mongoose.Promise = global.Promise;
+// mongoose.Promise = global.Promise;
 
-var db = mongoose.connection;
-db.on("error", debugDB);
-db.once("open", function callback() {
-    debug("Connection to database succesfull.");
-});
+// var db = mongoose.connection;
+// db.on("error", debugDB);
+// db.once("open", function callback() {
+//     debug("Connection to database succesfull.");
+// });
 
-// Build the connection string
-var connectionString = "mongodb://";
+// // Build the connection string
+// var connectionString = "mongodb://";
 
-if (process.env.DATABASE_USERNAME && process.env.DATABASE_PASSWORD) {
-    connectionString += `${process.env.DATABASE_USERNAME}:${process.env.DATABASE_PASSWORD}@`;
-}
+// if (process.env.DATABASE_USERNAME && process.env.DATABASE_PASSWORD) {
+//     connectionString += `${process.env.DATABASE_USERNAME}:${process.env.DATABASE_PASSWORD}@`;
+// }
 
-if (process.env.DATABASE_HOST && process.env.DATABASE_PORT) {
-    connectionString += `${process.env.DATABASE_HOST}:${process.env.DATABASE_PORT}`;
-} else {
-    connectionString += "localhost:27017";
-}
+// if (process.env.DATABASE_HOST && process.env.DATABASE_PORT) {
+//     connectionString += `${process.env.DATABASE_HOST}:${process.env.DATABASE_PORT}`;
+// } else {
+//     connectionString += "localhost:27017";
+// }
 
-connectionString += "/" + (process.env.DATABASE_NAME || "uniqueweb");
+// connectionString += "/" + (process.env.DATABASE_NAME || "uniqueweb");
 
-mongoose.connect(connectionString, { useNewUrlParser: true });
+// mongoose.connect(connectionString, { useNewUrlParser: true });
 
 // Load App routes
 var index = require("./routes/index");
-var admin = require("./routes/admin");
+// var admin = require("./routes/admin");
 var ranks = require("./routes/ranks");
 
 var app = express();
@@ -63,11 +63,11 @@ app.set("view engine", "pug");
 app.use(favicon(path.join(__dirname, "public", "favicon/favicon.ico")));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(
-    mongoSanitize({
-        replaceWith: "_",
-    }),
-);
+// app.use(
+//     mongoSanitize({
+//         replaceWith: "_",
+//     }),
+// );
 app.use(cookieParser());
 
 app.use("/static", express.static(path.join(__dirname, "public")));
@@ -102,10 +102,10 @@ app.use(
             expires: new Date(253402300799999),
         },
         name: "uniqueclan.sid",
-        store: new MongoStore({
-            mongooseConnection: mongoose.connection,
-            ttl: 14 * 24 * 60 * 60, // = 14 days. Default
-        }),
+        // store: new MongoStore({
+        //     mongooseConnection: mongoose.connection,
+        //     ttl: 14 * 24 * 60 * 60, // = 14 days. Default
+        // }),
     }),
 );
 
@@ -114,7 +114,7 @@ app.locals.escape = escape;
 
 // Add the app routes
 app.use("/", index);
-app.use("/admin", admin);
+// app.use("/admin", admin);
 app.use("/ranks", ranks);
 
 // catch 404 and forward to error handler
