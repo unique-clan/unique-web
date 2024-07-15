@@ -31,21 +31,9 @@ block content
           p.has-text-centered
             | This location is currently offline.
         else
-          if location.name === 'CAN'
+          if location.sponsor
             p.has-text-centered.background-text
-              | Unique CAN is sponsored by Fudgy.
-            br
-          if location.name === 'USA'
-            p.has-text-centered.background-text
-              | Unique USA is sponsored by Ewan Green.
-            br
-          if location.name === 'RUS'
-            p.has-text-centered.background-text
-              | Unique RUS is sponsored by gerdoe.
-            br
-          if location.name === 'Taiwan'
-            p.has-text-centered.background-text
-              | Unique Taiwan is sponsored by heinrich5991.
+              | Unique #{location.name} is sponsored by #{location.sponsor}.
             br
           .columns.is-multiline
             each server in location.servers.filter(s => !s.password).sort((a, b) => ((b.reachable ? 1 : 0) - (a.reachable ? 1 : 0)) || ((b.players ? b.players.length : 0) - (a.players ? a.players.length : 0)) || (a.name > b.name ? 1 : -1))
