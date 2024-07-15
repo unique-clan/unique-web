@@ -6,7 +6,7 @@ var logger = require("morgan");
 var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
 var helmet = require("helmet");
-var session = require("express-session");
+// var session = require("express-session");
 // const MongoStore = require("connect-mongo")(session);
 // var mongoSanitize = require("express-mongo-sanitize");
 var debug = require("debug")("uniqueweb:app");
@@ -93,22 +93,22 @@ app.use(logger("dev"));
 if (process.env.BEHIND_PROXY === "true") {
     app.set("trust proxy", 1); // trust first proxy
 }
-app.use(
-    session({
-        secret: process.env.COOKIE_SECRET || "unique is the best clan in teeworlds",
-        resave: false,
-        saveUninitialized: false,
-        cookie: {
-            secure: process.env.COOKIE_SECURE === "true",
-            expires: new Date(253402300799999),
-        },
-        name: "uniqueclan.sid",
-        // store: new MongoStore({
-        //     mongooseConnection: mongoose.connection,
-        //     ttl: 14 * 24 * 60 * 60, // = 14 days. Default
-        // }),
-    }),
-);
+// app.use(
+//     session({
+//         secret: process.env.COOKIE_SECRET || "unique is the best clan in teeworlds",
+//         resave: false,
+//         saveUninitialized: false,
+//         cookie: {
+//             secure: process.env.COOKIE_SECURE === "true",
+//             expires: new Date(253402300799999),
+//         },
+//         name: "uniqueclan.sid",
+//         // store: new MongoStore({
+//         //     mongooseConnection: mongoose.connection,
+//         //     ttl: 14 * 24 * 60 * 60, // = 14 days. Default
+//         // }),
+//     }),
+// );
 
 // make html escape function available in all views
 app.locals.escape = escape;

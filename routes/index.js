@@ -40,7 +40,6 @@ router.get("/serverstatus/:location", function (req, res, next) {
     }
     res.render("serverstatus", {
         title: serverName + " Server Status | Unique",
-        user: req.session.authed ? req.session.user : null,
         locations: serverStatus.list,
         location: serverStatus.list.filter((x) => x.name === serverName)[0],
     });

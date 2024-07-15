@@ -92,7 +92,6 @@ router.get("/", async function (req, res, next) {
 
     res.render("ranks", {
         title: "Ranks | Unique",
-        user: req.session.authed ? req.session.user : null,
         topPoints: topPoints,
         lastTopRanks: lastTopRanks,
         formatTime: sql.formatTime,
@@ -246,7 +245,6 @@ router.get("/player/:name", async function (req, res, next) {
     res.render("playerranks", {
         title: `Ranks for ${player} | Unique`,
         name: player,
-        user: req.session.authed ? req.session.user : null,
 
         formatTime: sql.formatTime,
         getOrdinal: getOrdinal,

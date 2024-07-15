@@ -19,7 +19,6 @@
     "dotenv": "^16.4.5",
     "escape-html": "^1.0.3",
     "express": "^4.19.2",
-    "express-session": "^1.18.0",
     "helmet": "^7.1.0",
     "morgan": "^1.10.0",
     "mysql2": "^3.10.2",
