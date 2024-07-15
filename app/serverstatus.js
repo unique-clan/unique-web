@@ -33,7 +33,12 @@ class ServerStatus {
     async updateStatus() {
         this.loadTWFlags();
         while (true) {
-            let svlist = JSON.parse(await readFile(this.path, "utf8"));
+            let svlist = [{ "name": "GER", "servers": [] }];
+            try {
+                svlist = JSON.parse(await readFile(this.path, "utf8"));
+            } catch (err) {
+                debug("Failed to read server list: %s", err);
+            }
             let tasks = Object.values(svlist).map((loc) => this.updateLocation(loc));
             await Promise.all(tasks);
             this.list = svlist;
@@ -48,7 +53,7 @@ class ServerStatus {
 
         let tasks = Object.values(location.servers).map((srv) => this.updateGameserver(srv, location.ip));
         await Promise.all(tasks);
-        
+
         location.alive = location.servers.some(srv => srv.reachable);
     }
 
