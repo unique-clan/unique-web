@@ -224,6 +224,7 @@ a.navbar-item:focus {
 .unfinished-maps p {
   display: -webkit-box;
   -webkit-line-clamp: 3;
+  line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -237,6 +238,7 @@ a.navbar-item:focus {
   cursor: pointer;
 }
 .unfinished-maps input:checked + p {
+  line-clamp: unset;
   -webkit-line-clamp: unset;
 }
 .table-links table a,
