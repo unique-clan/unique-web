@@ -5,7 +5,9 @@ block content
     section.section
       .container
         center
-          img(src=`/static/img/st.png` alt="welcome to our clanpage!" style="max-height: 220px;")
+          picture
+            source(srcset=`/static/img/st2.png` alt="welcome to our clanpage!" style="max-height: 220px;" media="(prefers-color-scheme: dark)")
+            img(src=`/static/img/st.png` alt="welcome to our clanpage!" style="max-height: 220px;")
         .columns
           .column
             .card.unique-card
@@ -55,4 +57,4 @@ block content
                     li Collect <a href="/ranks#points-calculation">time based points</a>
                     li Play on both 0.6 and 0.7 Teeworlds clients            
                   .video-container
-                    iframe.video(src="https://www.youtube.com/embed/5vZS0niYEGw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen)
+                    iframe.video(src='https://www.youtube.com/embed/5vZS0niYEGw?si=m5z8S-dMX0607S-B' frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share' referrerpolicy='strict-origin-when-cross-origin' allowfullscreen)

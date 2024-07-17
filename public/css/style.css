@@ -2,36 +2,28 @@
 html, body {
   background: #EFF3F4;
 }
-
 .box {
   height: 100%;
 }
-
 a {
   color: #c68b25;
 }
-
 a:hover {
   color: #FFA500;
 }
-
 .hb:hover {
-  background: orange;
+  background: #FFA500;
 }
-
 .author-date {
   color: #D3D3D3;
   font-size: 16px;
 }
-
 .footer {
   background: #EFF3F4;
 }
-
 .mb {
   margin-top: 40px;
 }
-
 .nocontent {
   height: 100%;
 }
@@ -50,11 +42,9 @@ a:hover {
 .card.unique-card a:hover {
   color: #FFA500;
 }
-
 .no-overflow {
   overflow: hidden;
 }
-
 .author-image {
   position: absolute;
   top: -30px;
@@ -65,25 +55,20 @@ a:hover {
   border: 3px solid #ccc;
   border-radius: 50%;
 }
-
 .article, .promo-block {
   margin-top: 2rem;
 }
-
 .article-title {
   line-height: 2;
 }
-
 .pagination-link.is-current {
   color: #363636;
   background-color: #ffdd57;
   border-color: #e9c94f;
 }
-
 .pagination a:not([disabled]):active, .pagination a:not([disabled]):focus {
   border-color: #e9c94f !important;
 }
-
 .servernot {
   overflow-x: auto;
   padding: 20px 10px;
@@ -158,7 +143,6 @@ a:hover {
   position: relative;
   top: 3px;
 }
-
 .warning-tagsinput div.is-focused:not(.is-danger):not(.is-success) {
   border-color: #ffdd57;
   box-shadow: 0 0 0 0.125em rgba(255, 221, 87, 0.4);
@@ -167,43 +151,34 @@ a:hover {
   background-color: #ffdd57 !important;
   color: inherit !important;
 }
-
 .warning-input:focus:not(.is-danger):not(.is-success) {
   border-color: #ffdd57;
   box-shadow: 0 0 0 0.125em rgba(255, 221, 87, 0.4);
 }
-
 .warning-dark-input {
   background-color: #2b2b2b;
   color: #f5f5f5;
   border-color: #262626;
 }
-
 .warning-dark-input:hover {
   border-color: #191919;
 }
-
 .warning-dark-input:focus {
   border-color: #e89200;
   box-shadow: 0 0 0 0.125em rgba(232, 146, 0, 0.4);
 }
-
 .warning-dark-input::placeholder {
   color: #595959;
 }
-
 a.navbar-item:hover {
   color: #e89200;
 }
-
 a.navbar-item:active {
   color: #e89200;
 }
-
 a.navbar-item:focus {
   color: #e89200;
 }
-
 .navbar {
   box-shadow: 0 2px 0 0 #eeeeee;
 }
@@ -213,12 +188,10 @@ a.navbar-item:focus {
 .navbar .button:focus:not(:active) {
   box-shadow: none;
 }
-
 .tabs li.is-active a {
   border-bottom-color: #e89200;
   color: #e89200;
 }
-
 .rank-nav a {
   color: whitesmoke !important;
   outline: none !important;
@@ -229,14 +202,12 @@ a.navbar-item:focus {
 .rank-nav li::before {
   color: #666666 !important;
 }
-
 .rank-anchor {
   display: block;
   position: relative;
   top: -70px;
   visibility: hidden;
 }
-
 .playerranks-header {
   max-width: 800px;
   margin-bottom: 24px;
@@ -246,7 +217,6 @@ a.navbar-item:focus {
   margin-right: 30px;
   margin-bottom: 0;
 }
-
 .unfinished-maps {
   margin-top: 20px;
   margin-bottom: 40px;
@@ -269,7 +239,6 @@ a.navbar-item:focus {
 .unfinished-maps input:checked + p {
   -webkit-line-clamp: unset;
 }
-
 .table-links table a,
 .table-links ul a,
 a.unobstrusive {
@@ -281,27 +250,22 @@ a.unobstrusive {
 a.unobstrusive:hover {
   text-decoration: underline !important;
 }
-
 .horizontal-scroll {
   overflow-x: auto;
   white-space: nowrap;
 }
-
 .background-text {
   font-family: Montserrat, san-serif;
 }
-
 .tr {
   float: right;
 }
-
 .maps-page-meta {
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
 .mapmappers span:before {
   content: ", ";
 }
@@ -311,7 +275,6 @@ a.unobstrusive:hover {
 .mapmappers span:first-child:before {
   content: none;
 }
-
 .video-container {
   position: relative;
   width: 100%;
@@ -328,7 +291,7 @@ a.unobstrusive:hover {
 
 @media (prefers-color-scheme: dark) {
   html, body {
-    background: #404258;
+    background: #14161a;
   }
   p {
     color: white;
@@ -351,11 +314,8 @@ a.unobstrusive:hover {
   .title {
     color: white;
   }
-  .unique-card {
-    background: #474E68;
-  }
   .footer {
-    background-color: #404258;
+    background-color: #14161a;
   }
   .card-footer {
     border-top: 1px solid rgba(51, 51, 51, 0.2);
@@ -364,36 +324,19 @@ a.unobstrusive:hover {
     border-right: 1px solid rgba(51, 51, 51, 0.2);
   }
   .navbar {
-    background-color: #474E68;
     box-shadow: 0 2px 0 0 rgba(51, 51, 51, 0.2);
   }
-  .navbar-menu {
-    background-color: #474E68;
-  }
   .navbar-item {
-    background-color: #474E68;
     color: white;
-  }
-  .navbar-item:hover {
-    background-color: #4c536e !important;
-  }
-  .navbar-item:focus {
-    background-color: #4c536e !important;
-  }
-  .navbar-item:active {
-    background-color: #4c536e !important;
-  }
-  .box {
-    background-color: #474E68;
   }
   .content h1, .content h2, .content h3, .content h4, .content h5, .content h6 {
     color: white;
   }
   .notification {
-    background-color: #474E68 !important;
+    background-color: #1f2329
   }
   .notification .title, .notification .subtitle, .notification .subtitle strong {
-    color: white !important;
+    color: white
   }
   .notification.is-white {
     color: white;
@@ -402,7 +345,7 @@ a.unobstrusive:hover {
     color: white;
   }
   .input[disabled], .textarea[disabled], .select select[disabled], fieldset[disabled] .input, fieldset[disabled] .textarea, fieldset[disabled] .select select, .select fieldset[disabled] select {
-    background-color: #4c536e;
+    background-color: #1f2329;
     border-color: #a3965f;
     color: #8f92a0;
   }
@@ -432,20 +375,20 @@ a.unobstrusive:hover {
     color: white;
   }
   .table {
-    background-color: #474E68;
+    background-color: #1f2329;
     color: white;
   }
   .table.is-striped tbody tr:not(.is-selected):nth-child(2n) {
-    background-color: #4c536e;
+    background-color: #272c35;
   }
   .content table thead td, .content table thead th {
     color: white;
   }
   .table.is-striped tbody tr:hover {
-    background-color: #525a7c !important;
+    background-color: #303841 !important;
   }
   .card {
-    background-color: #474E68;
+    background-color: #1f2329;
   }
   .table-links table a, .table-links ul a, a.unobstrusive {
     color: white;
@@ -457,7 +400,7 @@ a.unobstrusive:hover {
     color: white;
   }
   .servernot .serverbox .serverinfobox .servermap {
-    background-color: #474E68;
+    background-color: #1f2329;
   }
   .pagination-previous, .pagination-next, .pagination-link {
     color: white;
@@ -465,7 +408,7 @@ a.unobstrusive:hover {
   .pagination-previous:hover, .pagination-next:hover, .pagination-link:hover {
     color: #e89200;
   }
-  .button {
-    background-color: #474E68;
+  .box {
+    background: #1f2329;
   }
 }

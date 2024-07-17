@@ -232,24 +232,34 @@ block content
           p Players accumulate points from their times on all maps in relation to the map records. The player holding the record is rewarded 100 points while the amount of points drops exponentially for slower times.
             p
               | The points a player recieves for a specific map are calculated from the player's time in seconds 
-              img(src='/static/img/points/tplayer.png', style='position:relative;top:8px;')
+              picture
+                source(srcset='/static/img/points/tplayer2.png', style='position:relative;top:8px;' media="(prefers-color-scheme: dark)")
+                img(src='/static/img/points/tplayer.png', style='position:relative;top:8px;')
               | , the record time in seconds 
-              img(src='/static/img/points/trecord.png', style='position:relative;top:5px;')
+              picture
+                source(srcset='/static/img/points/trecord2.png', style='position:relative;top:5px;' media="(prefers-color-scheme: dark)")
+                img(src='/static/img/points/trecord.png', style='position:relative;top:5px;')
               |  and the map category constant 
-              img(src='/static/img/points/s.png')
+              picture
+                source(srcset='/static/img/points/s2.png' media="(prefers-color-scheme: dark)")
+                img(src='/static/img/points/s.png')
               | :
             br
             br
             .columns
               .column
-                img(src='/static/img/points/equation.png', style="padding-top:30px;")
+                picture
+                  source(srcset='/static/img/points/equation2.png', style="padding-top:30px;" media="(prefers-color-scheme: dark)")
+                  img(src='/static/img/points/equation.png', style="padding-top:30px;")
               .column
                 table.table.is-narrow.has-text-centered
                   thead
                     tr
                       th Map Category
                       th
-                        img(src='/static/img/points/s.png')
+                        picture
+                          source(srcset='/static/img/points/s2.png' media="(prefers-color-scheme: dark)")
+                          img(src='/static/img/points/s.png')
                   tbody
                     tr
                       td Short
