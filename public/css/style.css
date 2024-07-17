@@ -298,12 +298,6 @@ a.unobstrusive:hover {
   p {
     color: white;
   }
-  .subtitle {
-    color: white;
-  }
-  .subtitle strong, .title strong {
-    color: white;
-  }
   strong {
     color: white;
   }
@@ -311,9 +305,6 @@ a.unobstrusive:hover {
     color: white;
   }
   i {
-    color: white;
-  }
-  .title {
     color: white;
   }
   .footer {
@@ -336,9 +327,6 @@ a.unobstrusive:hover {
   }
   .notification {
     background-color: #1f2329
-  }
-  .notification .title, .notification .subtitle, .notification .subtitle strong {
-    color: white
   }
   .notification.is-white {
     color: white;
@@ -371,9 +359,6 @@ a.unobstrusive:hover {
     border-bottom-color: #e89200;
   }
   .box .title {
-    color: white;
-  }
-  .box .subtitle {
     color: white;
   }
   .table {
