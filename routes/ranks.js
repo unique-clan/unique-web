@@ -21,25 +21,25 @@ function getOrdinal(n) {
 }
 
 const topRecordsQuery =
-    "SELECT @pos := @pos + 1 AS v1, @rank := IF(@prev = recordsCount, @rank, @pos) AS rank, @prev := recordsCount AS v2, Name, recordsCount FROM (SELECT Name, COUNT(*) as recordsCount FROM race_ranks WHERE Rank=1 GROUP BY Name ORDER BY recordsCount DESC) v, (SELECT @pos := 0) i1, (SELECT @rank := -1) i2, (SELECT @prev := -1) i3 LIMIT 10;";
+    "SELECT RANK() OVER (ORDER BY recordsCount DESC) AS rank, Name, recordsCount FROM (SELECT Name, COUNT(*) as recordsCount FROM race_ranks WHERE Rank=1 GROUP BY Name ORDER BY recordsCount DESC) v LIMIT 10;";
 const topRecordsCategoryQuery =
-    "SELECT @pos := @pos + 1 AS v1, @rank := IF(@prev = recordsCount, @rank, @pos) AS rank, @prev := recordsCount AS v2, Name, recordsCount FROM (SELECT Name, COUNT(*) as recordsCount FROM race_ranks WHERE Rank=1 AND Server=? GROUP BY Name ORDER BY recordsCount DESC) v, (SELECT @pos := 0) i1, (SELECT @rank := -1) i2, (SELECT @prev := -1) i3 LIMIT 10;";
+    "SELECT RANK() OVER (ORDER BY recordsCount DESC) AS rank, Name, recordsCount FROM (SELECT Name, COUNT(*) as recordsCount FROM race_ranks WHERE Rank=1 AND Server=? GROUP BY Name ORDER BY recordsCount DESC) v LIMIT 10;";
 const topPointsQuery =
-    "SELECT @pos := @pos + 1 AS v1, @rank := IF(@prev = Points, @rank, @pos) AS rank, @prev := Points AS v2, Name, Points FROM race_points, (SELECT @pos := 0) i1, (SELECT @rank := -1) i2, (SELECT @prev := -1) i3 WHERE Points > 0 ORDER BY Points DESC LIMIT 10;";
+    "SELECT RANK() OVER (ORDER BY Points DESC) AS rank, Name, Points FROM race_points WHERE Points > 0 ORDER BY Points DESC LIMIT 10;";
 const topPointsCategoryQuery =
-    "SELECT @pos := @pos + 1 AS v1, @rank := IF(@prev = Points, @rank, @pos) AS rank, @prev := Points AS v2, Name, Points FROM race_catpoints, (SELECT @pos := 0) i1, (SELECT @rank := -1) i2, (SELECT @prev := -1) i3 WHERE Server=? AND Points > 0 ORDER BY Points DESC LIMIT 10;";
+    "SELECT RANK() OVER (ORDER BY Points DESC) AS rank, Name, Points FROM race_catpoints WHERE Server=? AND Points > 0 ORDER BY Points DESC LIMIT 10;";
 const lastRecordsQuery = "SELECT Map, Name, Timestamp, Time FROM race_lastrecords ORDER BY Timestamp DESC LIMIT 10;";
 const mapCountQuery = "SELECT COUNT(*) as n from race_maps";
 const mapCountCategoryQuery = "SELECT COUNT(*) as n from race_maps where Server=?";
 
 const recordsPlayerQuery =
-    "SELECT rank, recordsCount FROM (SELECT @pos := @pos + 1 AS v1, @rank := IF(@prev = recordsCount, @rank, @pos) AS rank, @prev := recordsCount AS v2, Name, recordsCount FROM (SELECT Name, COUNT(*) as recordsCount FROM race_ranks WHERE Rank=1 GROUP BY Name ORDER BY recordsCount DESC) v, (SELECT @pos := 0) i1, (SELECT @rank := -1) i2, (SELECT @prev := -1) i3) w WHERE Name=?;";
+    "SELECT rank, recordsCount FROM (SELECT RANK() OVER (ORDER BY recordsCount DESC) AS rank, Name, recordsCount FROM (SELECT Name, COUNT(*) as recordsCount FROM race_ranks WHERE Rank=1 GROUP BY Name ORDER BY recordsCount DESC) v) w WHERE Name=?;";
 const recordsCategoryPlayerQuery =
-    "SELECT rank, recordsCount FROM (SELECT @pos := @pos + 1 AS v1, @rank := IF(@prev = recordsCount, @rank, @pos) AS rank, @prev := recordsCount AS v2, Name, recordsCount FROM (SELECT Name, COUNT(*) as recordsCount FROM race_ranks WHERE Rank=1 AND Server=? GROUP BY Name ORDER BY recordsCount DESC) v, (SELECT @pos := 0) i1, (SELECT @rank := -1) i2, (SELECT @prev := -1) i3) w WHERE Name=?;";
+    "SELECT rank, recordsCount FROM (SELECT RANK() OVER (ORDER BY recordsCount DESC) AS rank, Name, recordsCount FROM (SELECT Name, COUNT(*) as recordsCount FROM race_ranks WHERE Rank=1 AND Server=? GROUP BY Name ORDER BY recordsCount DESC) v) w WHERE Name=?;";
 const pointsPlayerQuery =
-    "SELECT rank, Points FROM (SELECT @pos := @pos + 1 AS v1, @rank := IF(@prev = Points, @rank, @pos) AS rank, @prev := Points AS v2, Name, Points FROM race_points, (SELECT @pos := 0) i1, (SELECT @rank := -1) i2, (SELECT @prev := -1) i3 WHERE Points > 0 ORDER BY Points DESC) t WHERE Name=?;";
+    "SELECT rank, Points FROM (SELECT RANK() OVER (ORDER BY Points DESC) AS rank, Name, Points FROM race_points WHERE Points > 0 ORDER BY Points DESC) t WHERE Name=?;";
 const pointsPlayerCategoryQuery =
-    "SELECT rank, Points FROM (SELECT @pos := @pos + 1 AS v1, @rank := IF(@prev = Points, @rank, @pos) AS rank, @prev := Points AS v2, Name, Points FROM race_catpoints, (SELECT @pos := 0) i1, (SELECT @rank := -1) i2, (SELECT @prev := -1) i3 WHERE Server=? AND Points > 0 ORDER BY Points DESC) t WHERE Name=?;";
+    "SELECT rank, Points FROM (SELECT RANK() OVER (ORDER BY Points DESC) AS rank, Name, Points FROM race_catpoints WHERE Server=? AND Points > 0 ORDER BY Points DESC) t WHERE Name=?;";
 const lastRecordsPlayerQuery =
     "SELECT Map, Name, Timestamp, Time FROM race_lastrecords WHERE Name=? ORDER BY Timestamp DESC LIMIT 10;";
 
