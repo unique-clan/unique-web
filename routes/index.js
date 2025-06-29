@@ -179,7 +179,7 @@ router.get("/maps", async function (req, res, next) {
         const [
             map,
         ] = await connection.execute(
-            'SELECT IFNULL((SELECT Map FROM race_maps WHERE Map=? AND (Server != "Fastcap" OR Stars != 1)), (SELECT Map FROM race_maps WHERE Map COLLATE utf8mb4_general_ci LIKE ? AND (Server != "Fastcap" OR Stars != 1) HAVING COUNT(*) = 1)) AS Map;',
+            'SELECT IFNULL((SELECT Map FROM record_maps WHERE Map=? AND (Server != "Fastcap" OR Stars != 1)), (SELECT Map FROM record_maps WHERE Map COLLATE utf8mb4_general_ci LIKE ? AND (Server != "Fastcap" OR Stars != 1) HAVING COUNT(*) = 1)) AS Map;',
             [search, pattern],
         );
         if (map[0].Map) {
@@ -191,7 +191,7 @@ router.get("/maps", async function (req, res, next) {
     const [
         mapCount,
     ] = await connection.execute(
-        'SELECT COUNT(*) as Count FROM race_maps WHERE (Map COLLATE utf8mb4_general_ci LIKE ? OR Mapper COLLATE utf8mb4_general_ci LIKE ?) AND (Server != "Fastcap" OR Stars != 1);',
+        'SELECT COUNT(*) as Count FROM record_maps WHERE (Map COLLATE utf8mb4_general_ci LIKE ? OR Mapper COLLATE utf8mb4_general_ci LIKE ?) AND (Server != "Fastcap" OR Stars != 1);',
         [pattern, mapperPattern],
     );
     const pageCount = Math.ceil(mapCount[0]["Count"] / 30);
@@ -199,7 +199,7 @@ router.get("/maps", async function (req, res, next) {
     const [
         maps,
     ] = await connection.execute(
-        'SELECT Map, Server, Mapper, Stars, Timestamp FROM race_maps WHERE (Map COLLATE utf8mb4_general_ci LIKE ? OR Mapper COLLATE utf8mb4_general_ci LIKE ?) AND (Server != "Fastcap" OR Stars != 1) ORDER BY Timestamp DESC, Map COLLATE utf8mb4_general_ci LIMIT ?, 30;',
+        'SELECT Map, Server, Mapper, Stars, Timestamp FROM record_maps WHERE (Map COLLATE utf8mb4_general_ci LIKE ? OR Mapper COLLATE utf8mb4_general_ci LIKE ?) AND (Server != "Fastcap" OR Stars != 1) ORDER BY Timestamp DESC, Map COLLATE utf8mb4_general_ci LIMIT ?, 30;',
         [pattern, mapperPattern, (page - 1) * 30],
     );
     connection.end();
@@ -235,7 +235,7 @@ router.get("/map/:map", async function (req, res, next) {
     const [
         map,
     ] = await connection.execute(
-        "SELECT Map, Server, Mapper, Stars, Timestamp, (SELECT COUNT(DISTINCT Name) FROM race_race WHERE Map = l.Map) AS Finishers FROM race_maps l WHERE Map = ?;",
+        "SELECT Map, Server, Mapper, Stars, Timestamp, (SELECT COUNT(DISTINCT Name) FROM record_race WHERE Map = l.Map) AS Finishers FROM record_maps l WHERE Map = ?;",
         [req.params.map],
     );
     if (!map.length) {
@@ -253,13 +253,7 @@ router.get("/map/:map", async function (req, res, next) {
         topTen: await sql.getCacheOrUpdate(
             "mapOverviewTopTen_" + mapname,
             connection,
-            "SELECT RANK() OVER (ORDER BY Time) AS rank, Name, Time FROM (SELECT Name, MIN(Time) AS Time FROM race_race WHERE Map=? GROUP BY Name ORDER BY Time) v LIMIT 10;",
-            [mapname],
-        ),
-        lastRecords: await sql.getCacheOrUpdate(
-            "mapOverviewLastRecords_" + mapname,
-            connection,
-            "SELECT Name, Timestamp, Time FROM race_lastrecords WHERE Map=? ORDER BY Timestamp DESC LIMIT 10;",
+            "SELECT RANK() OVER (ORDER BY Time) AS rank, Name, Time FROM (SELECT Name, MIN(Time) AS Time FROM record_race WHERE Map=? GROUP BY Name ORDER BY Time) v LIMIT 10;",
             [mapname],
         ),
     });
@@ -286,7 +280,7 @@ router.get("/mapper/:mapper", async function (req, res, next) {
     let [
         maps,
     ] = await connection.execute(
-        'SELECT Map, Server, Mapper, Stars, Timestamp FROM race_maps WHERE Mapper LIKE ? AND (Server != "Fastcap" OR Stars != 1) ORDER BY Timestamp DESC, Map COLLATE utf8mb4_general_ci;',
+        'SELECT Map, Server, Mapper, Stars, Timestamp FROM record_maps WHERE Mapper LIKE ? AND (Server != "Fastcap" OR Stars != 1) ORDER BY Timestamp DESC, Map COLLATE utf8mb4_general_ci;',
         [pattern],
     );
     connection.end();
