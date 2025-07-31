@@ -68,23 +68,23 @@ block content
                         td
                           a(href='/ranks/player/'+encodeURIComponent(player.Name))= player.Name
                         td= player.Points
-            .column
-              p.subtitle Latest Records
-              .horizontal-scroll
-                table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
-                  thead
-                    tr
-                      th Player
-                      th Map
-                      th Time
-                  tbody
-                    each record, index in lastTopRanks
-                      tr
-                        td
-                          a(href='/ranks/player/'+encodeURIComponent(record.Name))= record.Name
-                        td
-                          a(href='/map/'+encodeURIComponent(record.Map))= record.Map
-                        td= formatTime(record.Time)
+            //- .column
+            //-   p.subtitle Latest Records
+            //-   .horizontal-scroll
+            //-     table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
+            //-       thead
+            //-         tr
+            //-           th Player
+            //-           th Map
+            //-           th Time
+            //-       tbody
+            //-         each record, index in lastTopRanks
+            //-           tr
+            //-             td
+            //-               a(href='/ranks/player/'+encodeURIComponent(record.Name))= record.Name
+            //-             td
+            //-               a(href='/map/'+encodeURIComponent(record.Map))= record.Map
+            //-             td= formatTime(record.Time)
           span.rank-anchor#short
           p.title.is-4 Short Ranks (#{numShortMaps} Maps)
           .columns
