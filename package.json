@@ -15,7 +15,7 @@
     "bulma": "^1.0.4",
     "content-disposition": "^0.5.4",
     "cookie-parser": "^1.4.7",
-    "debug": "~4.4.1",
+    "debug": "~4.4.3",
     "dotenv": "^17.2.2",
     "escape-html": "^1.0.3",
     "express": "^5.1.0",
