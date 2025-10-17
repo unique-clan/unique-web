@@ -290,6 +290,10 @@ a.unobstrusive:hover {
   width: 100%;
   height: 100%;
 }
+.latest-records-table {
+  max-height: 360px;
+  overflow-y: auto;
+}
 
 @media (prefers-color-scheme: dark) {
   html, body {

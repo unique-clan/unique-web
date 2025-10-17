@@ -10,6 +10,7 @@ const topPointsQuery =
     "SELECT RANK() OVER (ORDER BY Points DESC) AS rank, Name, Points FROM record_points WHERE Points > 0 ORDER BY Points DESC LIMIT 10;";
 const topPointsCategoryQuery =
     "SELECT RANK() OVER (ORDER BY Points DESC) AS rank, Name, Points FROM (SELECT Name, SUM(cache_points.Points) as Points FROM cache_points JOIN record_maps ON cache_points.Map = record_maps.Map WHERE Server LIKE ? GROUP BY Name) v WHERE Points > 0 ORDER BY Points DESC LIMIT 10;";
+const lastRecordsQuery = "SELECT Map, Name, Timestamp, Time FROM cache_records ORDER BY Timestamp DESC LIMIT 100;";
 const mapCountQuery = "SELECT COUNT(*) as n from record_maps";
 const mapCountCategoryQuery = "SELECT COUNT(*) as n from record_maps where Server LIKE ?";
 
@@ -21,6 +22,8 @@ const pointsPlayerQuery =
     "SELECT rank, Points FROM (SELECT RANK() OVER (ORDER BY Points DESC) AS rank, Name, Points FROM record_points WHERE Points > 0 ORDER BY Points DESC) t WHERE Name=?;";
 const pointsPlayerCategoryQuery =
     "SELECT rank, Points FROM (SELECT RANK() OVER (ORDER BY Points DESC) AS rank, Name, Points FROM (SELECT Name, SUM(cache_points.Points) as Points FROM cache_points JOIN record_maps ON cache_points.Map = record_maps.Map WHERE Server LIKE ? GROUP BY Name) v WHERE Points > 0 ORDER BY Points DESC) t WHERE Name=?;";
+const lastRecordsPlayerQuery =
+    "SELECT Map, Name, Timestamp, Time FROM cache_records WHERE Name=? ORDER BY Timestamp DESC LIMIT 100;";
 
 const mapFinishedCountQuery = "SELECT COUNT(DISTINCT Map) as n FROM record_race WHERE Name=?;";
 const mapFinishedCountCategoryQuery =
@@ -46,6 +49,8 @@ router.get("/", async function (req, res, next) {
         "Fastcap%",
     ]);
 
+    const lastTopRanks = await sql.getCacheOrUpdate("lastTopRanks", connection, lastRecordsQuery);
+
     const mapRecordsShort = await sql.getCacheOrUpdate("mapRecordsShort", connection, topRecordsCategoryQuery, [
         "Short%",
     ]);
@@ -70,7 +75,7 @@ router.get("/", async function (req, res, next) {
     res.render("ranks", {
         title: "Ranks | Unique",
         topPoints: topPoints,
-        // lastTopRanks: lastTopRanks,
+        lastTopRanks: lastTopRanks,
         formatTime: sql.formatTime,
 
         mapRecords: mapRecords,
@@ -111,6 +116,10 @@ router.get("/player/:name", async function (req, res, next) {
     }
 
     const mapRecords = await sql.getCacheOrUpdate("mapRecords_" + player, connection, recordsPlayerQuery, [player]);
+
+    const lastRecords = await sql.getCacheOrUpdate("lastRecords_" + player, connection, lastRecordsPlayerQuery, [
+        player,
+    ]);
 
     const playerPoints = await sql.getCacheOrUpdate("playerPoints_" + player, connection, pointsPlayerQuery, [player]);
 
@@ -219,7 +228,7 @@ router.get("/player/:name", async function (req, res, next) {
         formatTime: sql.formatTime,
 
         mapRecords: mapRecords.length > 0 ? mapRecords[0] : null,
-        // lastRecords: lastRecords,
+        lastRecords: lastRecords,
         playerPoints: playerPoints.length > 0 ? playerPoints[0] : null,
 
         totalMapCount: totalMapCount.length > 0 ? totalMapCount[0].n : "Unknown",
