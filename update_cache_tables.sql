@@ -30,7 +30,6 @@ JOIN (SELECT Map, CASE
     WHEN Server = 'Long Advanced' THEN 1.0
     WHEN Server = 'Long Hard' THEN 0.03
     WHEN Server = 'Fastcap' THEN 5.0
-    WHEN Server = 'Fastcap No Weapons' THEN 5.0
 END AS Const FROM record_maps) t3 ON t1.Map = t3.Map;
 COMMIT;
 SELECT CONCAT('cache_points update took: ', UNIX_TIMESTAMP() - @section_start, ' seconds') AS timing;
