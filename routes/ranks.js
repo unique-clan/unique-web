@@ -2,54 +2,36 @@ var express = require("express");
 var router = express.Router();
 const sql = require("../app/sql");
 
-setInterval(async () => {
-    const connection = await sql.newMysqlConn();
-    const [maps] = await connection.execute("SELECT Map, Server FROM race_maps;");
-    for (let x in maps) {
-        var query =
-            "INSERT INTO race_ranks SELECT Map, Name, Rank, ? FROM (SELECT @pos := @pos + 1 AS v1, @rank := IF(@prev = playerTime, @rank, @pos) AS rank, @prev := playerTime AS v2, Map, Name, playerTime FROM (SELECT Map, Name, ROUND(MIN(Time), 3) AS playerTime FROM race_race WHERE Map=? GROUP BY Name) t, (SELECT @pos := 0) i1, (SELECT @rank := -1) i2, (SELECT @prev := -1) i3 ORDER BY playerTime) u ON DUPLICATE KEY UPDATE Rank=VALUES(Rank);";
-        await connection.execute(query, [maps[x].Server, maps[x].Map]);
-    }
-    connection.end();
-}, 2 * 60 * 1000);
-
-// https://stackoverflow.com/questions/13627308/add-st-nd-rd-and-th-ordinal-suffix-to-a-number#13627586
-function getOrdinal(n) {
-    var s = ["th", "st", "nd", "rd"];
-    var v = n % 100;
-    return s[(v - 20) % 10] || s[v] || s[0];
-}
-
 const topRecordsQuery =
-    "SELECT RANK() OVER (ORDER BY recordsCount DESC) AS rank, Name, recordsCount FROM (SELECT Name, COUNT(*) as recordsCount FROM race_ranks WHERE Rank=1 GROUP BY Name ORDER BY recordsCount DESC) v LIMIT 10;";
+    "SELECT RANK() OVER (ORDER BY recordsCount DESC) AS rank, Name, recordsCount FROM (SELECT Name, COUNT(*) as recordsCount FROM cache_ranks WHERE Rank=1 GROUP BY Name ORDER BY recordsCount DESC) v LIMIT 10;";
 const topRecordsCategoryQuery =
-    "SELECT RANK() OVER (ORDER BY recordsCount DESC) AS rank, Name, recordsCount FROM (SELECT Name, COUNT(*) as recordsCount FROM race_ranks WHERE Rank=1 AND Server=? GROUP BY Name ORDER BY recordsCount DESC) v LIMIT 10;";
+    "SELECT RANK() OVER (ORDER BY recordsCount DESC) AS rank, Name, recordsCount FROM (SELECT Name, COUNT(*) as recordsCount FROM cache_ranks rr INNER JOIN record_maps rm ON rr.Map = rm.Map WHERE rr.Rank=1 AND rm.Server LIKE ? GROUP BY Name ORDER BY recordsCount DESC) v LIMIT 10;";
 const topPointsQuery =
-    "SELECT RANK() OVER (ORDER BY Points DESC) AS rank, Name, Points FROM race_points WHERE Points > 0 ORDER BY Points DESC LIMIT 10;";
+    "SELECT RANK() OVER (ORDER BY Points DESC) AS rank, Name, Points FROM record_points WHERE Points > 0 ORDER BY Points DESC LIMIT 10;";
 const topPointsCategoryQuery =
-    "SELECT RANK() OVER (ORDER BY Points DESC) AS rank, Name, Points FROM race_catpoints WHERE Server=? AND Points > 0 ORDER BY Points DESC LIMIT 10;";
-const lastRecordsQuery = "SELECT Map, Name, Timestamp, Time FROM race_lastrecords ORDER BY Timestamp DESC LIMIT 10;";
-const mapCountQuery = "SELECT COUNT(*) as n from race_maps";
-const mapCountCategoryQuery = "SELECT COUNT(*) as n from race_maps where Server=?";
+    "SELECT RANK() OVER (ORDER BY Points DESC) AS rank, Name, Points FROM (SELECT Name, SUM(cache_points.Points) as Points FROM cache_points JOIN record_maps ON cache_points.Map = record_maps.Map WHERE Server LIKE ? GROUP BY Name) v WHERE Points > 0 ORDER BY Points DESC LIMIT 10;";
+const lastRecordsQuery = "SELECT Map, Name, Timestamp, Time FROM cache_records ORDER BY Timestamp DESC LIMIT 100;";
+const mapCountQuery = "SELECT COUNT(*) as n from record_maps";
+const mapCountCategoryQuery = "SELECT COUNT(*) as n from record_maps where Server LIKE ?";
 
 const recordsPlayerQuery =
-    "SELECT rank, recordsCount FROM (SELECT RANK() OVER (ORDER BY recordsCount DESC) AS rank, Name, recordsCount FROM (SELECT Name, COUNT(*) as recordsCount FROM race_ranks WHERE Rank=1 GROUP BY Name ORDER BY recordsCount DESC) v) w WHERE Name=?;";
+    "SELECT rank, recordsCount FROM (SELECT RANK() OVER (ORDER BY recordsCount DESC) AS rank, Name, recordsCount FROM (SELECT Name, COUNT(*) as recordsCount FROM cache_ranks WHERE Rank=1 GROUP BY Name ORDER BY recordsCount DESC) v) w WHERE Name=?;";
 const recordsCategoryPlayerQuery =
-    "SELECT rank, recordsCount FROM (SELECT RANK() OVER (ORDER BY recordsCount DESC) AS rank, Name, recordsCount FROM (SELECT Name, COUNT(*) as recordsCount FROM race_ranks WHERE Rank=1 AND Server=? GROUP BY Name ORDER BY recordsCount DESC) v) w WHERE Name=?;";
+    "SELECT rank, recordsCount FROM (SELECT RANK() OVER (ORDER BY recordsCount DESC) AS rank, Name, recordsCount FROM (SELECT Name, COUNT(*) as recordsCount FROM cache_ranks rr INNER JOIN record_maps rm ON rr.Map = rm.Map WHERE rr.Rank=1 AND rm.Server LIKE ? GROUP BY Name ORDER BY recordsCount DESC) v) w WHERE Name=?;";
 const pointsPlayerQuery =
-    "SELECT rank, Points FROM (SELECT RANK() OVER (ORDER BY Points DESC) AS rank, Name, Points FROM race_points WHERE Points > 0 ORDER BY Points DESC) t WHERE Name=?;";
+    "SELECT rank, Points FROM (SELECT RANK() OVER (ORDER BY Points DESC) AS rank, Name, Points FROM record_points WHERE Points > 0 ORDER BY Points DESC) t WHERE Name=?;";
 const pointsPlayerCategoryQuery =
-    "SELECT rank, Points FROM (SELECT RANK() OVER (ORDER BY Points DESC) AS rank, Name, Points FROM race_catpoints WHERE Server=? AND Points > 0 ORDER BY Points DESC) t WHERE Name=?;";
+    "SELECT rank, Points FROM (SELECT RANK() OVER (ORDER BY Points DESC) AS rank, Name, Points FROM (SELECT Name, SUM(cache_points.Points) as Points FROM cache_points JOIN record_maps ON cache_points.Map = record_maps.Map WHERE Server LIKE ? GROUP BY Name) v WHERE Points > 0 ORDER BY Points DESC) t WHERE Name=?;";
 const lastRecordsPlayerQuery =
-    "SELECT Map, Name, Timestamp, Time FROM race_lastrecords WHERE Name=? ORDER BY Timestamp DESC LIMIT 10;";
+    "SELECT Map, Name, Timestamp, Time FROM cache_records WHERE Name=? ORDER BY Timestamp DESC LIMIT 100;";
 
-const mapFinishedCountQuery = "SELECT COUNT(DISTINCT Map) as n FROM race_race WHERE Name=?;";
+const mapFinishedCountQuery = "SELECT COUNT(DISTINCT Map) as n FROM record_race WHERE Name=?;";
 const mapFinishedCountCategoryQuery =
-    "SELECT COUNT(DISTINCT t1.Map) as n FROM race_race t1 INNER JOIN race_maps t2 ON t1.Map = t2.Map WHERE t1.Name=? AND t2.Server=?;";
+    "SELECT COUNT(DISTINCT t1.Map) as n FROM record_race t1 INNER JOIN record_maps t2 ON t1.Map = t2.Map WHERE t1.Name=? AND t2.Server LIKE ?;";
 const mapListQuery =
-    'SELECT Server, t1.Map as Map, playerTime, Rank, FLOOR(100*EXP(-S*(playerTime/bestTime-1))) as mapPoints FROM (SELECT Map, ROUND(MIN(Time), 3) AS playerTime FROM race_race WHERE Name=? GROUP BY Map) t1 INNER JOIN (SELECT Map, ROUND(MIN(Time), 3) AS bestTime FROM race_race GROUP BY Map) t2 ON t1.Map = t2.Map INNER JOIN (SELECT Map, Server, CASE WHEN Server="Short" THEN 5.0 WHEN Server="Middle" THEN 3.5 WHEN Server="Long" THEN CASE WHEN Stars=0 THEN 2.0 WHEN Stars=1 THEN 1.0 WHEN Stars=2 THEN 0.03 END WHEN Server="Fastcap" THEN 5.0 END AS S FROM race_maps) t3 ON t1.Map = t3.Map INNER JOIN (SELECT Map, Rank FROM race_ranks WHERE Name=?) t4 ON t1.Map = t4.Map ORDER BY LOWER(t1.Map);';
+    "SELECT Server, t1.Map, playerTime, Rank, Points FROM (SELECT Map, MIN(Time) as playerTime FROM record_race WHERE Name=? GROUP BY Map) t1 INNER JOIN (SELECT Map, Server FROM record_maps) t2 ON t1.Map = t2.Map INNER JOIN (SELECT Map, Rank FROM cache_ranks WHERE Name=?) t3 ON t1.Map = t3.Map INNER JOIN (SELECT Map, Points FROM cache_points WHERE Name=?) t4 ON t1.Map = t4.Map";
 const unfinishedMapsQuery =
-    "SELECT t1.Map FROM (SELECT Map FROM race_maps WHERE Server=?) t1 LEFT JOIN (SELECT Map FROM race_race WHERE Name=?) t2 ON t1.Map = t2.Map WHERE t2.Map IS NULL;";
+    "SELECT t1.Map FROM (SELECT Map FROM record_maps WHERE Server LIKE ?) t1 LEFT JOIN (SELECT Map FROM record_race WHERE Name=?) t2 ON t1.Map = t2.Map WHERE t2.Map IS NULL;";
 
 router.get("/", async function (req, res, next) {
     const connection = await sql.newMysqlConn();
@@ -58,34 +40,34 @@ router.get("/", async function (req, res, next) {
 
     const topPoints = await sql.getCacheOrUpdate("topPoints", connection, topPointsQuery);
 
-    const topPointsShort = await sql.getCacheOrUpdate("topPointsShort", connection, topPointsCategoryQuery, ["Short"]);
+    const topPointsShort = await sql.getCacheOrUpdate("topPointsShort", connection, topPointsCategoryQuery, ["Short%"]);
     const topPointsMiddle = await sql.getCacheOrUpdate("topPointsMiddle", connection, topPointsCategoryQuery, [
-        "Middle",
+        "Middle%",
     ]);
-    const topPointsLong = await sql.getCacheOrUpdate("topPointsLong", connection, topPointsCategoryQuery, ["Long"]);
+    const topPointsLong = await sql.getCacheOrUpdate("topPointsLong", connection, topPointsCategoryQuery, ["Long%"]);
     const topPointsFastcap = await sql.getCacheOrUpdate("topPointsFastcap", connection, topPointsCategoryQuery, [
-        "Fastcap",
+        "Fastcap%",
     ]);
 
     const lastTopRanks = await sql.getCacheOrUpdate("lastTopRanks", connection, lastRecordsQuery);
 
     const mapRecordsShort = await sql.getCacheOrUpdate("mapRecordsShort", connection, topRecordsCategoryQuery, [
-        "Short",
+        "Short%",
     ]);
     const mapRecordsMiddle = await sql.getCacheOrUpdate("mapRecordsMiddle", connection, topRecordsCategoryQuery, [
-        "Middle",
+        "Middle%",
     ]);
-    const mapRecordsLong = await sql.getCacheOrUpdate("mapRecordsLong", connection, topRecordsCategoryQuery, ["Long"]);
+    const mapRecordsLong = await sql.getCacheOrUpdate("mapRecordsLong", connection, topRecordsCategoryQuery, ["Long%"]);
     const mapRecordsFastcap = await sql.getCacheOrUpdate("mapRecordsFastcap", connection, topRecordsCategoryQuery, [
-        "Fastcap",
+        "Fastcap%",
     ]);
 
     const totalMapCount = await sql.getCacheOrUpdate("totalMapCount", connection, mapCountQuery);
-    const shortMapCount = await sql.getCacheOrUpdate("shortMapCount", connection, mapCountCategoryQuery, ["Short"]);
-    const middleMapCount = await sql.getCacheOrUpdate("middleMapCount", connection, mapCountCategoryQuery, ["Middle"]);
-    const longMapCount = await sql.getCacheOrUpdate("longMapCount", connection, mapCountCategoryQuery, ["Long"]);
+    const shortMapCount = await sql.getCacheOrUpdate("shortMapCount", connection, mapCountCategoryQuery, ["Short%"]);
+    const middleMapCount = await sql.getCacheOrUpdate("middleMapCount", connection, mapCountCategoryQuery, ["Middle%"]);
+    const longMapCount = await sql.getCacheOrUpdate("longMapCount", connection, mapCountCategoryQuery, ["Long%"]);
     const fastcapMapCount = await sql.getCacheOrUpdate("fastcapMapCount", connection, mapCountCategoryQuery, [
-        "Fastcap",
+        "Fastcap%",
     ]);
 
     connection.end();
@@ -142,103 +124,100 @@ router.get("/player/:name", async function (req, res, next) {
     const playerPoints = await sql.getCacheOrUpdate("playerPoints_" + player, connection, pointsPlayerQuery, [player]);
 
     const totalMapCount = await sql.getCacheOrUpdate("totalMapCount", connection, mapCountQuery);
-    const shortMapCount = await sql.getCacheOrUpdate("shortMapCount", connection, mapCountCategoryQuery, ["Short"]);
-    const middleMapCount = await sql.getCacheOrUpdate("middleMapCount", connection, mapCountCategoryQuery, ["Middle"]);
-    const longMapCount = await sql.getCacheOrUpdate("longMapCount", connection, mapCountCategoryQuery, ["Long"]);
-    const fastcapMapCount = await sql.getCacheOrUpdate("fastcapMapCount", connection, mapCountCategoryQuery, [
-        "Fastcap",
-    ]);
+    const shortMapCount = await sql.getCacheOrUpdate("shortMapCount", connection, mapCountCategoryQuery, ["Short%"]);
+    const middleMapCount = await sql.getCacheOrUpdate("middleMapCount", connection, mapCountCategoryQuery, ["Middle%"]);
+    const longMapCount = await sql.getCacheOrUpdate("longMapCount", connection, mapCountCategoryQuery, ["Long%"]);
+    const fastcapMapCount = await sql.getCacheOrUpdate("fastcapMapCount", connection, mapCountCategoryQuery, ["Fastcap%"]);
 
     const shortMapFinishedCount = await sql.getCacheOrUpdate(
         "shortMapFinishedCount_" + player,
         connection,
         mapFinishedCountCategoryQuery,
-        [player, "Short"],
+        [player, "Short%"],
     );
     const middleMapFinishedCount = await sql.getCacheOrUpdate(
         "middleMapFinishedCount_" + player,
         connection,
         mapFinishedCountCategoryQuery,
-        [player, "Middle"],
+        [player, "Middle%"],
     );
     const longMapFinishedCount = await sql.getCacheOrUpdate(
         "longMapFinishedCount_" + player,
         connection,
         mapFinishedCountCategoryQuery,
-        [player, "Long"],
+        [player, "Long%"],
     );
     const fastcapMapFinishedCount = await sql.getCacheOrUpdate(
         "fastcapMapFinishedCount_" + player,
         connection,
         mapFinishedCountCategoryQuery,
-        [player, "Fastcap"],
+        [player, "Fastcap%"],
     );
 
     const shortMapRecordsCount = await sql.getCacheOrUpdate(
         "shortMapRecordsCount_" + player,
         connection,
         recordsCategoryPlayerQuery,
-        ["Short", player],
+        ["Short%", player],
     );
     const middleMapRecordsCount = await sql.getCacheOrUpdate(
         "middleMapRecordsCount_" + player,
         connection,
         recordsCategoryPlayerQuery,
-        ["Middle", player],
+        ["Middle%", player],
     );
     const longMapRecordsCount = await sql.getCacheOrUpdate(
         "longMapRecordsCount_" + player,
         connection,
         recordsCategoryPlayerQuery,
-        ["Long", player],
+        ["Long%", player],
     );
     const fastcapMapRecordsCount = await sql.getCacheOrUpdate(
         "fastcapMapRecordsCount_" + player,
         connection,
         recordsCategoryPlayerQuery,
-        ["Fastcap", player],
+        ["Fastcap%", player],
     );
 
     const shortPoints = await sql.getCacheOrUpdate("shortPoints_" + player, connection, pointsPlayerCategoryQuery, [
-        "Short",
+        "Short%",
         player,
     ]);
     const middlePoints = await sql.getCacheOrUpdate("middlePoints_" + player, connection, pointsPlayerCategoryQuery, [
-        "Middle",
+        "Middle%",
         player,
     ]);
     const longPoints = await sql.getCacheOrUpdate("longPoints_" + player, connection, pointsPlayerCategoryQuery, [
-        "Long",
+        "Long%",
         player,
     ]);
     const fastcapPoints = await sql.getCacheOrUpdate("fastcapPoints_" + player, connection, pointsPlayerCategoryQuery, [
-        "Fastcap",
+        "Fastcap%",
         player,
     ]);
 
     const mapList = await sql.getCacheOrUpdate("mapList_" + player, connection, mapListQuery, [
         player,
         player,
+        player,
     ]);
 
     const unfinishedShort = await sql.getCacheOrUpdate("unfinishedShort_" + player, connection, unfinishedMapsQuery, [
-        "Short",
+        "Short%",
         player,
     ]);
     const unfinishedMiddle = await sql.getCacheOrUpdate("unfinishedMiddle_" + player, connection, unfinishedMapsQuery, [
-        "Middle",
+        "Middle%",
         player,
     ]);
     const unfinishedLong = await sql.getCacheOrUpdate("unfinishedLong_" + player, connection, unfinishedMapsQuery, [
-        "Long",
+        "Long%",
         player,
     ]);
-    const unfinishedFastcap = await sql.getCacheOrUpdate(
-        "unfinishedFastcap_" + player,
-        connection,
-        unfinishedMapsQuery,
-        ["Fastcap", player],
-    );
+    const unfinishedFastcap = await sql.getCacheOrUpdate("unfinishedFastcap_" + player, connection, unfinishedMapsQuery, [
+        "Fastcap%",
+        player,
+    ]);
 
     connection.end();
 
@@ -247,7 +226,6 @@ router.get("/player/:name", async function (req, res, next) {
         name: player,
 
         formatTime: sql.formatTime,
-        getOrdinal: getOrdinal,
 
         mapRecords: mapRecords.length > 0 ? mapRecords[0] : null,
         lastRecords: lastRecords,
@@ -270,10 +248,10 @@ router.get("/player/:name", async function (req, res, next) {
         longMapRecords: longMapRecordsCount.length > 0 ? longMapRecordsCount[0] : null,
         fastcapMapRecords: fastcapMapRecordsCount.length > 0 ? fastcapMapRecordsCount[0] : null,
 
-        shortMapList: mapList.filter(row => row.Server === "Short"),
-        middleMapList: mapList.filter(row => row.Server === "Middle"),
-        longMapList: mapList.filter(row => row.Server === "Long"),
-        fastcapMapList: mapList.filter(row => row.Server === "Fastcap"),
+        shortMapList: mapList.filter(row => row.Server.startsWith("Short")),
+        middleMapList: mapList.filter(row => row.Server.startsWith("Middle")),
+        longMapList: mapList.filter(row => row.Server.startsWith("Long")),
+        fastcapMapList: mapList.filter(row => row.Server.startsWith("Fastcap")),
 
         shortPoints: shortPoints.length > 0 ? shortPoints[0] : null,
         middlePoints: middlePoints.length > 0 ? middlePoints[0] : null,
@@ -297,7 +275,7 @@ router.get("/search", async function (req, res, next) {
         const [
             player,
         ] = await connection.execute(
-            "SELECT IFNULL((SELECT DISTINCT Name FROM race_race WHERE Name=?), (SELECT DISTINCT Name FROM race_race WHERE Name COLLATE utf8mb4_general_ci LIKE ? HAVING COUNT(DISTINCT Name) = 1)) AS Name;",
+            "SELECT IFNULL((SELECT DISTINCT Name FROM record_race WHERE Name=?), (SELECT DISTINCT Name FROM record_race WHERE Name COLLATE utf8mb4_general_ci LIKE ? HAVING COUNT(DISTINCT Name) = 1)) AS Name;",
             [search, pattern],
         );
         if (player[0].Name) {
@@ -309,7 +287,7 @@ router.get("/search", async function (req, res, next) {
     const [
         playerCount,
     ] = await connection.execute(
-        "SELECT COUNT(DISTINCT Name) as Count FROM race_race WHERE Name COLLATE utf8mb4_general_ci LIKE ?;",
+        "SELECT COUNT(DISTINCT Name) as Count FROM record_race WHERE Name COLLATE utf8mb4_general_ci LIKE ?;",
         [pattern],
     );
     const pageCount = Math.ceil(playerCount[0]["Count"] / 60);
@@ -317,7 +295,7 @@ router.get("/search", async function (req, res, next) {
     const [
         players,
     ] = await connection.execute(
-        "SELECT DISTINCT t1.Name, t2.recordsCount, t3.Points FROM race_race t1 LEFT JOIN (SELECT Name, COUNT(*) as recordsCount FROM race_ranks WHERE Rank = 1 GROUP BY Name) t2 ON t1.Name = t2.Name LEFT JOIN race_points t3 ON t1.Name = t3.Name WHERE t1.Name COLLATE utf8mb4_general_ci LIKE ? ORDER BY t2.recordsCount DESC, t3.Points DESC, t1.Name COLLATE utf8mb4_general_ci LIMIT ?, 60;",
+        "SELECT DISTINCT t1.Name, t2.recordsCount, t3.Points FROM record_race t1 LEFT JOIN (SELECT Name, COUNT(*) as recordsCount FROM cache_ranks WHERE Rank = 1 GROUP BY Name) t2 ON t1.Name = t2.Name LEFT JOIN record_points t3 ON t1.Name = t3.Name WHERE t1.Name COLLATE utf8mb4_general_ci LIKE ? ORDER BY t2.recordsCount DESC, t3.Points DESC, t1.Name COLLATE utf8mb4_general_ci LIMIT ?, 60;",
         [pattern, (page - 1) * 60],
     );
     connection.end();

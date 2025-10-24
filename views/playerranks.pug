@@ -34,75 +34,69 @@ block content
     section.section
       .container
         article.tile.is-child.notification.is-white.table-links
-          p.title Ranks for #{name} (#{totalMapFinishedCount}/#{totalMapCount} Maps)
-          .playerranks-header
-            .columns
-              .column
-                p.subtitle Map Records
+          p.title.mb-4 Ranks for #{name} (#{totalMapFinishedCount}/#{totalMapCount} Maps)
+          .columns
+            .column
+              p.subtitle 🥇 Map Records: 
                 if mapRecords
-                  b #{mapRecords.rank}
-                  sup= getOrdinal(mapRecords.rank)
-                  |  with 
                   b #{mapRecords.recordsCount}
-                  |  records
+                  |  (ranked 
+                  b #{mapRecords.rank}
+                  |  of all tees)
                 else
-                  | &mdash;
-              .column
-                p.subtitle Points
+                  b 0
+            .column
+              p.subtitle 🏆 Points: 
                 if playerPoints
-                  b= playerPoints.rank
-                  sup= getOrdinal(playerPoints.rank)
-                  |  with 
-                  b= playerPoints.Points
-                  |  points
+                  b #{playerPoints.Points}
+                  |  (ranked 
+                  b #{playerPoints.rank}
+                  |  of all tees)
                 else
-                  | &mdash;
-            p.subtitle Latest Records
-            if lastRecords.length < 1
-              if mapRecords
-                p Sorry, we couldn't find any recent map records of this player.
-              else
-                p This player holds no map records.
+                  b 0
+          p.title.is-4.mb-4 Record History
+          if lastRecords.length < 1
+            if mapRecords
+              p Sorry, we couldn't find any recent map records of this player.
             else
-              .horizontal-scroll
-                table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
-                  thead
+              p This player holds no map records.
+          else
+            .horizontal-scroll.latest-records-table
+              table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
+                thead
+                  tr
+                    th Date
+                    th Map
+                    th Time
+                tbody
+                  each x in lastRecords
                     tr
-                      th Date
-                      th Map
-                      th Time
-                  tbody
-                    each x in lastRecords
-                      tr
-                        td= x.Timestamp.toISOString().replace(/T/, ' ').replace(/\..+/, '')
-                        td
-                          a(href='/map/'+encodeURIComponent(x.Map))= x.Map
-                        td= formatTime(x.Time)
+                      td= x.Timestamp.toISOString().replace(/T/, ' ').replace(/\..+/, '')
+                      td
+                        a(href='/map/'+encodeURIComponent(x.Map))= x.Map
+                      td= formatTime(x.Time)
+          br
           span.rank-anchor#short
-          p.title.is-4 Short Ranks (#{shortMapFinishedCount}/#{numShortMaps} Maps)
-          .playerranks-header
-            .columns
-              .column
-                p.subtitle Map Records
+          p.title.is-4.mb-4 Short Ranks (#{shortMapFinishedCount}/#{numShortMaps} Maps)
+          .columns
+            .column
+              p.subtitle 🥇 Map Records: 
                 if shortMapRecords
-                  b= shortMapRecords.rank
-                  sup= getOrdinal(shortMapRecords.rank)
-                  |  with 
-                  b= shortMapRecords.recordsCount
-                  |  records
+                  b #{shortMapRecords.recordsCount}
+                  |  (ranked 
+                  b #{shortMapRecords.rank}
+                  |  of all tees)
                 else
-                  | &mdash;
-              .column
-                p.subtitle Points
+                  b 0
+            .column
+              p.subtitle 🏆 Points: 
                 if shortPoints
-                  b= shortPoints.rank
-                  sup= getOrdinal(shortPoints.rank)
-                  |  with 
-                  b= shortPoints.Points
-                  |  points
+                  b #{shortPoints.Points}
+                  |  (ranked 
+                  b #{shortPoints.rank}
+                  |  of all tees)
                 else
-                  | &mdash;
-          p.subtitle Map List
+                  b 0
           if shortMapList.length
             .horizontal-scroll
               table.table.is-narrow.is-striped.is-hoverable.is-fullwidth.is-bordered#short-table
@@ -119,8 +113,7 @@ block content
                         a(href='/map/'+encodeURIComponent(x.Map))= x.Map
                       td= formatTime(x.playerTime)
                       td(data-order=x.Rank)= x.Rank
-                        sup= getOrdinal(x.Rank)
-                      td= x.mapPoints
+                      td= x.Points
           .unfinished-maps
             if unfinishedShort.length
               input(type='checkbox' id='showmoreShort' style='display:none;' autocomplete='off')
@@ -132,30 +125,26 @@ block content
                     | ,&ensp;
               label(for='showmoreShort') SHOW ALL
           span.rank-anchor#middle
-          p.title.is-4 Middle Ranks (#{middleMapFinishedCount}/#{numMiddleMaps} Maps)
-          .playerranks-header
-            .columns
-              .column
-                p.subtitle Map Records
+          p.title.is-4.mb-4 Middle Ranks (#{middleMapFinishedCount}/#{numMiddleMaps} Maps)
+          .columns
+            .column
+              p.subtitle 🥇 Map Records: 
                 if middleMapRecords
-                  b= middleMapRecords.rank
-                  sup= getOrdinal(middleMapRecords.rank)
-                  |  with 
-                  b= middleMapRecords.recordsCount
-                  |  records
+                  b #{middleMapRecords.recordsCount}
+                  |  (ranked 
+                  b #{middleMapRecords.rank}
+                  |  of all tees)
                 else
-                  | &mdash;
-              .column
-                p.subtitle Points
+                  b 0
+            .column
+              p.subtitle 🏆 Points: 
                 if middlePoints
-                  b= middlePoints.rank
-                  sup= getOrdinal(middlePoints.rank)
-                  |  with 
-                  b= middlePoints.Points
-                  |  points
+                  b #{middlePoints.Points}
+                  |  (ranked 
+                  b #{middlePoints.rank}
+                  |  of all tees)
                 else
-                  | &mdash;
-          p.subtitle Map List
+                  b 0
           if middleMapList.length
             .horizontal-scroll
               table.table.is-narrow.is-striped.is-hoverable.is-fullwidth.is-bordered#middle-table
@@ -172,8 +161,7 @@ block content
                         a(href='/map/'+encodeURIComponent(x.Map))= x.Map
                       td= formatTime(x.playerTime)
                       td(data-order=x.Rank)= x.Rank
-                        sup= getOrdinal(x.Rank)
-                      td= x.mapPoints
+                      td= x.Points
           .unfinished-maps
             if unfinishedMiddle.length
               input(type='checkbox' id='showmoreMiddle' style='display:none;' autocomplete='off')
@@ -185,30 +173,26 @@ block content
                     | ,&ensp;
               label(for='showmoreMiddle') SHOW ALL
           span.rank-anchor#long
-          p.title.is-4 Long Ranks (#{longMapFinishedCount}/#{numLongMaps} Maps)
-          .playerranks-header
-            .columns
-              .column
-                p.subtitle Map Records
+          p.title.is-4.mb-4 Long Ranks (#{longMapFinishedCount}/#{numLongMaps} Maps)
+          .columns
+            .column
+              p.subtitle 🥇 Map Records: 
                 if longMapRecords
-                  b= longMapRecords.rank
-                  sup= getOrdinal(longMapRecords.rank)
-                  |  with 
-                  b= longMapRecords.recordsCount
-                  |  records
+                  b #{longMapRecords.recordsCount}
+                  |  (ranked 
+                  b #{longMapRecords.rank}
+                  |  of all tees)
                 else
-                  | &mdash;
-              .column
-                p.subtitle Points
+                  b 0
+            .column
+              p.subtitle 🏆 Points: 
                 if longPoints
-                  b= longPoints.rank
-                  sup= getOrdinal(longPoints.rank)
-                  |  with 
-                  b= longPoints.Points
-                  |  points
+                  b #{longPoints.Points}
+                  |  (ranked 
+                  b #{longPoints.rank}
+                  |  of all tees)
                 else
-                  | &mdash;
-          p.subtitle Map List
+                  b 0
           if longMapList.length
             .horizontal-scroll
               table.table.is-narrow.is-striped.is-hoverable.is-fullwidth.is-bordered#long-table
@@ -225,8 +209,7 @@ block content
                         a(href='/map/'+encodeURIComponent(x.Map))= x.Map
                       td= formatTime(x.playerTime)
                       td(data-order=x.Rank)= x.Rank
-                        sup= getOrdinal(x.Rank)
-                      td= x.mapPoints
+                      td= x.Points
           .unfinished-maps
             if unfinishedLong.length
               input(type='checkbox' id='showmoreLong' style='display:none;' autocomplete='off')
@@ -238,30 +221,26 @@ block content
                     | ,&ensp;
               label(for='showmoreLong') SHOW ALL
           span.rank-anchor#fastcap
-          p.title.is-4 Fastcap Ranks (#{fastcapMapFinishedCount}/#{numFastcapMaps} Maps)
-          .playerranks-header
-            .columns
-              .column
-                p.subtitle Map Records
+          p.title.is-4.mb-4 Fastcap Ranks (#{fastcapMapFinishedCount}/#{numFastcapMaps} Maps)
+          .columns
+            .column
+              p.subtitle 🥇 Map Records: 
                 if fastcapMapRecords
-                  b= fastcapMapRecords.rank
-                  sup= getOrdinal(fastcapMapRecords.rank)
-                  |  with 
-                  b= fastcapMapRecords.recordsCount
-                  |  records
+                  b #{fastcapMapRecords.recordsCount}
+                  |  (ranked 
+                  b #{fastcapMapRecords.rank}
+                  |  of all tees)
                 else
-                  | &mdash;
-              .column
-                p.subtitle Points
+                  b 0
+            .column
+              p.subtitle 🏆 Points: 
                 if fastcapPoints
-                  b= fastcapPoints.rank
-                  sup= getOrdinal(fastcapPoints.rank)
-                  |  with 
-                  b= fastcapPoints.Points
-                  |  points
+                  b #{fastcapPoints.Points}
+                  |  (ranked 
+                  b #{fastcapPoints.rank}
+                  |  of all tees)
                 else
-                  | &mdash;
-          p.subtitle Map List
+                  b 0
           if fastcapMapList.length
             .horizontal-scroll
               table.table.is-narrow.is-striped.is-hoverable.is-fullwidth.is-bordered#fastcap-table
@@ -278,8 +257,7 @@ block content
                         a(href='/map/'+encodeURIComponent(x.Map))= x.Map
                       td= formatTime(x.playerTime)
                       td(data-order=x.Rank)= x.Rank
-                        sup= getOrdinal(x.Rank)
-                      td= x.mapPoints
+                      td= x.Points
           .unfinished-maps
             if unfinishedFastcap.length
               input(type='checkbox' id='showmoreFastcap' style='display:none;' autocomplete='off')

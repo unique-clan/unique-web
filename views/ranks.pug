@@ -31,6 +31,8 @@ block content
                 a(href='#long') Long
               li
                 a(href='#fastcap') Fastcap
+              li
+                a(href='#record-history') Record History
     section.section
       .container
         article.tile.is-child.notification.is-white.table-links
@@ -68,23 +70,6 @@ block content
                         td
                           a(href='/ranks/player/'+encodeURIComponent(player.Name))= player.Name
                         td= player.Points
-            .column
-              p.subtitle Latest Records
-              .horizontal-scroll
-                table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
-                  thead
-                    tr
-                      th Player
-                      th Map
-                      th Time
-                  tbody
-                    each record, index in lastTopRanks
-                      tr
-                        td
-                          a(href='/ranks/player/'+encodeURIComponent(record.Name))= record.Name
-                        td
-                          a(href='/map/'+encodeURIComponent(record.Map))= record.Map
-                        td= formatTime(record.Time)
           span.rank-anchor#short
           p.title.is-4 Short Ranks (#{numShortMaps} Maps)
           .columns
@@ -225,6 +210,25 @@ block content
                         td
                           a(href='/ranks/player/'+encodeURIComponent(player.Name))= player.Name
                         td= player.Points
+          span.rank-anchor#record-history
+          p.title.is-4 Record History
+          .horizontal-scroll.latest-records-table
+            table.table.is-narrow.is-striped.is-hoverable.is-fullwidth
+              thead
+                tr
+                  th Date
+                  th Player
+                  th Map
+                  th Time
+              tbody
+                each record, index in lastTopRanks
+                  tr
+                    td= record.Timestamp.toISOString().replace(/T/, ' ').replace(/\..+/, '')
+                    td
+                      a(href='/ranks/player/'+encodeURIComponent(record.Name))= record.Name
+                    td
+                      a(href='/map/'+encodeURIComponent(record.Map))= record.Map
+                    td= formatTime(record.Time)
         br
         br
         article.tile.is-child.notification.is-white

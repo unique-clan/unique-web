@@ -179,7 +179,7 @@ router.get("/maps", async function (req, res, next) {
         const [
             map,
         ] = await connection.execute(
-            'SELECT IFNULL((SELECT Map FROM race_maps WHERE Map=? AND (Server != "Fastcap" OR Stars != 1)), (SELECT Map FROM race_maps WHERE Map COLLATE utf8mb4_general_ci LIKE ? AND (Server != "Fastcap" OR Stars != 1) HAVING COUNT(*) = 1)) AS Map;',
+            'SELECT IFNULL((SELECT Map FROM record_maps WHERE Map=?), (SELECT Map FROM record_maps WHERE Map COLLATE utf8mb4_general_ci LIKE ? HAVING COUNT(*) = 1)) AS Map;',
             [search, pattern],
         );
         if (map[0].Map) {
@@ -191,7 +191,7 @@ router.get("/maps", async function (req, res, next) {
     const [
         mapCount,
     ] = await connection.execute(
-        'SELECT COUNT(*) as Count FROM race_maps WHERE (Map COLLATE utf8mb4_general_ci LIKE ? OR Mapper COLLATE utf8mb4_general_ci LIKE ?) AND (Server != "Fastcap" OR Stars != 1);',
+        'SELECT COUNT(*) as Count FROM record_maps WHERE (Map COLLATE utf8mb4_general_ci LIKE ? OR Mapper COLLATE utf8mb4_general_ci LIKE ?);',
         [pattern, mapperPattern],
     );
     const pageCount = Math.ceil(mapCount[0]["Count"] / 30);
@@ -199,7 +199,7 @@ router.get("/maps", async function (req, res, next) {
     const [
         maps,
     ] = await connection.execute(
-        'SELECT Map, Server, Mapper, Stars, Timestamp FROM race_maps WHERE (Map COLLATE utf8mb4_general_ci LIKE ? OR Mapper COLLATE utf8mb4_general_ci LIKE ?) AND (Server != "Fastcap" OR Stars != 1) ORDER BY Timestamp DESC, Map COLLATE utf8mb4_general_ci LIMIT ?, 30;',
+        'SELECT Map, Server, Mapper, Timestamp FROM record_maps WHERE (Map COLLATE utf8mb4_general_ci LIKE ? OR Mapper COLLATE utf8mb4_general_ci LIKE ?) ORDER BY Timestamp DESC, Map COLLATE utf8mb4_general_ci LIMIT ?, 30;',
         [pattern, mapperPattern, (page - 1) * 30],
     );
     connection.end();
@@ -225,7 +225,6 @@ router.get("/maps", async function (req, res, next) {
         pageCount: pageCount,
         maps: maps,
         search: search,
-        getCategory: sql.getCategory,
         getMappers: sql.getMappers,
     });
 });
@@ -235,7 +234,7 @@ router.get("/map/:map", async function (req, res, next) {
     const [
         map,
     ] = await connection.execute(
-        "SELECT Map, Server, Mapper, Stars, Timestamp, (SELECT COUNT(DISTINCT Name) FROM race_race WHERE Map = l.Map) AS Finishers FROM race_maps l WHERE Map = ?;",
+        "SELECT Map, Server, Mapper, Timestamp, (SELECT COUNT(DISTINCT Name) FROM record_race WHERE Map = l.Map) AS Finishers FROM record_maps l WHERE Map = ?;",
         [req.params.map],
     );
     if (!map.length) {
@@ -243,39 +242,27 @@ router.get("/map/:map", async function (req, res, next) {
         connection.end();
         return;
     }
-    if (map[0].Server === "Fastcap" && map[0].Stars === 1) {
-        res.redirect("/map/" + encodeURIComponent(map[0].Map.slice(0, -8)));
-        connection.end();
-        return;
-    }
 
-    const getTables = async (mapname) => ({
-        topTen: await sql.getCacheOrUpdate(
-            "mapOverviewTopTen_" + mapname,
-            connection,
-            "SELECT RANK() OVER (ORDER BY Time) AS rank, Name, Time FROM (SELECT Name, MIN(Time) AS Time FROM race_race WHERE Map=? GROUP BY Name ORDER BY Time) v LIMIT 10;",
-            [mapname],
-        ),
-        lastRecords: await sql.getCacheOrUpdate(
-            "mapOverviewLastRecords_" + mapname,
-            connection,
-            "SELECT Name, Timestamp, Time FROM race_lastrecords WHERE Map=? ORDER BY Timestamp DESC LIMIT 10;",
-            [mapname],
-        ),
-    });
-
-    let tables = await getTables(map[0].Map);
-    let tablesNoWpns = null;
-    if (map[0].Server === "Fastcap") tablesNoWpns = await getTables(map[0].Map + "_no_wpns");
+    const topTen = await sql.getCacheOrUpdate(
+        "mapOverviewTopTen_" + map[0].Map,
+        connection,
+        "SELECT RANK() OVER (ORDER BY Time) AS rank, Name, Time FROM (SELECT Name, MIN(Time) AS Time FROM record_race WHERE Map=? GROUP BY Name ORDER BY Time) v LIMIT 10;",
+        [map[0].Map],
+    );
+    const lastRecords = await sql.getCacheOrUpdate(
+        "mapOverviewLastRecords_" + map[0].Map,
+        connection,
+        "SELECT Name, Timestamp, Time FROM cache_records WHERE Map=? ORDER BY Timestamp DESC LIMIT 100;",
+        [map[0].Map],
+    );
 
     connection.end();
     res.render("map", {
         title: req.params.map + " | Unique",
         map: map[0],
-        tables: tables,
-        tablesNoWpns: tablesNoWpns,
+        topTen: topTen,
+        lastRecords: lastRecords,
         formatTime: sql.formatTime,
-        getCategory: sql.getCategory,
         getMappers: sql.getMappers,
     });
 });
@@ -286,7 +273,7 @@ router.get("/mapper/:mapper", async function (req, res, next) {
     let [
         maps,
     ] = await connection.execute(
-        'SELECT Map, Server, Mapper, Stars, Timestamp FROM race_maps WHERE Mapper LIKE ? AND (Server != "Fastcap" OR Stars != 1) ORDER BY Timestamp DESC, Map COLLATE utf8mb4_general_ci;',
+        'SELECT Map, Server, Mapper, Timestamp FROM record_maps WHERE Mapper LIKE ? ORDER BY Timestamp DESC, Map COLLATE utf8mb4_general_ci;',
         [pattern],
     );
     connection.end();
@@ -318,12 +305,11 @@ router.get("/mapper/:mapper", async function (req, res, next) {
         mapper: req.params.mapper,
         mapCount: maps.length,
         categories: {
-            Short: maps.filter((m) => m.Server === "Short"),
-            Middle: maps.filter((m) => m.Server === "Middle"),
-            Long: maps.filter((m) => m.Server === "Long"),
-            Fastcap: maps.filter((m) => m.Server === "Fastcap"),
+            Short: maps.filter((m) => m.Server.startsWith("Short")),
+            Middle: maps.filter((m) => m.Server.startsWith("Middle")),
+            Long: maps.filter((m) => m.Server.startsWith("Long")),
+            Fastcap: maps.filter((m) => m.Server.startsWith("Fastcap")),
         },
-        getCategory: sql.getCategory,
         getMappers: sql.getMappers,
     });
 });
