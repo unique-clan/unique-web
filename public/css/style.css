@@ -69,79 +69,130 @@ a:hover {
 .pagination a:not([disabled]):active, .pagination a:not([disabled]):focus {
   border-color: #e9c94f !important;
 }
-.servernot {
-  overflow-x: auto;
-  padding: 20px 10px;
+
+/* Server Status Styles */
+.location-section {
+  margin-bottom: 3rem;
 }
-.servernot .serverbox {
-  width: 410px;
-  margin: 0 auto;
+.location-header {
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e89200;
 }
-@media screen and (max-width: 500px) {
-  .servernot .serverbox {
-    width: 100%;
-  }
+.location-header .title {
+  margin-bottom: 0;
+  color: #363636;
 }
-.servernot .serverbox .serverinfobox {
-  width: calc(100% - 30px);
+.location-divider {
+  margin: 3rem 0;
+  background-color: #dbdbdb;
 }
-.servernot .serverbox .serverinfobox .servername {
-  display: inline;
-  margin-right: 15px;
-  white-space: nowrap;
+.server-card {
+  height: 100%;
+  transition: box-shadow 0.2s ease;
 }
-.servernot .serverbox .serverinfobox .servermap {
-  margin-right: 15px;
-  padding: 3px;
-  background-color: #ededed;
-  white-space: nowrap;
+.server-card:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
-.servernot .serverbox .serverinfobox .servercount {
-  text-decoration: underline dashed;
-  white-space: nowrap;
+.server-card .card-content {
+  padding: 1.25rem;
 }
-.servernot .serverbox .serverreach {
-  position: absolute;
-  top: 21px;
-  right: 28px;
-  border-radius: 0.75em;
+.server-header {
+  margin-bottom: 1rem;
 }
-.servernot .serverbox .serveron {
-  width: 1.5em;
-  background-color: #62ba60;
+.server-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
 }
-.servernot .serverbox .serveroff {
-  width: 1.5em;
-  background-color: #c14326;
+.server-name {
+  margin-bottom: 0 !important;
+  font-weight: 600;
 }
-.servernot .serverbox .serverofftext {
-  padding-left: 14px;
-  padding-right: 28px;
-  background-color: #db8a78;
+.server-status {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.875rem;
 }
-.servernot .serverbox .serverplayers table {
-  margin: 10px 0px 0px 0px;
+.server-status.is-online {
+  color: #48c774;
 }
-@media screen and (max-width: 500px) {
-  .servernot .serverbox .serverplayers table {
-    font-size: 14px;
-  }
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #48c774;
+  animation: pulse 2s infinite;
 }
-@media screen and (max-width: 420px) {
-  .servernot .serverbox .serverplayers table {
-    font-size: 12px;
-  }
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
 }
-.servernot .serverbox .serverplayers table td {
-  white-space: nowrap;
+.server-meta {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
-.servernot .serverbox .serverplayers table td:last-child {
-  width: 100%;
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.875rem;
+  color: #4a4a4a;
 }
-.servernot .serverbox .serverplayers table img {
-  height: 1em;
-  position: relative;
-  top: 3px;
+.meta-item .icon {
+  font-size: 0.75rem;
+}
+.meta-text {
+  font-weight: 500;
+}
+.players-list {
+  margin-top: 1rem;
+  max-height: 300px;
+  overflow-y: auto;
+}
+.players-list .table {
+  font-size: 0.875rem;
+  margin-bottom: 0;
+}
+.players-list .table th {
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom-width: 1px;
+}
+.flag-col {
+  width: 30px;
+  padding-right: 0.5rem !important;
+}
+.flag-img {
+  height: 14px;
+  width: auto;
+  max-width: none;
+  display: block;
+}
+.player-name {
+  font-weight: 500;
+}
+.player-clan {
+  color: #7a7a7a;
+  font-size: 0.8125rem;
+}
+.server-card .card-footer {
+  border-top: 1px solid #ededed;
+}
+.server-address {
+  font-family: 'Courier New', monospace;
+  font-size: 0.75rem;
+  color: #7a7a7a;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.server-address .icon {
+  font-size: 0.7rem;
 }
 .warning-tagsinput div.is-focused:not(.is-danger):not(.is-success) {
   border-color: #ffdd57;
@@ -435,5 +486,29 @@ html.dark-mode, [data-theme="dark"] {
   }
   .box {
     background: #1f2329;
+  }
+  .location-header .title {
+    color: white;
+  }
+  .location-header {
+    border-bottom-color: #e89200;
+  }
+  .location-divider {
+    background-color: #363636;
+  }
+  .server-card {
+    background-color: #1f2329;
+  }
+  .server-card .card-footer {
+    border-top-color: #363636;
+  }
+  .meta-item {
+    color: #dbdbdb;
+  }
+  .player-clan {
+    color: #a0a0a0;
+  }
+  .server-address {
+    color: #a0a0a0;
   }
 }
