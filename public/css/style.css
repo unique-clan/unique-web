@@ -295,7 +295,41 @@ a.unobstrusive:hover {
   overflow-y: auto;
 }
 
-@media (prefers-color-scheme: dark) {
+:root {
+  --background-color: #EFF3F4;
+  --text-color: #363636;
+  --card-background: #fff;
+  --navbar-background: #fff;
+  --box-background: #fff;
+}
+
+:root[data-theme="dark"],
+html.dark-mode {
+  --background-color: #14161a;
+  --text-color: #fff;
+  --card-background: #1f2329;
+  --navbar-background: #1f2329;
+  --box-background: #1f2329;
+}
+
+html, body {
+  background: var(--background-color);
+  color: var(--text-color);
+}
+
+.navbar {
+  background-color: var(--navbar-background);
+}
+
+.card {
+  background-color: var(--card-background);
+}
+
+.box {
+  background-color: var(--box-background);
+}
+
+html.dark-mode, [data-theme="dark"] {
   html, body {
     background: #14161a;
   }
