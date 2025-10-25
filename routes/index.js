@@ -207,7 +207,7 @@ router.get("/maps", async function (req, res, next) {
         for (let i = 0; i < maps.length; i++) {
             try {
                 await thumb({
-                    source: path.join(process.env.MAPS_LOCATION, maps[i].Map + ".png"),
+                    source: path.join(process.env.MAPS_LOCATION, "screenshots", maps[i].Map + ".png"),
                     destination: path.join(__dirname, "../public/img/mapthumb"),
                     width: 720,
                     skip: true,
@@ -287,7 +287,7 @@ router.get("/mapper/:mapper", async function (req, res, next) {
         for (let i = 0; i < maps.length; i++) {
             try {
                 await thumb({
-                    source: path.join(process.env.MAPS_LOCATION, maps[i].Map + ".png"),
+                    source: path.join(process.env.MAPS_LOCATION, "screenshots", maps[i].Map + ".png"),
                     destination: path.join(__dirname, "../public/img/mapthumb"),
                     width: 720,
                     skip: true,

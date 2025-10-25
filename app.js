@@ -78,7 +78,7 @@ app.use("/static/css", express.static(path.join(__dirname, "node_modules/bulma/c
 if (process.env.MAPS_LOCATION) {
     app.use(
         "/static/maps",
-        express.static(process.env.MAPS_LOCATION, {
+        express.static(path.join(process.env.MAPS_LOCATION, "maps"), {
             setHeaders: function (res, path) {
                 if (path.endsWith(".map")) {
                     res.setHeader("Content-Disposition", contentDisposition(path));
@@ -86,6 +86,10 @@ if (process.env.MAPS_LOCATION) {
             },
         }),
     );
+    app.use(
+        "/static/img/maps",
+        express.static(path.join(process.env.MAPS_LOCATION, "screenshots")),
+    )
 }
 
 app.use(logger("dev"));
