@@ -299,7 +299,7 @@ a.unobstrusive:hover {
   --background-color: #EFF3F4;
   --text-color: #363636;
   --card-background: #fff;
-  --navbar-background: #fff;
+  --navbar-background: #eff3f4;
   --box-background: #fff;
 }
 
@@ -308,7 +308,7 @@ html.dark-mode {
   --background-color: #14161a;
   --text-color: #fff;
   --card-background: #1f2329;
-  --navbar-background: #1f2329;
+  --navbar-background: #14161a;
   --box-background: #1f2329;
 }
 
@@ -331,6 +331,173 @@ html, body {
 html.dark-mode .points-section img, 
 [data-theme="dark"] .points-section img {
   filter: invert(1) hue-rotate(180deg);
+}
+/* Light mode - match navbar background */
+.button.is-small#darkModeToggle {
+  background-color: #EFF3F4;
+  border-color: #EFF3F4;
+}
+
+.button.is-small#darkModeToggle:hover {
+  background-color: #EFF3F4;
+  border-color: #e89200;
+}
+
+.button.is-small#darkModeToggle .icon {
+  color: #363636;
+}
+
+.button.is-small#darkModeToggle:hover .icon {
+  color: #e89200;
+}
+html.dark-mode #darkModeToggle,
+[data-theme="dark"] #darkModeToggle {
+  background-color: var(--navbar-background) !important;
+  border-color: rgba(51, 51, 51, 0.2) !important;
+  color: white !important;
+}
+
+html.dark-mode #darkModeToggle:hover,
+[data-theme="dark"] #darkModeToggle:hover {
+  background-color: #1f2329 !important;
+  border-color: #e89200 !important;
+  color: #e89200 !important;
+}
+
+html.dark-mode #darkModeToggle .icon,
+[data-theme="dark"] #darkModeToggle .icon {
+  color: white !important;
+}
+
+html.dark-mode #darkModeToggle:hover .icon,
+[data-theme="dark"] #darkModeToggle:hover .icon {
+  color: #e89200 !important;
+}
+/* Add to your CSS */
+.theme-image {
+  max-height: 220px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 100%; /* or specific width */
+  height: 220px; /* fixed height */
+}
+
+.theme-image-light {
+  background-image: url('/static/img/st.png');
+}
+
+.theme-image-dark {
+  background-image: url('/static/img/st2.png');
+}
+
+/* Show/hide based on theme */
+html:not(.dark-mode) .theme-image-dark,
+html.dark-mode .theme-image-light {
+  display: none;
+}
+
+html:not(.dark-mode) .theme-image-light,
+html.dark-mode .theme-image-dark {
+  display: block;
+}
+/* Make only the GER tab link orange in dark mode */
+html.dark-mode .tabs li.is-active a,
+[data-theme="dark"] .tabs li.is-active a {
+  color: #c68b25 !important;
+  border-bottom-color: #c68b25 !important;
+}
+
+html.dark-mode .tabs li.is-active a:hover,
+[data-theme="dark"] .tabs li.is-active a:hover {
+  color: #FFA500 !important;
+  border-bottom-color: #FFA500 !important;
+}
+html.dark-mode fieldset[disabled] .input,
+html.dark-mode fieldset[disabled] .textarea,
+html.dark-mode fieldset[disabled] .select,
+html.dark-mode fieldset[disabled] .select select,
+[data-theme="dark"] fieldset[disabled] .input,
+[data-theme="dark"] fieldset[disabled] .textarea,
+[data-theme="dark"] fieldset[disabled] .select,
+[data-theme="dark"] fieldset[disabled] .select select {
+  background-color: #1f2329 !important;
+  border-color: #555 !important;
+  color: #8f92a0 !important;
+}
+html.dark-mode fieldset[disabled] .tagsinput,
+html.dark-mode fieldset[disabled] .tagify,
+html.dark-mode fieldset[disabled] .warning-tagsinput,
+html.dark-mode fieldset[disabled] .warning-tagsinput .input,
+[data-theme="dark"] fieldset[disabled] .tagsinput,
+[data-theme="dark"] fieldset[disabled] .tagify,
+[data-theme="dark"] fieldset[disabled] .warning-tagsinput,
+[data-theme="dark"] fieldset[disabled] .warning-tagsinput .input {
+  background-color: #1f2329 !important;
+  border-color: #555 !important;
+  color: #8f92a0 !important;
+}
+html.dark-mode fieldset[disabled] .tag,
+html.dark-mode fieldset[disabled] .tagify__tag,
+[data-theme="dark"] fieldset[disabled] .tag,
+[data-theme="dark"] fieldset[disabled] .tagify__tag {
+  background-color: #2b2b2b !important;
+  color: #8f92a0 !important;
+  border-color: #555 !important;
+}
+html.dark-mode fieldset[disabled] .radio,
+html.dark-mode fieldset[disabled] input[type="radio"],
+[data-theme="dark"] fieldset[disabled] .radio,
+[data-theme="dark"] fieldset[disabled] input[type="radio"] {
+  color: #8f92a0 !important;
+}
+html.dark-mode fieldset[disabled] input[type="radio"]:before,
+[data-theme="dark"] fieldset[disabled] input[type="radio"]:before {
+  background-color: #2b2b2b !important;
+  border-color: #555 !important;
+}
+html.dark-mode fieldset[disabled] .select:not(.is-multiple):not(.is-loading)::after,
+[data-theme="dark"] fieldset[disabled] .select:not(.is-multiple):not(.is-loading)::after {
+  border-color: #8f92a0 !important;
+}
+html.dark-mode .pagination,
+[data-theme="dark"] .pagination {
+  background-color: transparent !important;
+}
+html.dark-mode .pagination-previous,
+html.dark-mode .pagination-next,
+html.dark-mode .pagination-link,
+[data-theme="dark"] .pagination-previous,
+[data-theme="dark"] .pagination-next,
+[data-theme="dark"] .pagination-link {
+  background-color: #1f2329 !important;
+  border-color: #444 !important;
+  color: white !important;
+}
+html.dark-mode .pagination-previous:hover,
+html.dark-mode .pagination-next:hover,
+html.dark-mode .pagination-link:hover,
+[data-theme="dark"] .pagination-previous:hover,
+[data-theme="dark"] .pagination-next:hover,
+[data-theme="dark"] .pagination-link:hover {
+  background-color: #2b2f36 !important;
+  border-color: #e89200 !important;
+  color: #e89200 !important;
+}
+html.dark-mode .pagination-link.is-current,
+[data-theme="dark"] .pagination-link.is-current {
+  background-color: #ffdd57 !important;
+  border-color: #e9c94f !important;
+  color: #363636 !important;
+}
+html.dark-mode .pagination-previous[disabled],
+html.dark-mode .pagination-next[disabled],
+[data-theme="dark"] .pagination-previous[disabled],
+[data-theme="dark"] .pagination-next[disabled] {
+  background-color: #2b2b2b !important;
+  border-color: #444 !important;
+  color: #666 !important;
+  opacity: 0.7 !important;
 }
 html.dark-mode, [data-theme="dark"] {
   html, body {
