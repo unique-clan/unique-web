@@ -328,7 +328,10 @@ html, body {
 .box {
   background-color: var(--box-background);
 }
-
+html.dark-mode .points-section img, 
+[data-theme="dark"] .points-section img {
+  filter: invert(1) hue-rotate(180deg);
+}
 html.dark-mode, [data-theme="dark"] {
   html, body {
     background: #14161a;
