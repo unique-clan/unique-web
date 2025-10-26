@@ -692,75 +692,6 @@ html.dark-mode, [data-theme="dark"] {
 .member-section-title .icon {
   font-size: 1.5rem;
 }
-.leader-cards .column {
-  transition: transform 0.3s ease;
-}
-.leader-cards .column:hover {
-  transform: translateY(-8px);
-}
-.leader-cards .box {
-  border-radius: 0 0 12px 12px;
-  height: 100%;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
-  border: 2px solid transparent;
-  border-top: none;
-  overflow: visible;
-  position: relative;
-  padding: 2rem;
-  padding-top: 2rem;
-}
-.leader-cards .box::before {
-  content: '';
-  position: absolute;
-  top: -4px;
-  left: -2px;
-  right: -2px;
-  height: 4px;
-  background: linear-gradient(90deg, #c68b25, #FFA500);
-  border-radius: 12px 12px 0 0;
-}
-.leader-cards .box:hover {
-  box-shadow: 0 12px 28px rgba(198, 139, 37, 0.2), 0 0 40px rgba(198, 139, 37, 0.15);
-  border-color: rgba(198, 139, 37, 0.3);
-}
-.leader-cards .media-left img {
-  border: none;
-  border-radius: 8px;
-  box-shadow: none;
-  transition: none;
-}
-.leader-cards .box:hover .media-left img {
-  transform: none;
-  box-shadow: none;
-}
-.leader-cards h1 {
-  color: inherit;
-  font-weight: 600;
-  margin-bottom: 0.5rem !important;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  hyphens: auto;
-  line-height: 1.3;
-}
-.leader-cards h4 {
-  color: #c68b25;
-  font-weight: 500;
-  margin-bottom: 0.75rem !important;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  hyphens: none;
-  line-height: 1.4;
-  font-size: 0.85rem;
-  white-space: normal;
-}
-.leader-cards h3 {
-  color: #666;
-  font-size: 0.95rem;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  line-height: 1.5;
-}
 .member-cards .column {
   transition: transform 0.2s ease;
 }
@@ -786,10 +717,17 @@ html.dark-mode, [data-theme="dark"] {
   left: -2px;
   right: -2px;
   height: 3px;
-  background: linear-gradient(90deg, #c68b25, #FFA500);
   border-radius: 8px 8px 0 0;
+  background: linear-gradient(90deg, #3273dc, #209cee);
+}
+.member-cards.is-admin .box::before {
+  background: linear-gradient(90deg, #c68b25, #FFA500);
 }
 .member-cards .box:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12), 0 0 30px rgba(50, 115, 220, 0.25);
+  border-color: rgba(50, 115, 220, 0.4);
+}
+.member-cards.is-admin .box:hover {
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12), 0 0 30px rgba(198, 139, 37, 0.25);
   border-color: rgba(198, 139, 37, 0.4);
 }
@@ -824,22 +762,22 @@ html.dark-mode, [data-theme="dark"] {
   height: 2px;
   background: linear-gradient(90deg, transparent, currentColor, transparent);
 }
-html.dark-mode .leader-cards .box::before,
-[data-theme="dark"] .leader-cards .box::before {
+html.dark-mode .member-cards.is-admin .box::before,
+[data-theme="dark"] .member-cards.is-admin .box::before {
   background: linear-gradient(90deg, #c68b25, #FFA500);
 }
-html.dark-mode .leader-cards .box,
-[data-theme="dark"] .leader-cards .box {
+html.dark-mode .member-cards.is-admin .box,
+[data-theme="dark"] .member-cards.is-admin .box {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   background-color: #1f2329;
 }
-html.dark-mode .leader-cards .box:hover,
-[data-theme="dark"] .leader-cards .box:hover {
+html.dark-mode .member-cards.is-admin .box:hover,
+[data-theme="dark"] .member-cards.is-admin .box:hover {
   box-shadow: 0 12px 28px rgba(198, 139, 37, 0.3), 0 0 50px rgba(198, 139, 37, 0.2);
   border-color: rgba(198, 139, 37, 0.4);
 }
-html.dark-mode .leader-cards h3,
-[data-theme="dark"] .leader-cards h3 {
+html.dark-mode .member-cards.is-admin h3,
+[data-theme="dark"] .member-cards.is-admin h3 {
   color: #aaa;
 }
 html.dark-mode .member-cards .box,
@@ -849,8 +787,8 @@ html.dark-mode .member-cards .box,
 }
 html.dark-mode .member-cards .box:hover,
 [data-theme="dark"] .member-cards .box:hover {
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5), 0 0 40px rgba(198, 139, 37, 0.3);
-  border-color: rgba(198, 139, 37, 0.4);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5), 0 0 40px rgba(50, 115, 220, 0.3);
+  border-color: rgba(50, 115, 220, 0.4);
 }
 html.dark-mode .member-cards .media-left img,
 [data-theme="dark"] .member-cards .media-left img {
@@ -881,7 +819,6 @@ html.dark-mode .member-section-header,
     align-items: flex-start;
     gap: 1rem;
   }
-  .leader-cards .box,
   .member-cards .box {
     padding: 1.25rem;
   }
