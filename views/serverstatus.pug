@@ -10,11 +10,16 @@ block content
       .hero-body
         .container
           h1.title Server Status
-          h2.subtitle Monitor our game servers in real-time
+          nav.breadcrumb.rank-nav
+            ul
+              each location in locations
+                li
+                  a(href='#'+location.name)= location.name
     
     section.section
       .container
         each location in locations
+          span.rank-anchor(id=location.name)
           .location-section
             .level.location-header
               .level-left
