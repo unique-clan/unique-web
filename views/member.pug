@@ -4,33 +4,65 @@ include templates/mixins.pug
 
 block content
   main
-    .container
       br
-      section.section
-        h1.title Leaders
-        .columns.is-multiline
-          +member('Tezcan', 'Race, DDRace', 'TR', 'Founder, Web Devel. Leader')
-          +member('timakro', 'Race, DDRace', 'DE', 'Technical Leader')
-          +member('Ryozuki', 'DDRace', 'XCA', 'Web Devel. Leader')
-      section.section
-        h1.title Members
-        .columns.is-multiline
-          +member('tobu.', 'DDRace')
-          +member('Zonsa', 'DDRace, Gores')
-          +member('Avelton', 'Race, DDRace')
-          +member('dcgù', 'DDRace', 'FR')
-          +member('Husky', 'DDRace, zCatch')
-          +member('bano', 'DDRace, FNG')
-          +member('Nocsis', 'DDRace, Gores')
-          +member('KlexMikrowelle', 'DDRace')
-          +member('Juandissimo', 'DDRace')
-          +member('Moni', 'DDRace')
-          +member('µLTim8*', 'DDRace, zCatch')
-          +member('x0seF', 'gCTF, zCatch', 'FR')
-          +member('Ninja_cool', 'Race, Gores', 'BY')
-          +member('KlimoZ', 'Race, Gores', 'PL')
-          +member('Derp', 'Race, iCTF')
-          +member('NeXus', 'Race, DDRace')
-          +member('Floral Strobe', 'Race, gCTF', 'FR')
-          +member('Matrose l_I', 'Race, DDRace')
-          +member('Assa', 'Race, zCatch')
+      br
+      br
+      br
+      section.hero.is-dark
+        .hero-body 
+          .container 
+            h1.title
+              | Members
+            h2.subtitle
+              br 
+              | Meet the amazing individuals who make Unique exceptional.       
+      br
+      br
+      br
+      section.section(style="padding-top: 1rem;")
+        .container
+          .level.is-mobile.member-section-header(style="margin-bottom: 2rem;")
+            .level-left
+              .level-item
+                h2.title.is-3(style="margin: 0; font-weight: 600;") 
+                  span.icon.has-text-warning(style="margin-right: 0.5rem;")
+                    i.fas.fa-crown
+                  | Leaders
+          .columns.is-multiline.is-variable.is-6.leader-cards
+            +member('Tezcan', 'Race, DDRace', 'TR', 'Founder, Web Devel. Leader')
+            +member('timakro', 'Race, DDRace', 'DE', 'Technical Leader')
+            +member('Ryozuki', 'DDRace', 'XCA', 'Web Devel. Leader')
+
+      hr(style="margin: 3rem 0; opacity: 0.1;")
+
+      // Members Section
+      section.section(style="padding-top: 1rem; padding-bottom: 4rem;")
+        .container
+          .level.is-mobile.member-section-header(style="margin-bottom: 2rem;")
+            .level-left
+              .level-item
+                h2.title.is-3(style="margin: 0; font-weight: 600;") 
+                  span.icon.has-text-info(style="margin-right: 0.5rem;")
+                    i.fas.fa-users
+                  | Members
+        
+          .columns.is-multiline.is-variable.is-5.member-cards
+            +member('tobu.', 'DDRace')
+            +member('Zonsa', 'DDRace, Gores')
+            +member('Avelton', 'Race, DDRace')
+            +member('dcgù', 'DDRace', 'FR')
+            +member('Husky', 'DDRace, zCatch')
+            +member('bano', 'DDRace, FNG')
+            +member('Nocsis', 'DDRace, Gores')
+            +member('KlexMikrowelle', 'DDRace')
+            +member('Juandissimo', 'DDRace')
+            +member('Moni', 'DDRace')
+            +member('µLTim8*', 'DDRace, zCatch')
+            +member('x0seF', 'gCTF, zCatch', 'FR')
+            +member('Ninja_cool', 'Race, Gores', 'BY')
+            +member('KlimoZ', 'Race, Gores', 'PL')
+            +member('Derp', 'Race, iCTF')
+            +member('NeXus', 'Race, DDRace')
+            +member('Floral Strobe', 'Race, gCTF', 'FR')
+            +member('Matrose l_I', 'Race, DDRace')
+            +member('Assa', 'Race, zCatch')
