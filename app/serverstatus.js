@@ -1,22 +1,28 @@
 var fs = require("fs");
-var ping = require("ping").promise;
 var debug = require("debug")("uniqueweb:serverstatus");
-var util = require("util");
-var ServerHandler = require("teeworlds-server-status").ServerHandler;
+var https = require("https");
+var NodeCache = require("node-cache");
 
-const sleep = util.promisify(setTimeout);
-const readFile = util.promisify(fs.readFile);
+// Define locations and their sponsors
+const LOCATIONS = [
+    { name: "GER" },
+    { name: "CAN", sponsor: "Fudgy" },
+];
 
 class ServerStatus {
-    constructor(jsonPath) {
-        this.path = jsonPath;
-        this.list = null;
+    constructor() {
+        this.locations = LOCATIONS;
         this.twFlags = {};
+        this.masterServerUrl = "https://master1.ddnet.org/ddnet/15/servers.json";
+        this.targetCommunity = "unique";
+        // Cache for 30 seconds (stdTTL in seconds)
+        this.cache = new NodeCache({ stdTTL: 30 });
+        this.loadTWFlags();
     }
 
     loadTWFlags() {
         var lastLine;
-        var lines = fs.readFileSync("twflags.txt", "utf8").split("\n");
+        var lines = fs.readFileSync("public/img/twflags/index.txt", "utf8").split("\n");
         for (var i in lines) {
             var line = lines[i];
             var numMatch = line.match(/^== (\d+)/);
@@ -30,51 +36,117 @@ class ServerStatus {
         }
     }
 
-    async updateStatus() {
-        this.loadTWFlags();
-        while (true) {
-            let svlist = [{ "name": "GER", "servers": [] }];
-            try {
-                svlist = JSON.parse(await readFile(this.path, "utf8"));
-            } catch (err) {
-                debug("Failed to read server list: %s", err);
+    async fetchMasterServerData() {
+        return new Promise((resolve, reject) => {
+            https.get(this.masterServerUrl, (res) => {
+                let data = "";
+                
+                res.on("data", (chunk) => {
+                    data += chunk;
+                });
+                
+                res.on("end", () => {
+                    try {
+                        const parsed = JSON.parse(data);
+                        resolve(parsed);
+                    } catch (err) {
+                        reject(err);
+                    }
+                });
+            }).on("error", (err) => {
+                reject(err);
+            });
+        });
+    }
+
+    parseServerAddress(address) {
+        const match = address.match(/^(.+):(\d+)$/);
+        if (!match) return null;
+        return {
+            ip: match[1],
+            port: parseInt(match[2])
+        };
+    }
+
+    getLocationFromName(serverName) {
+        // Try to extract location from server name (e.g., "GER" from "Unique Race GER")
+        for (const loc of this.locations) {
+            if (serverName.includes(loc.name)) {
+                return loc.name;
             }
-            let tasks = Object.values(svlist).map((loc) => this.updateLocation(loc));
-            await Promise.all(tasks);
-            this.list = svlist;
-            await sleep(parseFloat(process.env.SERVER_STATUS_UPDATE || 5) * 1000);
         }
+        return null;
     }
 
-    async updateLocation(location) {
-        for (var server of location.servers) {
-            server.ip = location.ip;
+    async getServerList() {
+        // Check cache first
+        const cached = this.cache.get("serverList");
+        if (cached) {
+            return cached;
         }
-
-        let tasks = Object.values(location.servers).map((srv) => this.updateGameserver(srv, location.ip));
-        await Promise.all(tasks);
-
-        location.alive = location.servers.some(srv => srv.reachable);
-    }
-
-    async updateGameserver(server, ip) {
+        
         try {
-            let svInfo = await new ServerHandler(ip, server.port, false, 1000).requestInfo();
-
-            server.reachable = true;
-            server.map = svInfo.map;
-            server.maxclients = svInfo.maxClientCount;
-            server.players = svInfo.clients
-                .filter((p) => p.name !== "(connecting)")
-                .sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1));
-            server.password = svInfo.password;
-
-            for (var player of server.players) {
-                if (player.country in this.twFlags) player.flag = this.twFlags[player.country];
-                else player.flag = "default";
+            const masterData = await this.fetchMasterServerData();
+            
+            // Initialize location data
+            const locationMap = {};
+            for (const loc of this.locations) {
+                locationMap[loc.name] = {
+                    name: loc.name,
+                    sponsor: loc.sponsor,
+                    servers: []
+                };
             }
+
+            // Process servers from master server
+            if (masterData.servers) {
+                for (const server of masterData.servers) {
+                    // Filter by community field
+                    if (server.community && server.community === this.targetCommunity) {
+                        
+                        const location = this.getLocationFromName(server.info.name || "");
+                        if (location && locationMap[location]) {
+                            const addrInfo = this.parseServerAddress(server.addresses[0] || "");
+                            
+                            if (addrInfo && server.info && server.info.map) {
+                                const processedServer = {
+                                    name: server.info.name,
+                                    ip: addrInfo.ip.replace(/^tw-0.6\+udp:\/\//, ""),
+                                    port: addrInfo.port,
+                                    map: server.info.map.name,
+                                    maxclients: server.info.max_clients,
+                                    players: (server.info.clients || []).map(client => ({
+                                        name: client.name,
+                                        clan: client.clan || "",
+                                        country: client.country,
+                                        flag: this.twFlags[client.country] || "default"
+                                    })).sort((a, b) => 
+                                        a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1
+                                    ),
+                                    password: server.info.passworded || false,
+                                };
+                                
+                                locationMap[location].servers.push(processedServer);
+                            }
+                        }
+                    }
+                }
+            }
+
+            const serverList = Object.values(locationMap);
+            
+            // Store in cache
+            this.cache.set("serverList", serverList);
+                        
+            return serverList;
         } catch (err) {
-            server.reachable = false;
+            debug("Failed to fetch server status: %s", err);
+            // Return empty location structure on error
+            return this.locations.map(loc => ({
+                name: loc.name,
+                sponsor: loc.sponsor,
+                servers: []
+            }));
         }
     }
 }

@@ -9,63 +9,75 @@ block content
     section.hero.is-dark
       .hero-body
         .container
-          h1.title
-            | Serverstatus
-          h2.subtitle
-            each loc, i in locations
-              if i != 0
-                | &nbsp;| 
-              | #{loc.name}&nbsp;Status:&nbsp;
-              if loc.alive
-                span.has-text-success ON
-              else
-                span.has-text-danger OFF
+          h1.title Server Status
+          nav.breadcrumb.rank-nav
+            ul
+              each location in locations
+                li
+                  a(href='#'+location.name)= location.name
+    
     section.section
       .container
-        .tabs.is-large.is-centered
-          ul
-            each loc in locations
-              li(class={'is-active': loc.name === location.name})
-                a(href='/serverstatus/'+loc.name)= loc.name
-        if !location.alive
-          p.has-text-centered
-            | This location is currently offline.
-        else
-          if location.sponsor
-            p.has-text-centered.background-text
-              | Unique #{location.name} is sponsored by #{location.sponsor}.
-            br
-          .columns.is-multiline
-            each server in location.servers.filter(s => !s.password).sort((a, b) => ((b.reachable ? 1 : 0) - (a.reachable ? 1 : 0)) || ((b.players ? b.players.length : 0) - (a.players ? a.players.length : 0)) || (a.name > b.name ? 1 : -1))
-              .column.is-full-tablet.is-half-desktop.is-one-third-fullhd
-                .notification.is-white.servernot
-                  .serverbox
-                    .serverinfobox
-                      h2.subtitle.servername= server.name
-                      if server.reachable
-                        |  
-                        span.servermap=server.map
-                        |  
-                        span.servercount #{server.players ? server.players.length : 0} / #{server.maxclients}
-                    if server.reachable
-                      .is-unselectable.serverreach.serveron &nbsp;
-                    else
-                      .serverreach.serverofftext Offline
-                      .is-unselectable.serverreach.serveroff &nbsp;
-                    .serverplayers
-                      if server.reachable
-                        if server.players && server.players.length
-                          table.table.is-narrow.is-fullwidth
-                            thead
-                              tr
-                                th.is-unselectable &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                th Player
-                                th Clan
-                            tbody
-                              each player in server.players
+        each location in locations
+          span.rank-anchor(id=location.name)
+          .location-section
+            .level.location-header
+              .level-left
+                .level-item
+                  h2.title.is-4= location.name
+              .level-right
+                if location.sponsor
+                  .level-item
+                    p.has-text-grey
+                      | Sponsored by 
+                      strong= location.sponsor
+            
+            if location.servers && location.servers.length > 0
+              .columns.is-multiline
+                each server in location.servers.filter(s => !s.password).sort((a, b) => ((b.players ? b.players.length : 0) - (a.players ? a.players.length : 0)) || (a.name > b.name ? 1 : -1))
+                  .column.is-full-tablet.is-half-desktop.is-one-third-widescreen
+                    .card.server-card
+                      .card-content
+                        .server-header
+                          .server-title
+                            h3.title.is-6.server-name= server.name
+                            .server-status.is-online
+                              span.status-dot
+                              span.status-text Online
+                          .server-meta
+                            .meta-item
+                              span.icon.has-text-grey-light
+                                i.fas.fa-map
+                              span.meta-text= server.map
+                            .meta-item
+                              span.icon.has-text-grey-light
+                                i.fas.fa-users
+                              span.meta-text #{server.players ? server.players.length : 0} / #{server.maxclients}
+                        
+                        if server.players && server.players.length > 0
+                          .players-list
+                            table.table.is-narrow.is-fullwidth.is-hoverable
+                              thead
                                 tr
-                                  td
-                                    img(src='/static/img/twflags/'+player.flag+'.png')
-                                  td= player.name
-                                  td= player.clan
-                    p(style=' font-family: Montserrat, san-serif; font-size: 10px; text-align: right; margin-top: 15px;') #{server.ip}:#{server.port}
+                                  th.flag-col
+                                  th Player
+                                  th Clan
+                              tbody
+                                each player in server.players
+                                  tr
+                                    td.flag-col
+                                      img.flag-img(src='/static/img/twflags/'+player.flag+'.png' alt=player.flag)
+                                    td.player-name= player.name
+                                    td.player-clan= player.clan
+                      
+                      .card-footer
+                        .card-footer-item.server-address
+                          span.icon.has-text-grey-light
+                            i.fas.fa-server
+                          span #{server.ip}:#{server.port}
+            else
+              .notification.is-light.has-text-centered
+                p.has-text-grey No servers currently running in this location
+            
+            unless location === locations[locations.length - 1]
+              hr.location-divider

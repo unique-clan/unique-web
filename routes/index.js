@@ -12,8 +12,7 @@ const ServerStatus = require("../app/serverstatus");
 // const MapModel = mongoose.model("Map");
 const sql = require("../app/sql");
 
-var serverStatus = new ServerStatus(process.env.SERVERS_LOCATION);
-serverStatus.updateStatus();
+var serverStatus = new ServerStatus();
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -28,21 +27,21 @@ router.get("/member", function (req, res, next) {
     });
 });
 
-router.get("/serverstatus", function (req, res, next) {
-    res.redirect("/serverstatus/" + serverStatus.list.map((x) => x.name)[0]);
+router.get("/serverstatus", async function (req, res, next) {
+    try {
+        const locations = await serverStatus.getServerList();
+        res.render("serverstatus", {
+            title: "Server Status | Unique",
+            locations: locations,
+        });
+    } catch (err) {
+        next(err);
+    }
 });
 
 router.get("/serverstatus/:location", function (req, res, next) {
-    let serverName = String(req.params.location);
-    let serverNames = serverStatus.list.map((x) => x.name);
-    if (!serverNames.includes(serverName)) {
-        return next();
-    }
-    res.render("serverstatus", {
-        title: serverName + " Server Status | Unique",
-        locations: serverStatus.list,
-        location: serverStatus.list.filter((x) => x.name === serverName)[0],
-    });
+    // Redirect old location-specific URLs to main page
+    res.redirect("/serverstatus");
 });
 
 router.get("/apply", function (req, res, next) {
