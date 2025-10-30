@@ -88,7 +88,6 @@ a:hover {
   background-color: #dbdbdb;
 }
 .server-card {
-  height: 100%;
   transition: box-shadow 0.2s ease;
 }
 .server-card:hover {
