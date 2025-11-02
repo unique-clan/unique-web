@@ -228,29 +228,29 @@ block content
                     td= formatTime(record.Time)
         br
         br
-        article.tile.is-child.notification.is-white.points-section
+        article.tile.is-child.notification.is-white
           p.title(id="points-calculation") Points Calculation
           p Players accumulate points from their times on all maps in relation to the map records. The player holding the record is rewarded 100 points while the amount of points drops exponentially for slower times.
             p
               | The points a player recieves for a specific map are calculated from the player's time in seconds 
-              img(src='/static/img/points/tplayer.png', style='position:relative;top:8px;')
+              img(src='/static/img/points/tplayer.png', style='position:relative;top:8px;', class='invert-in-dark-mode')
               | , the record time in seconds 
-              img(src='/static/img/points/trecord.png', style='position:relative;top:5px;')
+              img(src='/static/img/points/trecord.png', style='position:relative;top:5px;', class='invert-in-dark-mode')
               |  and the map category constant 
-              img(src='/static/img/points/s.png')
+              img(src='/static/img/points/s.png', class='invert-in-dark-mode')
               | :
             br
             br
             .columns
               .column
-                img(src='/static/img/points/equation.png', style="padding-top:30px;")
+                img(src='/static/img/points/equation.png', style="padding-top:30px;", class='invert-in-dark-mode')
               .column
                 table.table.is-narrow.has-text-centered
                   thead
                     tr
                       th Map Category
                       th
-                        img(src='/static/img/points/s.png')
+                        img(src='/static/img/points/s.png', class='invert-in-dark-mode')
                   tbody
                     tr
                       td Short

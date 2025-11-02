@@ -9,13 +9,12 @@ block content
     section.hero.is-dark
       .hero-body
         .container
-          h1.title Server Status
+          h1.title Serverstatus
           nav.breadcrumb.rank-nav
             ul
               each location in locations
                 li
-                  a(href='#'+location.name)= location.name
-    
+                  a(href='#'+location.name)= location.name   
     section.section
       .container
         each location in locations
@@ -30,8 +29,7 @@ block content
                   .level-item
                     p.has-text-grey
                       | Sponsored by 
-                      strong= location.sponsor
-            
+                      strong= location.sponsor          
             if location.servers && location.servers.length > 0
               .columns.is-multiline
                 each server in location.servers.filter(s => !s.password).sort((a, b) => ((b.players ? b.players.length : 0) - (a.players ? a.players.length : 0)) || (a.name > b.name ? 1 : -1))
@@ -52,8 +50,7 @@ block content
                             .meta-item
                               span.icon.has-text-grey-light
                                 i.fas.fa-users
-                              span.meta-text #{server.players ? server.players.length : 0} / #{server.maxclients}
-                        
+                              span.meta-text #{server.players ? server.players.length : 0} / #{server.maxclients}                        
                         if server.players && server.players.length > 0
                           .players-list
                             table.table.is-narrow.is-fullwidth.is-hoverable
@@ -68,8 +65,7 @@ block content
                                     td.flag-col
                                       img.flag-img(src='/static/img/twflags/'+player.flag+'.png' alt=player.flag)
                                     td.player-name= player.name
-                                    td.player-clan= player.clan
-                      
+                                    td.player-clan= player.clan                      
                       .card-footer
                         .card-footer-item.server-address
                           span.icon.has-text-grey-light
@@ -77,7 +73,6 @@ block content
                           span #{server.ip}:#{server.port}
             else
               .notification.is-light.has-text-centered
-                p.has-text-grey No servers currently running in this location
-            
+                p.has-text-grey No servers currently running in this location            
             unless location === locations[locations.length - 1]
               hr.location-divider

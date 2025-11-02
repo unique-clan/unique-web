@@ -35,8 +35,14 @@ block content
           .column
             .box
               section.hero
-              fieldset(disabled)
-                form.form#form-mapupload
+              article.tile.is-child.notification.is-white.has-shadow.application-form-wrapper
+                .disabled-overlay
+                  .has-text-centered
+                    span.icon.is-large.has-text-warning
+                      i.fa.fa-lock.fa-4x
+                    p.title.is-4.mt-3.has-text-grey Map Submissions locked
+                fieldset.disabled-form-content(disabled)
+                  form.form#form-mapupload
                   .file.is-warning.has-name.is-fullwidth
                     label.file-label
                       input#file.file-input(type="file" name="mapFile")
@@ -55,7 +61,6 @@ block content
                     span.icon.is-small.is-left
                       i.fa.fa-user
                   p#help-mappers
-                  button.button.is-warning.mb Submit Map
                   p#response-message
         .columns
           .column
@@ -251,7 +256,7 @@ block content
                 h2.subtitle
                   br
                   a(href="/static/UniqueRaceServer.exe" download)
-                    img(src="/static/img/UniqueRaceServerImage.png")
+                    img(src="/static/img/UniqueRaceServerImage.png",  class="invert-in-dark-mode")
                 p
                   | Replace or add it to your current clientfolder.
         .columns
@@ -288,7 +293,6 @@ block content
                     li The design should be appealing and easy to play with. It should not hurt the eye after playing for a long time.
                     li Scenery is important too! Try to excel not only in gameplay mapping but also in design!
                     li The background should not be transparent and large enough for all resolutions. Click 'Proof' in the editor to check 
-                      | if the background is covered over the white border in order to work with all resolutions.
-             
+                      | if the background is covered over the white border in order to work with all resolutions.         
 block scripts
   script(src="/static/js/mapupload.js")

@@ -62,8 +62,13 @@ block content
                     li Who brought you to us?
     .columns
       .container
-        article.tile.is-child.notification.is-white.has-shadow
-          fieldset(disabled)
+        article.tile.is-child.notification.is-white.has-shadow.application-form-wrapper
+          .disabled-overlay
+            .has-text-centered
+              span.icon.is-large.has-text-warning
+                i.fa.fa-lock.fa-4x
+              p.title.is-4.mt-3.has-text-grey Applications locked
+          fieldset.disabled-form-content(disabled)
             form.form#form-apply
               .field.is-horizontal
                 .field-label.is-normal
@@ -124,6 +129,5 @@ block content
                       button.button.is-warning
                         | Apply
                     p#response-message
-
 block scripts
   script(src="/static/js/apply.js")

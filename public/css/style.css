@@ -69,8 +69,6 @@ a:hover {
 .pagination a:not([disabled]):active, .pagination a:not([disabled]):focus {
   border-color: #e9c94f !important;
 }
-
-/* Server Status Styles */
 .location-section {
   margin-bottom: 3rem;
 }
@@ -373,8 +371,8 @@ html, body {
 .box {
   background-color: var(--box-background);
 }
-html.dark-mode .points-section img, 
-[data-theme="dark"] .points-section img {
+html.dark-mode .invert-in-dark-mode,
+[data-theme="dark"] .invert-in-dark-mode {
   filter: invert(1) hue-rotate(180deg);
 }
 .button.is-small#darkModeToggle {
@@ -829,4 +827,45 @@ html.dark-mode .member-section-header,
   .member-section-title .icon {
     font-size: 1.25rem;
   }
+}
+.application-form-wrapper {
+  position: relative;
+}
+.disabled-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(3px);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+}
+.disabled-form-content {
+  opacity: 0.5;
+}
+html.dark-mode .disabled-overlay,
+[data-theme="dark"] .disabled-overlay {
+  background: rgba(31, 35, 41, 0.85);
+}
+html.dark-mode .disabled-overlay .has-text-grey,
+[data-theme="dark"] .disabled-overlay .has-text-grey {
+  color: #dbdbdb !important;
+}
+html.dark-mode .box.has-background-warning-light,
+[data-theme="dark"] .box.has-background-warning-light {
+  background-color: rgba(255, 221, 87, 0.15) !important;
+  color: white !important;
+}
+html.dark-mode .box.has-background-warning-light strong,
+[data-theme="dark"] .box.has-background-warning-light strong {
+  color: #ffdd57 !important;
+}
+html.dark-mode .box.has-background-warning-light p,
+[data-theme="dark"] .box.has-background-warning-light p {
+  color: #dbdbdb !important;
 }
