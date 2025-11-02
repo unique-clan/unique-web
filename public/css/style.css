@@ -869,3 +869,7 @@ html.dark-mode .box.has-background-warning-light p,
 [data-theme="dark"] .box.has-background-warning-light p {
   color: #dbdbdb !important;
 }
+.icon-spacer {
+  display: inline-block;
+  width: 2rem;
+}
