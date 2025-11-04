@@ -9,80 +9,152 @@ block content
           hr
           .columns.is-centered
             .column.nocontent
-              .box.has-text-centered 
-                p.title COMING SOON
-                  a(href="https://discord.gg/gbgEs7m6kK")
-                    img(src=`/static/img/discord-icon-logo.png` alt="Discord" align="right" style="max-height: 32px")
-                p.subtitle Join our Discord for the next announcement!
+              .box.has-text-centered
+                p.title.mb-0 COMING SOON
+                a(href="https://discord.gg/gbgEs7m6kK")
+                  img(src=`/static/img/discord-icon-logo.png` alt="Discord" style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); max-height: 48px")
+                p.subtitle.mt-0 Join our Discord for the next announcement!
           .columns.is-centered
             .column.is-half
-              .box.has-text-centered
-                p.title Catch the Netherman Tournament
-                p.subtitle.author-date 2024-02-04 | hosted by Derp | Prize Pool: 50€ 
-                hr
-                img(src=`/static/img/tournamentmaps/CatchtheNetherman-1-run_venice.png`)
-                center 
-                  p.subtitle 
-                    strong run_venice by Assa 
-                center 
-                br
-                p
-                  img(src=`/static/img/medals/gold.png`)
-                  strong Push 35€
-                p(align="left")
-                  img(src=`/static/img/medals/silver.png`)
-                  strong Fudgyking 15€
-                p(align="right")
-                  img(src=`/static/img/medals/bronze.png`)
-                  strong Saix 5€
-                br
-                p.subtitle Tournament Details:
-                p For every record stolen from nether you win 5€. In addition, Assa provided 20€ for the map run_venice.
+              .box.tournament-card
+                .tournament-header.has-text-centered
+                  h1.title.is-size-3.mb-4 Catch the Netherman Tournament
+                  .tournament-meta
+                    p.subtitle.author-date
+                      span.icon.has-text-warning
+                        i.fas.fa-calendar
+                      span 2024-02-04
+                    p.subtitle.author-date
+                      span.icon.has-text-info
+                        i.fas.fa-user
+                      span hosted by <a href="/ranks/player/Derp" style="color: unset">Derp</a>
+                    p.subtitle.author-date
+                      span.icon.has-text-success
+                        i.fas.fa-coins
+                      span Prize Pool: 50€
+                .tournament-map.has-text-centered
+                  a.map-link(href=`/static/img/tournamentmaps/CatchtheNetherman-1-run_venice.png` data-lightbox="tournament-maps")
+                    img.tournament-map-image(src=`/static/img/tournamentmaps/CatchtheNetherman-1-run_venice.png`)
+                  p.subtitle.map-info
+                    span.icon.has-text-info
+                      i.fas.fa-map
+                    strong run_venice by Assa
+                .tournament-results
+                  .medal-row
+                    .medal-info
+                      img.medal-icon(src=`/static/img/medals/gold.png`)
+                      strong.player-name <a href="/ranks/player/Push" style="color: unset">Push</a>
+                    span.prize-amount 35€
+                  .medal-row
+                    .medal-info
+                      img.medal-icon(src=`/static/img/medals/silver.png`)
+                      strong.player-name <a href="/ranks/player/Fudgyking" style="color: unset">Fudgyking</a>
+                    span.prize-amount 15€
+                  .medal-row
+                    .medal-info
+                      img.medal-icon(src=`/static/img/medals/bronze.png`)
+                      strong.player-name <a href="/ranks/player/Saix" style="color: unset">Saix</a>
+                    span.prize-amount 5€
+                .tournament-details
+                  h3.subtitle.has-text-centered.mb-3
+                    span.icon.has-text-warning
+                      i.fas.fa-info-circle
+                    span Tournament Details:
+                  .details-container
+                    p.details-text For every record stolen from nether you win 5€. In addition, Assa provided 20€ for the map run_venice.
           .columns
             .column
-              .box.has-text-centered
-                p.title Short Race Tournament
-                p.subtitle.author-date 2021-01-23 | hosted by Smash | Prize Pool: 80€ 
-                hr
-                img(src=`/static/img/tournamentmaps/SRT-1-run_4Smash.png`)
-                center 
-                  p.subtitle 
+              .box.tournament-card
+                .tournament-header.has-text-centered
+                  h1.title.is-size-3.mb-4 Short Race Tournament
+                  .tournament-meta
+                    p.subtitle.author-date
+                      span.icon.has-text-warning
+                        i.fas.fa-calendar
+                      span 2021-01-23
+                    p.subtitle.author-date
+                      span.icon.has-text-info
+                        i.fas.fa-user
+                      span hosted by Smash
+                    p.subtitle.author-date
+                      span.icon.has-text-success
+                        i.fas.fa-coins
+                      span Prize Pool: 80€
+                .tournament-map.has-text-centered
+                  a.map-link(href=`/static/img/tournamentmaps/SRT-1-run_4Smash.png` data-lightbox="tournament-maps")
+                    img.tournament-map-image(src=`/static/img/tournamentmaps/SRT-1-run_4Smash.png`)
+                  p.subtitle.map-info
+                    span.icon.has-text-info
+                      i.fas.fa-map
                     strong run_4Smash by GELO
-                center 
-                br
-                p
-                  img(src=`/static/img/medals/gold.png`)
-                  strong Saix 40€
-                p(align="left")
-                  img(src=`/static/img/medals/silver.png`)
-                  strong Fudgyking 25€
-                p(align="right")
-                  img(src=`/static/img/medals/bronze.png`)
-                  strong Fabian 15€
-                br
-                p.subtitle Tournament Details:
-                p In a time-based format, the winner goes to whoever is in first place at the end of the 30 minutes!        
+                .tournament-results
+                  .medal-row
+                    .medal-info
+                      img.medal-icon(src=`/static/img/medals/gold.png`)
+                      strong.player-name Saix
+                    span.prize-amount 40€
+                  .medal-row
+                    .medal-info
+                      img.medal-icon(src=`/static/img/medals/silver.png`)
+                      strong.player-name Fudgyking
+                    span.prize-amount 25€
+                  .medal-row
+                    .medal-info
+                      img.medal-icon(src=`/static/img/medals/bronze.png`)
+                      strong.player-name Fabian
+                    span.prize-amount 15€
+                .tournament-details
+                  h3.subtitle.has-text-centered.mb-3
+                    span.icon.has-text-warning
+                      i.fas.fa-info-circle
+                    span Tournament Details:
+                  .details-container
+                    p.details-text In a time-based format, the winner goes to whoever is in first place at the end of the 30 minutes!
             .column
-              .box.has-text-centered
-                p.title TeeSmash Tournament
-                p.subtitle.author-date 2016-07-17 | hosted by Ryozuki | Prize Pool: -
-                hr
-                img(src=`/static/img/tournamentmaps/TeeSmash-1-ts1.png`)
-                center
-                  p.subtitle
+              .box.tournament-card
+                .tournament-header.has-text-centered
+                  h1.title.is-size-3.mb-4 TeeSmash Tournament
+                  .tournament-meta
+                    p.subtitle.author-date
+                      span.icon.has-text-warning
+                        i.fas.fa-calendar
+                      span 2016-07-17
+                    p.subtitle.author-date
+                      span.icon.has-text-info
+                        i.fas.fa-user
+                      span hosted by Ryozuki
+                    p.subtitle.author-date
+                      span.icon.has-text-success
+                        i.fas.fa-coins
+                      span Prize Pool: -
+                .tournament-map.has-text-centered
+                  a.map-link(href=`/static/img/tournamentmaps/TeeSmash-1-ts1.png` data-lightbox="tournament-maps")
+                    img.tournament-map-image(src=`/static/img/tournamentmaps/TeeSmash-1-ts1.png`)
+                  p.subtitle.map-info
+                    span.icon.has-text-info
+                      i.fas.fa-map
                     strong ts1 by heinrich5991
-                center
-                br
-                p
-                  img(src=`/static/img/medals/gold.png`)
-                  strong Beast
-                p(align="left")
-                  img(src=`/static/img/medals/silver.png`)
-                  strong RayB.
-                p(align="right")
-                  img(src=`/static/img/medals/bronze.png`)
-                  strong timakro
-                br
-                p.subtitle Participants:
-                p ChillerDragon, Ryozuki, Tezcan, RedFight, timakro, Kladdy, gdin, FireRed, RayB., Beast, fikmesån, tèíñi94®0cK
+                .tournament-results
+                  .medal-row
+                    .medal-info
+                      img.medal-icon(src=`/static/img/medals/gold.png`)
+                      strong.player-name Beast
+                    span.prize-amount -
+                  .medal-row
+                    .medal-info
+                      img.medal-icon(src=`/static/img/medals/silver.png`)
+                      strong.player-name RayB.
+                    span.prize-amount -      
+                  .medal-row
+                    .medal-info
+                      img.medal-icon(src=`/static/img/medals/bronze.png`)
+                      strong.player-name timakro
+                    span.prize-amount -
+                .tournament-details
+                  h3.subtitle.has-text-centered.mb-3
+                    span.icon.has-text-grey
+                      i.fas.fa-users
+                    span Participants:
+                  .details-container
+                    p.details-text ChillerDragon, Ryozuki, Tezcan, RedFight, timakro, Kladdy, gdin, FireRed, RayB., Beast, fikmesån, tèíñi94®0cK
   
