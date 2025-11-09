@@ -22,6 +22,22 @@ block content
                 if !isNaN(map.Timestamp)
                   p.subtitle 📅 Released on #{map.Timestamp.toISOString().split('T')[0]}
                 p.subtitle 🏁 Finished by #{map.Finishers} tees
+                - var alternateMap = null
+                - var alternateLabel = null
+                - var alternateEmoji = null
+                - var isFastcap = map.Server === 'Fastcap'
+                - var isNoWpns = map.Map.includes('_no_wpns')
+                if isFastcap && !isNoWpns
+                  - alternateMap = map.Map + '_no_wpns'
+                  - alternateLabel = 'No Weapons Version'
+                  - alternateEmoji = '🛡️'
+                else if isFastcap && isNoWpns
+                  - alternateMap = map.Map.replace('_no_wpns', '')
+                  - alternateLabel = 'Weapons Version'
+                  - alternateEmoji = '🚀'
+                if alternateMap
+                  p.subtitle #{alternateEmoji} #{alternateLabel}: 
+                    a(href='/map/'+encodeURIComponent(alternateMap))= alternateMap
                 a.span.button.is-link.is-warning.is-outlined(href='/static/tw-webgl/?map='+encodeURIComponent(`/static/maps/${map.Map}.map`)) Preview
                 a.span.button.is-link.is-warning.is-outlined.tr(href=`/static/maps/${encodeURIComponent(map.Map)}.map`) Download
         br
