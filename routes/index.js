@@ -153,7 +153,13 @@ router.get("/submit", function (req, res, next) {
 //     fs.unlinkSync(req.file.path);
 //     return res.status(201).json({ msg: "Map submission sent." });
 // });
-
+/*
+router.get("/secret", function (req, res, next) {
+    res.render("secret", {
+        title: "Monthly Shorts | Unique",
+    });
+});
+*/
 router.get("/tournaments", function (req, res, next) {
     res.render("tournaments", {
         title: "Tournaments | Unique",
