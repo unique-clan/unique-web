@@ -207,14 +207,19 @@ a:hover {
 .warning-dark-input::placeholder {
   color: #595959;
 }
-a.navbar-item:hover {
+a.navbar-item:not(.navbar-dropdown .navbar-item):hover {
+  color: #e89200;
+  background-color: transparent !important;
+}
+a.navbar-item:not(.navbar-dropdown .navbar-item):active {
+  color: #e89200;
+  background-color: transparent !important;
+}
+a.navbar-item:not(.navbar-dropdown .navbar-item):focus {
   color: #e89200;
 }
-a.navbar-item:active {
-  color: #e89200;
-}
-a.navbar-item:focus {
-  color: #e89200;
+a.navbar-item {
+  transition: color 0.2s ease;
 }
 .navbar {
   box-shadow: 0 2px 0 0 #eeeeee;
@@ -1336,16 +1341,51 @@ html.dark-mode .month-card .month-winners p,
 .navbar-item.has-dropdown .navbar-link {
   color: #4a4a4a;
   background-color: transparent;
+  transition: color 0.2s ease;
 }
 .navbar-item.has-dropdown .navbar-link:hover {
-  color: #c68b25;
+  color: #e89200;
   background-color: transparent;
+}
+.navbar-item.has-dropdown .navbar-link::after {
+  border-color: #4a4a4a;
+  transition: border-color 0.2s ease;
+}
+.navbar-item.has-dropdown .navbar-link:hover::after {
+  border-color: #e89200;
 }
 html.dark-mode .navbar-item.has-dropdown .navbar-link,
 [data-theme="dark"] .navbar-item.has-dropdown .navbar-link {
   color: #f5f5f5;
+  background-color: transparent;
 }
 html.dark-mode .navbar-item.has-dropdown .navbar-link:hover,
 [data-theme="dark"] .navbar-item.has-dropdown .navbar-link:hover {
-  color: #c68b25;
+  color: #e89200;
+  background-color: transparent;
+}
+html.dark-mode .navbar-item.has-dropdown .navbar-link::after,
+[data-theme="dark"] .navbar-item.has-dropdown .navbar-link::after {
+  border-color: #f5f5f5 !important;
+}
+html.dark-mode .navbar-item.has-dropdown .navbar-link:hover::after,
+[data-theme="dark"] .navbar-item.has-dropdown .navbar-link:hover::after {
+  border-color: #e89200 !important;
+}
+.navbar-dropdown .navbar-item:hover {
+  color: #e89200 !important;
+}
+html.dark-mode a.navbar-item:not(.navbar-dropdown .navbar-item):hover,
+[data-theme="dark"] a.navbar-item:not(.navbar-dropdown .navbar-item):hover {
+  color: #e89200;
+  background-color: transparent !important;
+}
+html.dark-mode a.navbar-item:not(.navbar-dropdown .navbar-item):active,
+[data-theme="dark"] a.navbar-item:not(.navbar-dropdown .navbar-item):active {
+  color: #e89200;
+  background-color: transparent !important;
+}
+html.dark-mode a.navbar-item:not(.navbar-dropdown .navbar-item):focus,
+[data-theme="dark"] a.navbar-item:not(.navbar-dropdown .navbar-item):focus {
+  color: #e89200;
 }
