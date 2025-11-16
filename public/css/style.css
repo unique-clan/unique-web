@@ -1116,6 +1116,9 @@ html.dark-mode .indicator.active,
 [data-theme="dark"] .indicator.active {
   background: #c68b25;
 }
+.has-text-brown {
+  color: #cd7f32 !important;
+}
 @media screen and (max-width: 768px) {
   .video-carousel {
     gap: 1rem;
@@ -1248,130 +1251,100 @@ html.dark-mode .time-display,
     padding: 0.5rem;
   }
 }
-
-/* Monthly Shorts Archive Styles */
 .month-card {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   height: 100%;
   min-height: 200px;
 }
-
 .month-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 }
-
 .month-card .card-content {
   padding: 1.5rem;
 }
-
 .month-card .month-winners .column {
   padding: 0.25rem 0.75rem;
 }
-
 .month-card .month-winners p {
   margin-bottom: 0;
   font-size: 0.9rem;
 }
-
 .month-title {
   font-size: 1.5rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
   color: #363636;
 }
-
 .month-subtitle {
   font-size: 0.9rem;
   color: #7a7a7a;
 }
-
-/* Category Cards for Detail Page */
 .category-cards-grid {
   margin-top: 2rem;
 }
-
 .category-card .card-content {
   padding: 2rem;
   display: flex;
   flex-direction: column;
   min-height: 100%;
 }
-
 .category-card .level.is-mobile {
   margin-bottom: 0 !important;
 }
-
 .category-card .level-left {
   flex-shrink: 0;
   margin-right: auto;
 }
-
 .category-card .level-right {
   flex-shrink: 0;
   margin-left: auto;
 }
-
 .category-card .level-item {
   margin: 0 !important;
 }
-
 .category-card .buttons {
   flex-wrap: wrap;
 }
-
 .category-card .button {
   margin: 0 !important;
 }
-
-/* Dark Mode for Monthly Shorts */
 html.dark-mode .month-title,
 [data-theme="dark"] .month-title {
   color: #f5f5f5;
 }
-
 html.dark-mode .month-subtitle,
 [data-theme="dark"] .month-subtitle {
   color: #b5b5b5;
 }
-
 html.dark-mode .month-card .month-winners p,
 [data-theme="dark"] .month-card .month-winners p {
   color: #f5f5f5;
 }
-
-/* Responsive adjustments */
 @media (max-width: 768px) {
   .category-cards-grid .column {
     flex: 0 0 100% !important;
     max-width: 100%;
-  }
-  
+  }  
   .month-card .card-content {
     padding: 1.5rem;
-  }
-  
+  }  
   .month-title {
     font-size: 1.25rem;
   }
 }
-
-/* Navigation - Make navbar-link look like navbar-item */
 .navbar-item.has-dropdown .navbar-link {
   color: #4a4a4a;
   background-color: transparent;
 }
-
 .navbar-item.has-dropdown .navbar-link:hover {
   color: #c68b25;
   background-color: transparent;
 }
-
 html.dark-mode .navbar-item.has-dropdown .navbar-link,
 [data-theme="dark"] .navbar-item.has-dropdown .navbar-link {
   color: #f5f5f5;
 }
-
 html.dark-mode .navbar-item.has-dropdown .navbar-link:hover,
 [data-theme="dark"] .navbar-item.has-dropdown .navbar-link:hover {
   color: #c68b25;
