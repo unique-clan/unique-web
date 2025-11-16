@@ -1389,3 +1389,20 @@ html.dark-mode a.navbar-item:not(.navbar-dropdown .navbar-item):focus,
 [data-theme="dark"] a.navbar-item:not(.navbar-dropdown .navbar-item):focus {
   color: #e89200;
 }
+.navbar-dropdown {
+  background-color: var(--navbar-background) !important;
+}
+@media screen and (min-width: 1024px) {
+  .navbar-dropdown a.navbar-item:not(.is-active, .is-selected) {
+    background-color: #eff3f4;
+    color: hsl(var(--bulma-navbar-dropdown-item-h), var(--bulma-navbar-dropdown-item-s), var(--bulma-navbar-dropdown-item-color-l));
+  }
+  html.dark-mode .navbar-dropdown a.navbar-item:not(.is-active, .is-selected),
+  [data-theme="dark"] .navbar-dropdown a.navbar-item:not(.is-active, .is-selected) {
+    background-color: #14161a;
+    color: #f5f5f5;
+  }
+}
+html.dark-mode .navbar-dropdown {
+  background-color: #14161a !important;
+}
