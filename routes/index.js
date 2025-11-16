@@ -153,13 +153,127 @@ router.get("/submit", function (req, res, next) {
 //     fs.unlinkSync(req.file.path);
 //     return res.status(201).json({ msg: "Map submission sent." });
 // });
-/*
+
 router.get("/secret", function (req, res, next) {
     res.render("secret", {
         title: "Monthly Shorts | Unique",
     });
 });
-*/
+
+router.get("/monthlyshorts", function (req, res, next) {
+    // Generate months data (example: January 2024 - December 2027)
+    const allMonths = [];
+    const monthNames = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
+    
+    // Generate months from 2024 to 2027
+    for (let year = 2024; year <= 2027; year++) {
+        for (let month = 0; month < 12; month++) {
+            allMonths.push({
+                year: year,
+                monthNumber: month + 1,
+                monthName: monthNames[month],
+                description: "5 Categories Available"
+            });
+        }
+    }
+    
+    // Reverse to show newest first
+    allMonths.reverse();
+    
+    // Filter by search query
+    let filteredMonths = allMonths;
+    let search = null;
+    if (typeof req.query.search === "string" && req.query.search.trim()) {
+        search = req.query.search.trim().toLowerCase();
+        filteredMonths = allMonths.filter(m => 
+            m.monthName.toLowerCase().includes(search) || 
+            m.year.toString().includes(search)
+        );
+    }
+    
+    // Pagination
+    const pageCount = Math.ceil(filteredMonths.length / 30);
+    const page = Math.min(Math.max(1, req.query.page), pageCount) || 1;
+    const paginatedMonths = filteredMonths.slice((page - 1) * 30, page * 30);
+    
+    res.render("monthlyshorts", {
+        title: "Monthly Shorts Archive | Unique",
+        page: page,
+        pageCount: pageCount,
+        months: paginatedMonths,
+        search: search,
+    });
+});
+
+router.get("/monthlyshorts/:year/:month", async function (req, res, next) {
+    const monthNames = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
+    
+    const year = parseInt(req.params.year);
+    const monthNumber = parseInt(req.params.month);
+    
+    // Validate year and month
+    if (isNaN(year) || isNaN(monthNumber) || monthNumber < 1 || monthNumber > 12) {
+        res.status(404).render("error", { message: "Not Found", error: { status: 404 } });
+        return;
+    }
+    
+    const monthName = monthNames[monthNumber - 1];
+    
+    // TODO: Fetch real data from database
+    // For now, using placeholder data
+    const stats = {
+        fullspeed: { winner: "Player1", time: "12.34", points: 150 },
+        hook: { winner: "Player2", time: "45.67", points: 140 },
+        skill: { winner: "Player3", time: "23.45", points: 135 },
+        lol: { winner: "Player4", time: "56.78", points: 130 },
+        fastcap: { winner: "Player5", time: "34.56", points: 125 }
+    };
+    
+    const topPoints = [
+        { rank: 1, name: "Player1", points: 500 },
+        { rank: 2, name: "Player2", points: 450 },
+        { rank: 3, name: "Player3", points: 400 },
+        { rank: 4, name: "Player4", points: 380 },
+        { rank: 5, name: "Player5", points: 350 }
+    ];
+    
+    const records = [
+        { category: "Fullspeed", player: "Player1", time: "12.34" },
+        { category: "Hook", player: "Player2", time: "45.67" },
+        { category: "Skill", player: "Player3", time: "23.45" },
+        { category: "LOL", player: "Player4", time: "56.78" },
+        { category: "Fastcap", player: "Player5", time: "34.56" }
+    ];
+    
+    res.render("monthlyshort-detail", {
+        title: `${monthName} ${year} - Monthly Shorts | Unique`,
+        year: year,
+        monthNumber: monthNumber,
+        monthName: monthName,
+        stats: stats,
+        topPoints: topPoints,
+        records: records
+    });
+});
+
+router.get("/monthlyshorts/:year/:month/:category/preview", function (req, res, next) {
+    // Placeholder for preview functionality
+    // This would typically open the map in a viewer or redirect to the map preview page
+    res.send(`Preview for ${req.params.category} - ${req.params.month}/${req.params.year}`);
+});
+
+router.get("/monthlyshorts/:year/:month/:category/download", function (req, res, next) {
+    // Placeholder for download functionality
+    // This would typically serve the map file for download
+    res.send(`Download ${req.params.category} map for ${req.params.month}/${req.params.year}`);
+});
+
 router.get("/tournaments", function (req, res, next) {
     res.render("tournaments", {
         title: "Tournaments | Unique",

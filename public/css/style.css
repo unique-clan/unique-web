@@ -47,19 +47,6 @@ a:hover {
 .no-overflow {
   overflow: hidden;
 }
-.author-image {
-  position: absolute;
-  top: -30px;
-  left: 50%;
-  width: 60px;
-  height: 60px;
-  margin-left: -30px;
-  border: 3px solid #ccc;
-  border-radius: 50%;
-}
-.article, .promo-block {
-  margin-top: 2rem;
-}
 .article-title {
   line-height: 2;
 }
@@ -258,15 +245,6 @@ a.navbar-item:focus {
   top: -70px;
   visibility: hidden;
 }
-.playerranks-header {
-  max-width: 800px;
-  margin-bottom: 24px;
-}
-.playerranks-header .column .subtitle {
-  display: inline-block;
-  margin-right: 30px;
-  margin-bottom: 0;
-}
 .unfinished-maps {
   margin-top: 20px;
   margin-bottom: 40px;
@@ -376,6 +354,9 @@ html, body {
 html.dark-mode .invert-in-dark-mode,
 [data-theme="dark"] .invert-in-dark-mode {
   filter: invert(1) hue-rotate(180deg);
+}
+html.dark-mode hr {
+  background-color: rgba(255, 255, 255, 0.1);
 }
 .button.is-small#darkModeToggle {
   background-color: #EFF3F4;
@@ -658,12 +639,6 @@ html.dark-mode, [data-theme="dark"] {
   .server-address {
     color: #a0a0a0;
   }
-}
-.member-hero {
-  background: linear-gradient(135deg, rgba(198, 139, 37, 0.05) 0%, rgba(255, 165, 0, 0.05) 100%);
-  border-radius: 16px;
-  padding: 3rem 2rem 2rem 2rem;
-  margin-bottom: 2rem;
 }
 .member-section-header {
   display: flex;
@@ -984,18 +959,11 @@ html.dark-mode .member-cards h4,
 [data-theme="dark"] .member-cards h4 {
   color: #aaa;
 }
-html.dark-mode .member-hero,
-[data-theme="dark"] .member-hero {
-  background: linear-gradient(135deg, rgba(198, 139, 37, 0.08) 0%, rgba(255, 165, 0, 0.08) 100%);
-}
 html.dark-mode .member-section-header,
 [data-theme="dark"] .member-section-header {
   border-bottom-color: rgba(198, 139, 37, 0.15);
 }
 @media screen and (max-width: 768px) {
-  .member-hero {
-    padding: 2rem 1rem;
-  }
   .member-section-header {
     flex-direction: column;
     align-items: flex-start;
@@ -1132,357 +1100,279 @@ html.dark-mode .box.has-background-warning-light p,
 .indicator:hover {
   background: #FFA500;
 }
-.tournament-slider-section {
-  margin-bottom: 3rem;
-}
-.tournament-slider-container {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  margin: 2rem auto 0;
-  padding: 0 1rem;
-}
-.slider-nav-btn {
-  background: linear-gradient(135deg, #c68b25, #FFA500);
-  border: none;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  color: white;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 12px rgba(198, 139, 37, 0.3);
-  flex-shrink: 0;
-  align-self: center;
-  position: relative;
-  z-index: 10;
-}
-.slider-nav-btn:hover {
-  transform: scale(1.1);
-  box-shadow: 0 6px 16px rgba(198, 139, 37, 0.5);
-}
-.slider-nav-btn:active {
-  transform: scale(0.95);
-}
-.tournament-slider-main {
-  flex: 1;
-  overflow-x: hidden;
-  overflow-y: visible;
-  min-width: 0;
-  scroll-snap-type: x mandatory;
-}
-.slider-track {
-  display: flex;
-  transition: transform 0.5s ease-in-out;
-}
-.slider-item {
-  min-width: 100%;
-  flex-shrink: 0;
-  box-sizing: border-box;
-  padding: 1rem 0;
-  scroll-snap-align: start;
-}
-.slider-item article {
-  width: 100%;
-  overflow: visible;
-}
-.slider-item .notification {
-  overflow: visible;
-}
-.slider-item .title {
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  white-space: normal;
-}
-.simple-tournament-card {
-  padding: 3rem 2rem;
-}
-.slider-indicators {
-  display: flex;
-  justify-content: center;
-  gap: 0.75rem;
-  margin-top: 1.5rem;
-  position: relative;
-  z-index: 10;
-}
-.slider-dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: #dbdbdb;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-.slider-dot:hover {
-  background: #b5b5b5;
-  transform: scale(1.2);
-}
-.slider-dot.active {
-  background: #c68b25;
-  transform: scale(1.3);
-}
-.podium-container {
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  gap: 1.5rem;
-  margin: 2rem auto;
-  max-width: 700px;
-  padding: 0 1rem;
-}
-.points-champion-section .tournament-slider-container {
-  justify-content: center;
-}
-.podium-place {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  flex: 1;
-}
-.podium-trophy {
-  margin-bottom: 1rem;
-  min-height: 70px;
-  display: flex;
-  align-items: flex-end;
-}
-.podium-block {
-  width: 100%;
-  border-radius: 8px 8px 0 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  font-size: 1.75rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-.podium-rank {
-  color: white;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-.podium-block-first {
-  height: 160px;
-  background: linear-gradient(135deg, #FFD700, #FFC700);
-}
-.podium-block-first .podium-rank {
-  color: white;
-  font-size: 2rem;
-  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
-}
-.podium-block-second {
-  height: 130px;
-  background: linear-gradient(135deg, #C0C0C0, #A8A8A8);
-}
-.podium-block-second .podium-rank {
-  color: white;
-  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
-}
-.podium-block-third {
-  height: 105px;
-  background: linear-gradient(135deg, #CD7F32, #B86F28);
-}
-.podium-block-third .podium-rank {
-  color: white;
-  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
-}
-.podium-block-fourth {
-  height: 85px;
-  background: linear-gradient(135deg, #e67e22, #d35400);
-}
-.podium-block-fifth {
-  height: 70px;
-  background: linear-gradient(135deg, #e74c3c, #c0392b);
-}
-.podium-info {
-  margin-top: 1rem;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-.podium-info .player-name {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #363636;
-}
-.podium-info .prize-time {
-  font-size: 1.1rem;
-  font-weight: 500;
-  color: #4a4a4a;
-}
-.remaining-ranks {
-  max-width: 400px;
-  margin: 0 auto;
-}
-.rank-row {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 0.75rem 1rem;
-  margin-bottom: 0.5rem;
-  background: #f5f5f5;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-}
-.rank-row:hover {
-  background: #eeeeee;
-  transform: translateX(5px);
-}
-.rank-badge {
-  background: #dbdbdb;
-  color: #363636;
-  font-weight: bold;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-.rank-row .player-name {
-  flex: 1;
-  color: #363636;
-}
-.rank-row .prize-time {
-  color: #7a7a7a;
-  font-weight: 500;
-}
-.rank-info {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-.rank-number {
-  font-weight: bold;
-  color: #4a4a4a;
-  min-width: 35px;
-  text-align: center;
-  font-size: 1rem;
-}
-.has-text-brown {
-  color: #cd7f32 !important;
-}
 html.dark-mode .carousel-btn,
-html.dark-mode .slider-nav-btn,
-[data-theme="dark"] .carousel-btn,
-[data-theme="dark"] .slider-nav-btn {
+[data-theme="dark"] .carousel-btn {
   box-shadow: 0 4px 12px rgba(198, 139, 37, 0.5);
 }
 html.dark-mode .carousel-btn:hover,
-html.dark-mode .slider-nav-btn:hover,
-[data-theme="dark"] .carousel-btn:hover,
-[data-theme="dark"] .slider-nav-btn:hover {
+[data-theme="dark"] .carousel-btn:hover {
   box-shadow: 0 6px 16px rgba(198, 139, 37, 0.7);
 }
 html.dark-mode .indicator,
-html.dark-mode .slider-dot,
-[data-theme="dark"] .indicator,
-[data-theme="dark"] .slider-dot {
+[data-theme="dark"] .indicator {
   background: #4a4a4a;
 }
 html.dark-mode .indicator.active,
-html.dark-mode .slider-dot.active,
-[data-theme="dark"] .indicator.active,
-[data-theme="dark"] .slider-dot.active {
+[data-theme="dark"] .indicator.active {
   background: #c68b25;
 }
-html.dark-mode .podium-info .player-name,
-[data-theme="dark"] .podium-info .player-name {
-  color: white;
-}
-html.dark-mode .podium-info .prize-time,
-[data-theme="dark"] .podium-info .prize-time {
-  color: #dbdbdb;
-}
-html.dark-mode .rank-row,
-[data-theme="dark"] .rank-row {
-  background: #2b2b2b;
-}
-html.dark-mode .rank-row:hover,
-[data-theme="dark"] .rank-row:hover {
-  background: #363636;
-}
-html.dark-mode .rank-row .player-name,
-[data-theme="dark"] .rank-row .player-name {
-  color: white;
-}
-html.dark-mode .rank-row .prize-time,
-[data-theme="dark"] .rank-row .prize-time {
-  color: #a0a0a0;
-}
-html.dark-mode .rank-badge,
-[data-theme="dark"] .rank-badge {
-  background: #4a4a4a;
-  color: white;
-}
 @media screen and (max-width: 768px) {
-  .video-carousel,
-  .tournament-slider-container {
+  .video-carousel {
     gap: 1rem;
     padding: 0 0.5rem;
   }
-  .carousel-btn,
-  .slider-nav-btn {
+  .carousel-btn {
     width: 40px;
     height: 40px;
   }
-  .podium-container {
-    gap: 1rem;
-    padding: 0 0.5rem;
-  }
-  .podium-trophy {
-    min-height: 50px;
-  }
-  .podium-block-first {
-    height: 120px;
-  }
-  .podium-block-second {
-    height: 100px;
-  }
-  .podium-block-third {
-    height: 85px;
-  }
-  .podium-block-fourth {
-    height: 70px;
-  }
-  .podium-block-fifth {
-    height: 60px;
-  }
 }
 @media screen and (max-width: 480px) {
-  .carousel-btn,
-  .slider-nav-btn {
+  .carousel-btn {
     width: 35px;
     height: 35px;
   }
-  .podium-container {
-    gap: 0.5rem;
-  }
-  .podium-info .player-name {
-    font-size: 0.85rem;
-  }
-  .podium-info .prize-time {
-    font-size: 0.95rem;
-  }
 }
-.box-header {
-  transition: background-color 0.2s ease;
+.monthly-champions-section .box,
+.points-champion-section .box {
+  padding: 2rem;
+  border-radius: 8px;
 }
-.box-header:hover {
-  background-color: rgba(0, 0, 0, 0.05);
+.map-cards-grid {
+  margin-top: 2rem;
 }
-[data-theme="dark"] .box-header {
-  border-bottom-color: #4a4a4a !important;
-}
-[data-theme="dark"] .box-header:hover {
-  background-color: rgba(255, 255, 255, 0.05);
-}
-.timeline-content {
+.map-card {
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: left;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  background: #f5f5f5;
   transition: all 0.3s ease;
 }
-.box-header .icon {
-  transition: transform 0.3s ease;
+.map-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background: #ebebeb;
+}
+.map-card strong {
+  color: #363636;
+}
+.map-card small {
+  color: #7a7a7a;
+}
+.champions-table {
+  font-size: 0.95rem;
+}
+.champions-table thead th {
+  border-bottom: 1px solid #dbdbdb;
+  font-weight: 600;
+  padding: 1rem 0.75rem;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+.champions-table thead th .icon {
+  display: inline-block;
+  margin-right: 0.25rem;
+  vertical-align: middle;
+}
+.champions-table tbody tr {
+  transition: none;
+}
+.champions-table td {
+  padding: 1rem 0.75rem;
+  vertical-align: middle;
+}
+.rank-cell {
+  width: 80px;
+  font-weight: 600;
+}
+.time-display {
+  font-size: 0.85rem;
+  color: #7a7a7a;
+  font-family: 'Courier New', monospace;
+}
+html.dark-mode .map-card strong,
+[data-theme="dark"] .map-card strong {
+  color: white;
+}
+html.dark-mode .map-card small,
+[data-theme="dark"] .map-card small {
+  color: #a0a0a0;
+}
+html.dark-mode .map-card,
+[data-theme="dark"] .map-card {
+  background: rgba(255, 255, 255, 0.05);
+}
+html.dark-mode .map-card:hover,
+[data-theme="dark"] .map-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+html.dark-mode .champions-table thead th,
+[data-theme="dark"] .champions-table thead th {
+  border-bottom-color: #4a4a4a;
+}
+html.dark-mode .champions-table tbody tr:hover,
+[data-theme="dark"] .champions-table tbody tr:hover {
+  background: transparent !important;
+}
+html.dark-mode .time-display,
+[data-theme="dark"] .time-display {
+  color: #a0a0a0;
+}
+@media screen and (max-width: 1024px) {
+  .champions-table {
+    font-size: 0.85rem;
+  }
+  .champions-table td,
+  .champions-table th {
+    padding: 0.75rem 0.5rem;
+  }
+  .map-card {
+    padding: 0.75rem;
+  }
+}
+@media screen and (max-width: 768px) {
+  .champions-table {
+    font-size: 0.75rem;
+  }
+  .time-display {
+    font-size: 0.75rem;
+  }
+  .monthly-champions-section .box,
+  .points-champion-section .box {
+    padding: 1rem;
+  }
+  .map-cards-grid .column {
+    padding: 0.5rem;
+  }
+}
+
+/* Monthly Shorts Archive Styles */
+.month-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  height: 100%;
+  min-height: 200px;
+}
+
+.month-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.month-card .card-content {
+  padding: 1.5rem;
+}
+
+.month-card .month-winners .column {
+  padding: 0.25rem 0.75rem;
+}
+
+.month-card .month-winners p {
+  margin-bottom: 0;
+  font-size: 0.9rem;
+}
+
+.month-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #363636;
+}
+
+.month-subtitle {
+  font-size: 0.9rem;
+  color: #7a7a7a;
+}
+
+/* Category Cards for Detail Page */
+.category-cards-grid {
+  margin-top: 2rem;
+}
+
+.category-card .card-content {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.category-card .level.is-mobile {
+  margin-bottom: 0 !important;
+}
+
+.category-card .level-left {
+  flex-shrink: 0;
+  margin-right: auto;
+}
+
+.category-card .level-right {
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.category-card .level-item {
+  margin: 0 !important;
+}
+
+.category-card .buttons {
+  flex-wrap: wrap;
+}
+
+.category-card .button {
+  margin: 0 !important;
+}
+
+/* Dark Mode for Monthly Shorts */
+html.dark-mode .month-title,
+[data-theme="dark"] .month-title {
+  color: #f5f5f5;
+}
+
+html.dark-mode .month-subtitle,
+[data-theme="dark"] .month-subtitle {
+  color: #b5b5b5;
+}
+
+html.dark-mode .month-card .month-winners p,
+[data-theme="dark"] .month-card .month-winners p {
+  color: #f5f5f5;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .category-cards-grid .column {
+    flex: 0 0 100% !important;
+    max-width: 100%;
+  }
+  
+  .month-card .card-content {
+    padding: 1.5rem;
+  }
+  
+  .month-title {
+    font-size: 1.25rem;
+  }
+}
+
+/* Navigation - Make navbar-link look like navbar-item */
+.navbar-item.has-dropdown .navbar-link {
+  color: #4a4a4a;
+  background-color: transparent;
+}
+
+.navbar-item.has-dropdown .navbar-link:hover {
+  color: #c68b25;
+  background-color: transparent;
+}
+
+html.dark-mode .navbar-item.has-dropdown .navbar-link,
+[data-theme="dark"] .navbar-item.has-dropdown .navbar-link {
+  color: #f5f5f5;
+}
+
+html.dark-mode .navbar-item.has-dropdown .navbar-link:hover,
+[data-theme="dark"] .navbar-item.has-dropdown .navbar-link:hover {
+  color: #c68b25;
 }
