@@ -224,31 +224,63 @@ router.get("/monthlyshorts/:year/:month", async function (req, res, next) {
     }
     
     const monthName = monthNames[monthNumber - 1];
-    
-    // TODO: Fetch real data from database
+
+    // TODO update and use own database
+    // fetch shorts maps
+    const connection = await sql.newMysqlConn();
+    const [
+        monthlyMaps,
+    ] = await connection.execute(
+        "SELECT Map, Server, Mapper, Timestamp FROM record_maps WHERE YEAR(Timestamp) = ? AND MONTH(Timestamp) = ?;",
+        [year, monthNumber],
+    );
+
+    let top5PerMap = {}
+
     // For now, using placeholder data
-    const stats = {
-        fullspeed: { winner: "Player1", time: "12.34", points: 150 },
-        hook: { winner: "Player2", time: "45.67", points: 140 },
-        skill: { winner: "Player3", time: "23.45", points: 135 },
-        lol: { winner: "Player4", time: "56.78", points: 130 },
-        fastcap: { winner: "Player5", time: "34.56", points: 125 }
+    var mapNames = []
+    for (let i = 0; i < monthlyMaps.length; i++) {
+        // fetch top 5 for each
+        top5PerMap[monthlyMaps[i].Server] = await connection.execute(
+            "SELECT Name, Timestamp, MIN(Time) AS BestTime FROM record_race WHERE YEAR(Timestamp) = ? AND MONTH(Timestamp) = ? AND Map = ? GROUP BY Name ORDER BY BestTime ASC LIMIT 5;",
+            [year, monthNumber, monthlyMaps[i].Map],
+        );
+        mapNames.push(monthlyMaps[i].Map)
+    }
+
+    // TODO: IDK
+    const [
+        top5Points,
+    ] = await connection.execute(
+        "SELECT RANK() OVER (ORDER BY Points DESC) AS rank, Name, Points FROM (SELECT Name, SUM(cache_points.Points) as Points FROM cache_points JOIN record_maps ON cache_points.Map = record_maps.Map WHERE cache_points.Map IN (?) GROUP BY Name) v WHERE Points > 0 ORDER BY Points DESC LIMIT 5;",
+        //"SELECT Name, SUM(Points) AS TotalPoints FROM cache_points WHERE Map IN (?) GROUP BY Name ORDER BY TotalPoints DESC LIMIT 5",
+        [mapNames.join(', ')],
+    );
+
+    debug(top5Points)
+
+    let stats = {
+        fullspeed: { winner: top5PerMap.fullspeed?.[0]?.name, time: top5PerMap.fullspeed?.[0]?.time, points: 'TBD' },
+        hook: { winner: top5PerMap.hook?.[0]?.name, time:  top5PerMap.hook?.[0]?.time, points: 'TBD' },
+        skill: { winner: top5PerMap.skill?.[0]?.name, time:  top5PerMap.skill?.[0]?.time, points: 'TBD' },
+        lol: { winner: top5PerMap.lol?.[0]?.name, time:  top5PerMap.lol?.[0]?.time, points: 'TBD' },
+        fastcap: { winner: top5PerMap.fastcap?.[0]?.name, time:  top5PerMap.fastcap?.[0]?.time, points: 'TBD' }
     };
     
     const topPoints = [
-        { rank: 1, name: "Player1", points: 500 },
-        { rank: 2, name: "Player2", points: 450 },
-        { rank: 3, name: "Player3", points: 400 },
-        { rank: 4, name: "Player4", points: 380 },
-        { rank: 5, name: "Player5", points: 350 }
+        { rank: 1, name: "Player1", points: 'TBD' },
+        { rank: 2, name: "Player2", points: 'TBD' },
+        { rank: 3, name: "Player3", points: 'TBD' },
+        { rank: 4, name: "Player4", points: 'TBD' },
+        { rank: 5, name: "Player5", points: 'TBD' }
     ];
     
     const records = [
-        { category: "Fullspeed", player: "Player1", time: "12.34" },
-        { category: "Hook", player: "Player2", time: "45.67" },
-        { category: "Skill", player: "Player3", time: "23.45" },
-        { category: "LOL", player: "Player4", time: "56.78" },
-        { category: "Fastcap", player: "Player5", time: "34.56" }
+        { category: "Fullspeed", player: top5PerMap.fullspeed?.[0]?.name, time:  top5PerMap.fullspeed?.[0]?.time },
+        { category: "Hook", player: top5PerMap.hook?.[0]?.name, time:  top5PerMap.hook?.[0]?.time },
+        { category: "Skill", player: top5PerMap.skill?.[0]?.name, time:  top5PerMap.skill?.[0]?.time },
+        { category: "LOL", player: top5PerMap.lol?.[0]?.name, time:  top5PerMap.lol?.[0]?.time },
+        { category: "Fastcap", player: top5PerMap.fastcap?.[0]?.name, time:  top5PerMap.fastcap?.[0]?.time }
     ];
     
     res.render("monthlyshort-detail", {
