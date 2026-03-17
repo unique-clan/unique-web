@@ -24,7 +24,7 @@
     "mysql2": "^3.19.1",
     "node-cache": "^5.1.2",
     "node-thumbnail": "^0.15.0",
-    "pug": "3.0.3",
+    "pug": "3.0.4",
     "serve-favicon": "~2.5.1"
   }
 }
