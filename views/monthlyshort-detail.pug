@@ -1,0 +1,325 @@
+extends layout
+
+block content
+  main
+    br
+    section.section
+      .container
+        h1.title.has-text-centered= monthName + ' ' + year + ' - Monthly Shorts'
+        hr
+        
+        .columns.is-multiline.category-cards-grid
+          .column.is-one-fifth
+            .card.category-card(data-category="fullspeed")
+              .card-content.has-text-centered
+                .has-text-centered(style="margin-bottom: 1rem;")
+                  span.icon.is-large(style="color: #3273dc;")
+                    i.fas.fa-rocket.fa-3x
+                p.title.is-4.mb-4 Fullspeed
+                p.subtitle.is-6(style="margin-top: 10px; font-size: 0.9rem;")
+                  | 🏆 timakro
+                  br
+                  | ⏱️ 120.456s
+                  br
+                  | 🏁 342 finishes
+                p.is-size-7.has-text-grey-light(style="margin-top: 5px; margin-bottom: 20px;") run_venice by Assa
+                .level.is-mobile(style="margin-top: auto; margin-bottom: 0;")
+                  .level-left
+                    .level-item
+                      a.button.is-link.is-warning.is-outlined.is-small(href=`/static/tw-webgl/?map=/static/monthlyshorts/${year}/${monthNumber}/fullspeed.map`) Preview
+                  .level-right
+                    .level-item
+                      a.button.is-link.is-warning.is-outlined.is-small(href=`/static/monthlyshorts/${year}/${monthNumber}/fullspeed.map`, download) Download
+          
+          .column.is-one-fifth
+            .card.category-card(data-category="hook")
+              .card-content.has-text-centered
+                .has-text-centered(style="margin-bottom: 1rem;")
+                  span.icon.is-large(style="color: #ff8c00;")
+                    i.fas.fa-link.fa-3x
+                p.title.is-4.mb-4 Hook
+                p.subtitle.is-6(style="margin-top: 10px; font-size: 0.9rem;")
+                  | 🏆 Assa
+                  br
+                  | ⏱️ 240.500s
+                  br
+                  | 🏁 215 finishes
+                p.is-size-7.has-text-grey-light(style="margin-top: 5px; margin-bottom: 20px;") hook_tower by Ryozuki
+                .level.is-mobile(style="margin-top: auto; margin-bottom: 0;")
+                  .level-left
+                    .level-item
+                      a.button.is-link.is-warning.is-outlined.is-small(href=`/static/tw-webgl/?map=/static/monthlyshorts/${year}/${monthNumber}/hook.map`) Preview
+                  .level-right
+                    .level-item
+                      a.button.is-link.is-warning.is-outlined.is-small(href=`/static/monthlyshorts/${year}/${monthNumber}/hook.map`, download) Download
+          
+          .column.is-one-fifth
+            .card.category-card(data-category="skill")
+              .card-content.has-text-centered
+                .has-text-centered(style="margin-bottom: 1rem;")
+                  span.icon.is-large(style="color: #28a745;")
+                    i.fas.fa-crosshairs.fa-3x
+                p.title.is-4.mb-4 Skill
+                p.subtitle.is-6(style="margin-top: 10px; font-size: 0.9rem;")
+                  | 🏆 Tezcan
+                  br
+                  | ⏱️ 65.800s
+                  br
+                  | 🏁 189 finishes
+                p.is-size-7.has-text-grey-light(style="margin-top: 5px; margin-bottom: 20px;") skillmap_pro by timakro
+                .level.is-mobile(style="margin-top: auto; margin-bottom: 0;")
+                  .level-left
+                    .level-item
+                      a.button.is-link.is-warning.is-outlined.is-small(href=`/static/tw-webgl/?map=/static/monthlyshorts/${year}/${monthNumber}/skill.map`) Preview
+                  .level-right
+                    .level-item
+                      a.button.is-link.is-warning.is-outlined.is-small(href=`/static/monthlyshorts/${year}/${monthNumber}/skill.map`, download) Download
+          
+          .column.is-one-fifth
+            .card.category-card(data-category="lol")
+              .card-content.has-text-centered
+                .has-text-centered(style="margin-bottom: 1rem;")
+                  span.icon.is-large(style="color: #dc143c;")
+                    i.fas.fa-laugh.fa-3x
+                p.title.is-4.mb-4 LOL
+                p.subtitle.is-6(style="margin-top: 10px; font-size: 0.9rem;")
+                  | 🏆 Ryozuki
+                  br
+                  | ⏱️ 138.500s
+                  br
+                  | 🏁 167 finishes
+                p.is-size-7.has-text-grey-light(style="margin-top: 5px; margin-bottom: 20px;") lolmap_2 by Assa
+                .level.is-mobile(style="margin-top: auto; margin-bottom: 0;")
+                  .level-left
+                    .level-item
+                      a.button.is-link.is-warning.is-outlined.is-small(href=`/static/tw-webgl/?map=/static/monthlyshorts/${year}/${monthNumber}/lol.map`) Preview
+                  .level-right
+                    .level-item
+                      a.button.is-link.is-warning.is-outlined.is-small(href=`/static/monthlyshorts/${year}/${monthNumber}/lol.map`, download) Download
+          
+          .column.is-one-fifth
+            .card.category-card(data-category="fastcap")
+              .card-content.has-text-centered
+                .has-text-centered(style="margin-bottom: 1rem;")
+                  span.icon.is-large(style="color: #ffd700;")
+                    i.fas.fa-flag.fa-3x
+                p.title.is-4.mb-4 Fastcap
+                p.subtitle.is-6(style="margin-top: 10px; font-size: 0.9rem;")
+                  | 🏆 Ryozuki
+                  br
+                  | ⏱️ 29.800s
+                  br
+                  | 🏁 298 finishes
+                p.is-size-7.has-text-grey-light(style="margin-top: 5px; margin-bottom: 20px;") fastcap_ice by Tezcan
+                .level.is-mobile(style="margin-top: auto; margin-bottom: 0;")
+                  .level-left
+                    .level-item
+                      a.button.is-link.is-warning.is-outlined.is-small(href=`/static/tw-webgl/?map=/static/monthlyshorts/${year}/${monthNumber}/fastcap.map`) Preview
+                  .level-right
+                    .level-item
+                      a.button.is-link.is-warning.is-outlined.is-small(href=`/static/monthlyshorts/${year}/${monthNumber}/fastcap.map`, download) Download
+        
+        br
+        br
+        
+        //- Monthly Champions Table
+        .monthly-champions-section
+          h2.title.has-text-centered.mb-5 Champions Rankings
+          .box
+            .table-container
+              table.table.is-fullwidth.is-striped.is-hoverable.champions-table
+                thead
+                  tr
+                    th.has-text-centered
+                      span.icon.has-text-warning
+                        i.fas.fa-trophy
+                      | Rank
+                    th.has-text-centered
+                      span.icon(style="color: #3273dc;")
+                        i.fas.fa-rocket
+                      |  Fullspeed
+                    th.has-text-centered
+                      span.icon(style="color: #ff9800;")
+                        i.fas.fa-link
+                      |  Hook
+                    th.has-text-centered
+                      span.icon.has-text-success
+                        i.fas.fa-crosshairs
+                      |  Skill
+                    th.has-text-centered
+                      span.icon.has-text-danger
+                        i.fas.fa-laugh
+                      |  LOL
+                    th.has-text-centered
+                      span.icon.has-text-warning
+                        i.fas.fa-flag
+                      |  Fastcap
+                tbody
+                  tr
+                    td.rank-cell 1st
+                    td.has-text-centered
+                      strong timakro
+                      br
+                      span.time-display 120.456s
+                    td.has-text-centered
+                      strong Assa
+                      br
+                      span.time-display 240.500s
+                    td.has-text-centered
+                      strong Tezcan
+                      br
+                      span.time-display 65.800s
+                    td.has-text-centered
+                      strong Ryozuki
+                      br
+                      span.time-display 138.500s
+                    td.has-text-centered
+                      strong Ryozuki
+                      br
+                      span.time-display 29.800s
+                  
+                  tr
+                    td.rank-cell 2nd
+                    td.has-text-centered
+                      strong Ryozuki
+                      br
+                      span.time-display 121.234s
+                    td.has-text-centered
+                      strong Ryozuki
+                      br
+                      span.time-display 241.800s
+                    td.has-text-centered
+                      strong Assa
+                      br
+                      span.time-display 67.100s
+                    td.has-text-centered
+                      strong nether
+                      br
+                      span.time-display 139.800s
+                    td.has-text-centered
+                      strong timakro
+                      br
+                      span.time-display 30.500s
+                  
+                  tr
+                    td.rank-cell 3rd
+                    td.has-text-centered
+                      strong Tezcan
+                      br
+                      span.time-display 122.890s
+                    td.has-text-centered
+                      strong Tezcan
+                      br
+                      span.time-display 243.200s
+                    td.has-text-centered
+                      strong nether
+                      br
+                      span.time-display 68.500s
+                    td.has-text-centered
+                      strong Assa
+                      br
+                      span.time-display 141.200s
+                    td.has-text-centered
+                      strong Tezcan
+                      br
+                      span.time-display 31.900s
+                  
+                  tr
+                    td.rank-cell 4th
+                    td.has-text-centered
+                      span Assa
+                      br
+                      span.time-display 123.456s
+                    td.has-text-centered
+                      span timakro
+                      br
+                      span.time-display 245.000s
+                    td.has-text-centered
+                      span timakro
+                      br
+                      span.time-display 69.800s
+                    td.has-text-centered
+                      span Tezcan
+                      br
+                      span.time-display 142.500s
+                    td.has-text-centered
+                      span Assa
+                      br
+                      span.time-display 32.600s
+                  
+                  tr
+                    td.rank-cell 5th
+                    td.has-text-centered
+                      span nether
+                      br
+                      span.time-display 124.123s
+                    td.has-text-centered
+                      span nether
+                      br
+                      span.time-display 247.300s
+                    td.has-text-centered
+                      span Ryozuki
+                      br
+                      span.time-display 71.200s
+                    td.has-text-centered
+                      span timakro
+                      br
+                      span.time-display 143.900s
+                    td.has-text-centered
+                      span nether
+                      br
+                      span.time-display 33.300s
+        
+        br
+        br
+        br
+        
+        //- Points Champion Section
+        .points-champion-section
+          h2.title.has-text-centered.mb-5 Points Champions
+          .box
+            .table-container
+              table.table.is-fullwidth.is-striped.is-hoverable.champions-table
+                thead
+                  tr
+                    th.has-text-centered
+                      span.icon.has-text-warning
+                        i.fas.fa-trophy
+                      | Rank
+                    th.has-text-centered Player
+                    th.has-text-centered Points
+                tbody
+                  tr
+                    td.rank-cell 1st
+                    td.has-text-centered
+                      strong Champion
+                    td.has-text-centered
+                      strong 1,234 pts
+                  
+                  tr
+                    td.rank-cell 2nd
+                    td.has-text-centered
+                      strong Player2
+                    td.has-text-centered
+                      strong 1,102 pts
+                  
+                  tr
+                    td.rank-cell 3rd
+                    td.has-text-centered
+                      strong Player3
+                    td.has-text-centered
+                      strong 978 pts
+                  
+                  tr
+                    td.rank-cell 4th
+                    td.has-text-centered
+                      span Player4
+                    td.has-text-centered
+                      span 856 pts
+                  
+                  tr
+                    td.rank-cell 5th
+                    td.has-text-centered
+                      span Player5
+                    td.has-text-centered
+                      span 742 pts
