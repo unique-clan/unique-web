@@ -7,6 +7,7 @@ var NodeCache = require("node-cache");
 const LOCATIONS = [
     { name: "GER" },
     { name: "CAN", sponsor: "Fudgy" },
+    { name: "USA", sponsor: "Ewan" },
 ];
 
 class ServerStatus {
