@@ -1,0 +1,64 @@
+extends layout
+
+include templates/mixins.pug
+
+block content
+  main
+    br
+    br
+    br
+    br
+    section.hero.is-dark
+      .hero-body
+        .container
+          .columns
+            .column.is-9
+              h1.title Monthly Shorts Archive
+              if search
+                h2.subtitle
+                  | Searching for "#{search}"
+            .column
+              form
+                field
+                  p.control.has-icons-right
+                    input.input.warning-dark-input(type="text", placeholder="Month Search", name="search", value=search, autocomplete="off")
+                    span.icon.is-small.is-right
+                      i.fa.fa-search
+    section.section
+      .container
+        if !months.length
+          article.tile.is-child.notification
+            p.has-text-centered.background-text No months like "#{search}" found.
+        else
+          each monthRow in months.reduce(function(result, value, index, array) { if (index % 3 === 0) result.push(array.slice(index, index + 3)); return result; }, [])
+            .columns
+              each month in monthRow
+                .column.is-4
+                  a(href=`/monthlyshorts/${month.year}/${month.monthNumber}`)
+                    .card.month-card
+                      .card-content
+                        p.title.has-text-centered.is-4= month.monthName + ' ' + month.year
+                        hr(style="margin-top: 1.5rem; margin-bottom: 1.5rem;")
+                        .month-winners.has-text-centered
+                          p.mb-2
+                            span.icon.is-small(style="color: #3273dc;")
+                              i.fas.fa-rocket
+                            |  timakro
+                          p.mb-2
+                            span.icon.is-small(style="color: #ff8c00;")
+                              i.fas.fa-link
+                            |  Assa
+                          p.mb-2
+                            span.icon.is-small(style="color: #28a745;")
+                              i.fas.fa-crosshairs
+                            |  Tezcan
+                          p.mb-2
+                            span.icon.is-small(style="color: #dc143c;")
+                              i.fas.fa-laugh
+                            |  Ryozuki
+                          p.mb-0
+                            span.icon.is-small(style="color: #ffd700;")
+                              i.fas.fa-flag
+                            |  Ryozuki
+          if pageCount > 1
+            +pagination(page, pageCount)

@@ -154,6 +154,158 @@ router.get("/submit", function (req, res, next) {
 //     return res.status(201).json({ msg: "Map submission sent." });
 // });
 
+router.get("/secret", function (req, res, next) {
+    res.render("secret", {
+        title: "Monthly Shorts | Unique",
+    });
+});
+
+router.get("/monthlyshorts", function (req, res, next) {
+    // Generate months data (example: January 2024 - December 2027)
+    const allMonths = [];
+    const monthNames = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
+    
+    // Generate months from 2024 to 2027
+    for (let year = 2024; year <= 2027; year++) {
+        for (let month = 0; month < 12; month++) {
+            allMonths.push({
+                year: year,
+                monthNumber: month + 1,
+                monthName: monthNames[month],
+                description: "5 Categories Available"
+            });
+        }
+    }
+    
+    // Reverse to show newest first
+    allMonths.reverse();
+    
+    // Filter by search query
+    let filteredMonths = allMonths;
+    let search = null;
+    if (typeof req.query.search === "string" && req.query.search.trim()) {
+        search = req.query.search.trim().toLowerCase();
+        filteredMonths = allMonths.filter(m => 
+            m.monthName.toLowerCase().includes(search) || 
+            m.year.toString().includes(search)
+        );
+    }
+    
+    // Pagination
+    const pageCount = Math.ceil(filteredMonths.length / 30);
+    const page = Math.min(Math.max(1, req.query.page), pageCount) || 1;
+    const paginatedMonths = filteredMonths.slice((page - 1) * 30, page * 30);
+    
+    res.render("monthlyshorts", {
+        title: "Monthly Shorts Archive | Unique",
+        page: page,
+        pageCount: pageCount,
+        months: paginatedMonths,
+        search: search,
+    });
+});
+
+router.get("/monthlyshorts/:year/:month", async function (req, res, next) {
+    const monthNames = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
+    
+    const year = parseInt(req.params.year);
+    const monthNumber = parseInt(req.params.month);
+    
+    // Validate year and month
+    if (isNaN(year) || isNaN(monthNumber) || monthNumber < 1 || monthNumber > 12) {
+        res.status(404).render("error", { message: "Not Found", error: { status: 404 } });
+        return;
+    }
+    
+    const monthName = monthNames[monthNumber - 1];
+
+    // TODO update and use own database
+    // fetch shorts maps
+    const connection = await sql.newMysqlConn();
+    const [
+        monthlyMaps,
+    ] = await connection.execute(
+        "SELECT Map, Server, Mapper, Timestamp FROM record_maps WHERE YEAR(Timestamp) = ? AND MONTH(Timestamp) = ?;",
+        [year, monthNumber],
+    );
+
+    let top5PerMap = {}
+
+    // For now, using placeholder data
+    var mapNames = []
+    for (let i = 0; i < monthlyMaps.length; i++) {
+        // fetch top 5 for each
+        top5PerMap[monthlyMaps[i].Server] = await connection.execute(
+            "SELECT Name, Timestamp, MIN(Time) AS BestTime FROM record_race WHERE YEAR(Timestamp) = ? AND MONTH(Timestamp) = ? AND Map = ? GROUP BY Name ORDER BY BestTime ASC LIMIT 5;",
+            [year, monthNumber, monthlyMaps[i].Map],
+        );
+        mapNames.push(monthlyMaps[i].Map)
+    }
+
+    // TODO: IDK
+    const [
+        top5Points,
+    ] = await connection.execute(
+        "SELECT RANK() OVER (ORDER BY Points DESC) AS rank, Name, Points FROM (SELECT Name, SUM(cache_points.Points) as Points FROM cache_points JOIN record_maps ON cache_points.Map = record_maps.Map WHERE cache_points.Map IN (?) GROUP BY Name) v WHERE Points > 0 ORDER BY Points DESC LIMIT 5;",
+        //"SELECT Name, SUM(Points) AS TotalPoints FROM cache_points WHERE Map IN (?) GROUP BY Name ORDER BY TotalPoints DESC LIMIT 5",
+        [mapNames.join(', ')],
+    );
+
+    debug(top5Points)
+
+    let stats = {
+        fullspeed: { winner: top5PerMap.fullspeed?.[0]?.name, time: top5PerMap.fullspeed?.[0]?.time, points: 'TBD' },
+        hook: { winner: top5PerMap.hook?.[0]?.name, time:  top5PerMap.hook?.[0]?.time, points: 'TBD' },
+        skill: { winner: top5PerMap.skill?.[0]?.name, time:  top5PerMap.skill?.[0]?.time, points: 'TBD' },
+        lol: { winner: top5PerMap.lol?.[0]?.name, time:  top5PerMap.lol?.[0]?.time, points: 'TBD' },
+        fastcap: { winner: top5PerMap.fastcap?.[0]?.name, time:  top5PerMap.fastcap?.[0]?.time, points: 'TBD' }
+    };
+    
+    const topPoints = [
+        { rank: 1, name: "Player1", points: 'TBD' },
+        { rank: 2, name: "Player2", points: 'TBD' },
+        { rank: 3, name: "Player3", points: 'TBD' },
+        { rank: 4, name: "Player4", points: 'TBD' },
+        { rank: 5, name: "Player5", points: 'TBD' }
+    ];
+    
+    const records = [
+        { category: "Fullspeed", player: top5PerMap.fullspeed?.[0]?.name, time:  top5PerMap.fullspeed?.[0]?.time },
+        { category: "Hook", player: top5PerMap.hook?.[0]?.name, time:  top5PerMap.hook?.[0]?.time },
+        { category: "Skill", player: top5PerMap.skill?.[0]?.name, time:  top5PerMap.skill?.[0]?.time },
+        { category: "LOL", player: top5PerMap.lol?.[0]?.name, time:  top5PerMap.lol?.[0]?.time },
+        { category: "Fastcap", player: top5PerMap.fastcap?.[0]?.name, time:  top5PerMap.fastcap?.[0]?.time }
+    ];
+    
+    res.render("monthlyshort-detail", {
+        title: `${monthName} ${year} - Monthly Shorts | Unique`,
+        year: year,
+        monthNumber: monthNumber,
+        monthName: monthName,
+        stats: stats,
+        topPoints: topPoints,
+        records: records
+    });
+});
+
+router.get("/monthlyshorts/:year/:month/:category/preview", function (req, res, next) {
+    // Placeholder for preview functionality
+    // This would typically open the map in a viewer or redirect to the map preview page
+    res.send(`Preview for ${req.params.category} - ${req.params.month}/${req.params.year}`);
+});
+
+router.get("/monthlyshorts/:year/:month/:category/download", function (req, res, next) {
+    // Placeholder for download functionality
+    // This would typically serve the map file for download
+    res.send(`Download ${req.params.category} map for ${req.params.month}/${req.params.year}`);
+});
+
 router.get("/tournaments", function (req, res, next) {
     res.render("tournaments", {
         title: "Tournaments | Unique",
